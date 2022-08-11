@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+  <button type="button" class="btn btn-success btn-lg" id="addcomp">
+    <script type="text/javascript">
+        document.getElementById("addcomp").onclick = function () {
+            location.href = "/add_company/?session_id={{session_id}}";
+        };
+    </script>
+    <span data-feather="plus" ></span>
+    Add Company</button>
+
+   <div class="card bg-success text-white mt-2">
+     <div class="card-body">
+       <div class="card-title">Company List</div>
+     </div>
+   </div>
+<table class="table table-hover table-bordered table_shadow mt-3">
+          <thead>
+            <tr class="text-success" style="width: 96%; margin-left: auto; margin-right: auto;">
+              <th>ID</th>
+              <th>Company Name</th>
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+ 
+                  {% for comp in company %}
+    <tr>
+      <td contenteditable='true' data-id="question-{{comp.company_id }}" data-old_value='{{comp.company_id}}' onClick="highlightEdit(this);"> {{ comp.company_id }} </td>
+      <td contenteditable='true' data-id="answer-{{comp.company }}" data-old_value='{{comp.company}}' onClick="highlightEdit(this);"> {{ comp.company }} </td>
+        <td class="text-center">
+        <a href="{% url 'edit_company' %}?company_id={{comp.company_id}}&session_id={{session_id}}"> <span data-feather="edit-2" class="align-text-bottom"></span></a>
+         <span data-feather="x" class="align-text-bottom text-danger"></span>
+       </td>
+
+        {% comment %} <a href="{% url 'edit_company' %}/?session_id={{session_id}}&?company_id={{comp.company_id}}"> <span data-feather="edit-2" class="align-text-bottom"></span></a> {% endcomment %}
+
+
+
+    </tr>
+    {% endfor %}
+           
+          </tbody>
+          </table>
+
+<script>
+    function saveQuestionAnswer(id) {
+
+        editableQuestion = $('a[data-id=question-'+id+']') //this will get data-id=question-1 where 1 is the question ID
+        editableAnswer = $('a[data-id=answer-'+id+']') //this will get data-id=answer-1 where 1 is the question ID
+
+        // no change change made then return false
+        if ($(editableQuestion).attr('data-old_value') === editableQuestion.innerHTML && $(editableAnswer).attr('data-old_value') === editableAnswer.innerHTML)
+            return false;
+
+        // send ajax to update value
+        $(editableObj).css("background", "#FFF url(loader.gif) no-repeat right");
+        $.ajax({
+            url: "/my-save-url/",
+            type: "POST",
+            dataType: "json",
+            data: {"question": editableQuestion.innerHTML, "answer": editableAnswer.innerHTML}
+            success: function(response) {
+                // set updated value as old value
+                $(editableQuestion).attr('data-old_value', response.question);
+                $(editableQuestion).css("background", "#FDFDFD");
+
+                $(editableAnswer).attr('data-old_value', response.answer);
+                $(editableAnswer).css("background", "#FDFDFD");
+            },
+            error: function() {
+                console.log("errr");
+                alert("An error occurred")
+            }
+        });
+    }
+
+    function highlightEdit(elem){
+      $(elem).css("background", "#e3e3e3") //just add any css or anything, it's only to depict that this area is being edited...
+    }
+    </script>
+
+
+                     {% endblock %}

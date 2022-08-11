@@ -1,0 +1,159 @@
+
+
+
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+
+
+
+ <div class="card bg-success text-white mt-2">
+                <div class="card-body">
+                                                                                  {% if access_granted == 1 %}
+
+                  <div class="card-title">Add User</div>
+                </div>
+              </div>
+                     <!-- form     -->
+                     <form class="row g-3 mt-3 table_shadow" method="POST">
+                         {% csrf_token %}
+
+                      <div class="col-12">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                      </div>
+                      <div class="co-12">
+                        <label for="inputEmail4" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail4" name="inputEmail4" placeholder="Email">
+                      </div>
+                      <div class="col-12">
+                        <label for="firstname" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name">
+                      </div>
+                      <div class="col-12">
+                        <label for="lastname" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastname"  name="lastname" placeholder="Last Name">
+                      </div>
+                      {% comment %} <div class="col-12">
+                        <label for="role" class="form-label">Role</label>
+                        <input type="text" class="form-control" id="role" name="role" placeholder="Role">
+                      </div> {% endcomment %}
+                      <div class="col-12">
+                        <label for="teamcode" class="form-label">Team Code</label>
+                        <input type="text" class="form-control" id="teamcode" name="teamcode" placeholder="Team Code">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="inputPassword4" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4" name="inputPassword4">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="phonecode" class="form-label">Phone Code</label>
+                        <input type="text" class="form-control" id="phonecode" name="phonecode">
+                      </div>
+                      <div class="col-md-12">
+                        <label for="phone" class="form-label">Phone </label>
+                        <input type="text" class="form-control" id="phone" name="phone">
+                      </div>
+                      <div class="col-12">
+                        <label for="iamge" class="form-label">Insert Image</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                      </div>
+                      
+                      <div class="col-12">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                      </div>
+                    </form>
+
+                              {% endif %}
+
+                {% if access_granted == 0 %}
+
+                <h1> Access Denied </h1>
+
+                {% endif %}
+
+{% comment %} <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+<!--       <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In"> -->
+
+<div style="color:yellow; width:150px; height:150px;"><img id="previewImg" src="{{ MEDIA_URL }}/user.png" class="rounded-circle" alt="Placeholder" width="100%" height="100%"></div>
+
+<input type="file" name="profile_image" id="photofile" accept="image/*;capture=camera" onchange="previewFile(this);">
+  <input type="submit" class="fadeIn fourth" value="Register"  >
+
+
+    </form> {% endcomment %}
+
+
+      <script>
+        $('#btnSubmit').click(function () {
+            let role = $('#id_role').val();
+            let teamCode = $('#id_teamcode').val();  
+            let firstName = $('#id_firstname').val();
+            let lastName = $('#id_lastname').val();
+            let userName = $('#id_username').val();
+            let password = $('#id_password').val();
+            let email = $('#id_email').val();
+            let countrycode = $('#id_phonecode').val();
+            let phone = $('#id_phone').val();
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                  "username": userName,
+                  "role": role,
+                  "password": password,
+                  "email" : email,
+                  "phone": phone,
+                  "first_name": firstName,
+                  "last_name": lastName,
+                  "role": role,
+                  "teamcode" : countrycode,
+
+                },
+
+                url: "https://100014.pythonanywhere.com/api/register/",
+                
+
+                error: function (xhr, status, error) {
+
+                    var err_msg = ''
+                    for (var prop in xhr.responseJSON) {
+                        err_msg += prop + ': ' + xhr.responseJSON[prop] + '\n';
+                    }
+
+                    alert(err_msg);
+                },
+                success: function (result) {
+                 
+                    alert('Registered.');
+
+
+
+                }
+            });
+        });
+
+</script>
+
+
+
+           {% endblock %}

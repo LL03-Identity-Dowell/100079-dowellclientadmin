@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+  <button type="button" class="btn btn-success btn-lg" id="addproject">
+    <script type="text/javascript">
+        document.getElementById("addproject").onclick = function () {
+            location.href = "/add_project/?session_id={{session_id}}";
+        };
+    </script>
+    <span data-feather="plus" ></span>
+    Add Project</button>
+
+   <div class="card bg-success text-white mt-2">
+     <div class="card-body">
+       <div class="card-title">Project List</div>
+     </div>
+   </div>
+<table class="table table-hover table-bordered table_shadow mt-3">
+          <thead>
+            <tr class="text-success" style="width: 96%; margin-left: auto; margin-right: auto;">
+              <th>ID</th>
+              <th>Project Name</th>
+            <th>Department ID</th>
+                        <th>Department Name</th>
+
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+ 
+                  {% for project in projects %}
+    <tr>
+      <td > {{ project.project_id }} </td>
+      <td > {{ project.project }} </td>
+            <td > {{ project.department_id }} </td>
+            <td > {{ project.department_name }} </td>
+
+
+        <td class="text-center">
+       <a href="{% url 'edit_project' %}?project_id={{project.project_id}}&department_id={{project.department_id}}&session_id={{session_id}}">  <span data-feather="edit-2" class="align-text-bottom"></span></a>
+         <span data-feather="x" class="align-text-bottom text-danger"></span>
+       </td>
+
+
+
+
+    </tr>
+    {% endfor %}
+           
+          </tbody>
+          </table>
+
+
+
+
+                     {% endblock %}

@@ -1,0 +1,229 @@
+
+
+{% extends "new_base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+      <div class="container" style="margin-top: 64px;">
+      <div class="row">
+        <div class="col-sm-12 col-lg-6">
+          <div class="card card_bg text-white mt-5">
+            <div class="card-body">
+                                                                              {% if access_granted == 1 %}
+
+              <div class="card-title">Assign Roles</div>
+            </div>
+          </div>
+          <form class="table_shadow p-3" method = "POST">
+                {% csrf_token %}
+
+                <div class="col-12 mt-3">
+                  <label for="user_" class="form-label">User</label>
+                 <select name="users" id="user_" class="form-control" >
+           {% for user in users %}
+           {% if user.role == 'User' %}
+
+    <option value="{{ user.id }}">{{ user.username }}</option>
+    {% endif %}
+
+        {% endfor %}
+                  </select>
+                </div>
+<div class="loadingMask" id="loadingMask" style="visibility: hidden;"></div>
+
+
+                <div class="col-12 mt-3">
+                  <label for="roles_" class="form-label">Roles</label>
+                 <select name="roles" id="roles_" class="form-control" >
+
+                            {% if access_level == 'Admin' %}
+
+                    <option value="company_lead">Company Lead</option>
+                    <option value="organisation_lead">Organisation Lead</option>
+                    <option value="department_lead">Department Lead</option>
+                    <option value="project_lead">Project Lead</option>
+                    <option value="team_member">Team Member</option>
+                              {% endif %}
+
+
+                            {% if access_level == 'company_lead' %}
+
+                    <option value="organisation_lead">Organisation Lead</option>
+                    <option value="department_lead">Department Lead</option>
+                    <option value="project_lead">Project Lead</option>
+                    <option value="team_member">Team Member</option>
+                              {% endif %}
+                            {% if access_level == 'organisation_lead' %}
+
+
+                    <option value="department_lead">Department Lead</option>
+                    <option value="project_lead">Project Lead</option>
+                    <option value="team_member">Team Member</option>
+                              {% endif %}                            
+                            
+                            {% if access_level == 'department_lead' %}
+
+
+                    <option value="project_lead">Project Lead</option>
+                    <option value="team_member">Team Member</option>
+                              {% endif %}
+                            {% if access_level == 'project_lead' %}
+
+                    <option value="team_member">Team Member</option>
+                              {% endif %}
+
+                  </select>
+                </div>
+
+                <div class="col-12 mt-3">
+                  <label for="category" class="form-label">Category</label>
+                 <select name="category" id="category" class="form-control" >
+                      <option>Select value</option>
+                  </select>
+                </div>
+            <button type="submit" class="btn text-white card_bg ms-auto mt-2">Add</button>
+          </form>
+                          {% endif %}
+
+
+
+                                                {% if access_granted == 0 %}
+
+                <h1> Access Denied </h1>
+
+                {% endif %}
+       <script>
+       /*
+            var category_array = {
+              "company_lead": ["Jack", "Bruzz", "Merry", "Hira", "fara"],
+              "organization_lead" :["Preston", "Blue-Ray", "Horday", "Kim", "Sam"],
+              "department_lead":["Nugh", "Nag", "Bristo", "Jack Ma", "Grill"],
+              "project_lead":["Flerdo", "Zenta", "Sigma", "Green-Ray", "Yellow-Jack"],
+              "team_member":["Fin", "Stem","brencj","damm"]
+            }
+            window.onload = function() {
+              var roles = document.getElementById("roles_");
+              var category = document.getElementById("category");
+              for (var x in category_array) {
+                roles.options[roles.options.length] = new Option(x, x);
+              }
+              */
+              /*
+              roles.onchange = function() {
+                //empty Chapters- and Topics- dropdowns
+                category.length = 1;
+                //display correct values   
+                for (var y in category_array) {
+                  var a = category_array[this.value];
+                  for(var m=0; m<=a.length; m++){
+                    category.options[category.options.length] = new Option(a[m],a[m]);         
+                  }
+                  break;
+                }
+              }
+            }
+                          */
+
+            </script> 
+        </div>
+        <div class="col">
+        </div>
+      </div>
+      </div>  
+
+<script>
+
+                        $('#roles_').change(function(){
+
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: "{% url 'get_all_data' %}",        
+                beforeSend :function(){
+                    $("#loadingMask").css('visibility', 'visible');
+                },
+                success: function (result) {
+                  $("#loadingMask").css('visibility', 'hidden');
+                   $('#category').empty();
+                   console.log( result.companies );
+                   // var optionText = result.name;
+                    //var optionValue = result.name;
+                    var totalCount_comp = result.companies.length;
+                    var totalCount_org = result.organisations.length;
+                    var totalCount_dept = result.departments.length;
+                    var totalCount_proj = result.projects.length;
+
+
+   
+                  if ( $('#roles_').val()== 'company_lead') {
+
+                    for (let i = 0; i < totalCount_comp; i++) {
+
+                    $('#category').append(`<option value="${result.companies[i].company}">
+                                       ${result.companies[i].company}
+                    </option>`);
+                    }
+                  }
+
+                                    else if ( $('#roles_').val()== 'organisation_lead') {
+
+                    for (let i = 0; i < totalCount_org; i++) {
+
+                    $('#category').append(`<option value="${result.organisations[i].name}">
+                                       ${result.organisations[i].name}
+                    </option>`);
+                    }
+                  }
+
+
+
+                                                      else if ( $('#roles_').val()== 'department_lead') {
+
+                    for (let i = 0; i < totalCount_dept; i++) {
+
+                    $('#category').append(`<option value="${result.departments[i].department}">
+                                       ${result.departments[i].department}
+                    </option>`);
+                    }
+                  }
+
+
+
+
+                                                      else if ( $('#roles_').val()== 'project_lead') {
+
+                    for (let i = 0; i < totalCount_proj; i++) {
+
+                    $('#category').append(`<option value="${result.projects[i].project}">
+                                       ${result.projects[i].project}
+                    </option>`);
+                    }
+                  }
+
+                        $('#select_jobcode').change(function(){
+                        for (let i = 0; i < totalCount1; i++) {
+
+                        var jobCode =  $('#select_jobcode').val().substring(0,4)
+                        $('#jobCode').val(jobCode);
+                                                        }
+
+                })
+
+                }
+            });
+        });
+
+
+</script>
+           {% endblock %}

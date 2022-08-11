@@ -1,0 +1,69 @@
+
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+                {% comment %} <form class="table_shadow p-3">
+                   <div class="form-group mt-3">
+                       <label for="addCompany" class="form-label">Company Name</label>
+                     <input type="text" class="form-control" id="addCompany" aria-describedby="company" placeholder="Company">
+                   </div>
+                   <button type="submit" class="btn btn-success ms-auto mt-2">Add</button>
+                 </form> {% endcomment %}
+
+
+         <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="card bg-success text-white mt-5">
+                  <div class="card-body">
+                 {% if access_granted == 1 %}
+                    <div class="card-title">Organisation</div>
+                  </div>
+                </div>
+                <form class="table_shadow p-3" method ="POST">
+                    {% csrf_token %}
+
+                    <div class="col-12">
+                        <label for="org_name" class="form-label">Organisation Name</label>
+                        <input type="text" class="form-control" id="org_name" name="org_name" placeholder="Organisation Name" value= "{{organisation_placeholder}}">
+                      </div>  
+                      <div class="col-12 mt-3">
+                        <label for="companyName" class="form-label">Company Name</label>
+                       <select id="companyName" name="companyName" class="form-control" >
+    <option value="{{ company_id }}" selected>{{ company_placeholder }}</option>
+                   {% for company in company %}
+    <option value="{{ company.company_id }}">{{ company.company }}</option>
+        {% endfor %}
+                        
+                        
+                        </select>
+                      </div>
+                  <button type="submit" class="btn btn-success ms-auto mt-2">Update</button>
+                </form>
+
+ {% endif %}
+
+                           {% if access_granted == 0 %}
+
+                <h1> Access Denied </h1>
+
+                {% endif %}
+              </div>
+              <div class="col">
+              </div>
+            </div>
+            </div>
+
+
+           {% endblock %}

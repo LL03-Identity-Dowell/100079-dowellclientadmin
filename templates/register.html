@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}Register{% endblock %}
+
+
+{% block content %}
+      <script>
+
+          function previewFile(input){
+        var file = $("input[type=file]").get(0).files[0];
+
+        if(file){
+            var reader = new FileReader();
+
+            reader.onload = function(){
+                $("#previewImg").attr("src", reader.result);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+      </script>
+
+ 
+<h1 align="center"> DoWell Registration</h1>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+   </div>
+
+    <!-- Login Form -->
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+<!--       <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In"> -->
+
+<div style="color:yellow; width:150px; height:150px;"><img id="previewImg" src="{{ MEDIA_URL }}/user.png" class="rounded-circle" alt="Placeholder" width="100%" height="100%"></div>
+
+<input type="file" name="profile_image" id="photofile" accept="image/*;capture=camera" onchange="previewFile(this);">
+  <input type="submit" class="fadeIn fourth" value="Register" id="btnSubmit" >
+
+
+    </form>
+
+    <!-- Remind Passowrd -->
+<!--     <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div> -->
+
+  </div>
+</div>
+
+<script>
+
+
+
+
+        $('#btnSubmit').click(function () {
+
+            let role = $('#id_designation').val();
+            let teamCode = $('#id_teamcode').val();  
+            let firstName = $('#id_firstname').val();
+            let lastName = $('#id_lastname').val();
+            let userName = $('#id_username').val();
+            let password = $('#id_password').val();
+            let confirm = $('#id_confrm_password').val();            
+            let email = $('#id_email').val();
+            let countrycode = $('#id_country_code').val();
+            let phone = $('#id_phone').val();
+
+
+
+
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                  "username": userName,
+                  "role": role,
+                  "password": password,
+
+                },
+
+                url: "https://100014.pythonanywhere.com/api/register/",
+                
+
+                error: function (xhr, status, error) {
+
+                    var err_msg = ''
+                    for (var prop in xhr.responseJSON) {
+                        err_msg += prop + ': ' + xhr.responseJSON[prop] + '\n';
+                    }
+
+                    alert(err_msg);
+                },
+                success: function (result) {
+                 
+                    alert('Registered.');
+
+
+
+                }
+            });
+        });
+
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+  <!DOCTYPE html>
+  <html lang="en">  
+ {% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script defer src="{% static 'fontawesome/js/all.min.js' %}"></script>
+    <style type="text/css">
+        
+        .hidden {
+            display: none;
+        }
+        .main_wrap{
+    margin:0 auto;
+    width:auto;
+    height: auto;
+    position:relative;
+    ;
+}
+
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading .modal {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+
+    </style>
+</head>
+<body class="main_wrap" style="background-color: #eee;">
+    <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+
+
+
+
+
+
+    {% block content %}
+
+    {% endblock %}
+
+
+</body> 
+</html>  

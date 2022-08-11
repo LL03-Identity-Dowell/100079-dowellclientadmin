@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+  <button type="button" class="btn btn-success btn-lg" id="adddept">
+    <script type="text/javascript">
+        document.getElementById("adddept").onclick = function () {
+            location.href = "/add_department/?session_id={{session_id}}";
+        };
+    </script>
+    <span data-feather="plus" ></span>
+    Add Department</button>
+
+   <div class="card bg-success text-white mt-2">
+     <div class="card-body">
+       <div class="card-title">Department List</div>
+     </div>
+   </div>
+<table class="table table-hover table-bordered table_shadow mt-3">
+          <thead>
+            <tr class="text-success" style="width: 96%; margin-left: auto; margin-right: auto;">
+              <th>ID</th>
+              <th>Department Name</th>
+            <th>Organisation ID</th>
+                        <th>Organisation Name</th>
+
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+ 
+                  {% for department in departments %}
+    <tr>
+      <td > {{ department.department_id }} </td>
+      <td > {{ department.department }} </td>
+            <td > {{ department.organization_id }} </td>
+            <td > {{ department.organisation_name }} </td>
+
+        <td class="text-center">
+         <a href="{% url 'edit_department' %}?department_id={{department.department_id}}&organisation_id={{department.organization_id}}&session_id={{session_id}}"> <span data-feather="edit-2" class="align-text-bottom"></span></a>
+         <span data-feather="x" class="align-text-bottom text-danger"></span>
+       </td>
+
+
+
+
+    </tr>
+    {% endfor %}
+           
+          </tbody>
+          </table>
+
+
+
+
+                     {% endblock %}

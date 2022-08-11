@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<!--   <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form> -->
+<!-- 
+<form method="post">
+    {{ form.non_field_errors }}
+    <div class="form-group">
+
+        <label for="{{ form.username.id_for_label }}">Username:</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+
+    </div>
+    <div class="form-group">
+
+        <label for="{{ form.password.id_for_label }}">Password:</label>
+        {{ form.password }}
+        {{ form.password.errors }}
+    </div>
+    <button type="submit">Login</button>
+</form>
+ -->
+<h1 align="center"> DoWell Admin Page</h1>
+<div class="wrapper fadeInDown">
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+
+  <div id="formContent">
+<div class="paragraph" style="width:auto;">
+  Your Token : <input type="text" value = "{{jwt}}" id="jwt">
+  User Name : {{ userdata.username }} <br />
+  Email : {{ userdata.email }} <br />
+  First Name : {{ userdata.first_name }} <br />
+  Last Name : {{ userdata.last_name }} <br />
+  Role : {{ userdata.role }} <br />
+ 
+  </div>
+
+          <button type="button"  class="btn btn-primary" id="getUser">Get User</button>
+          <button type="button" onclick="location.href='{% url 'index' %}'" class="btn btn-primary" id="getUser">Admin Panel</button>
+
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+<!--       <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />
+ -->    </div>
+
+    <!-- Login Form -->
+    <h2> Restricted Access </h2>
+        <button type="button" onclick="location.href='{% url 'logout' %}'" class="btn btn-primary">Logout</button>
+
+  <form method="post">
+
+
+<!--       <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In"> -->
+
+
+
+    </form>
+
+    <!-- Remind Passowrd -->
+<!--     <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div> -->
+
+  </div>
+</div>
+
+<script>
+
+
+
+
+        $('#getUser').click(function () {
+
+
+                 let jwt = $('#jwt').val();     
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: "https://100014.pythonanywhere.com/api/user/", 
+                //headers: { 'Authorization': 'Token '+jwt+''},
+                
+                success: function (result) {
+                   console.log( result );
+
+
+                },
+
+
+                error: function (xhr, status, error) {
+                    console.log(  );
+                    var err_msg = ''
+                    for (var prop in xhr.responseJSON) {
+                        err_msg += prop + ': ' + xhr.responseJSON[prop] + '\n';
+                    }
+
+                    alert(err_msg);
+                },
+
+
+            });
+        });
+</script>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+
+ {% extends 'new_base.html' %}
+
+
+ {% load static %}
+
+{% block content %}
+
+ <div class="container" style="margin-top: 64px;">
+      <div class="row">
+        <div class="col">
+          <button type="button" id="addUser" class="btn btn-lg"><i type='solid' class='bx bx-plus-circle bx-md' style="vertical-align: sub; margin-right: 15px;"></i>Add User</button>
+        </div>
+        <div class="col">
+          <div class="input-group mt-3" style="float: right; width:66%">
+            <div class="form-outline ">
+              <input type="search" id="form1" class="form-control" placeholder="Search anything"/>
+            </div>
+            <button type="button" class="btn btn-primary">
+              <i class="bx bx-search"></i>
+
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
+        <div class="row">
+            <table class="table table-borderless table-light">
+                <tbody>
+ 
+                                      {% for user in users %}
+    <tr>
+          <td><b>ID: </b> {{ user.id }} </td>
+      <td><b>Email:</b> {{ user.email }} </td>
+
+      <td><b>Username: </b> {{ user.username }} </td>
+        <td><b>First Name:</b> {{ user.first_name }} </td>
+     <td><b>Last Name: </b> {{ user.last_name }} </td>
+    <td><b> Role:</b> {{ user.role }} </td>
+                        <td><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></td>
+                        <td><button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button></td>
+
+
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+
+        <script>
+      document.getElementById("addUser").onclick = function(){
+       location.href = "/add_user/?session_id={{session_id}}";
+      }
+    </script>
+
+        {% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+  <button type="button" class="btn btn-success btn-lg" id="addorg">
+    <script type="text/javascript">
+        document.getElementById("addorg").onclick = function () {
+            location.href = "/add_organisation/?session_id={{session_id}}";
+        };
+    </script>
+    <span data-feather="plus" ></span>
+    Add Organisation</button>
+
+   <div class="card bg-success text-white mt-2">
+     <div class="card-body">
+       <div class="card-title">Organisation List</div>
+     </div>
+   </div>
+<table class="table table-hover table-bordered table_shadow mt-3">
+          <thead>
+            <tr class="text-success" style="width: 96%; margin-left: auto; margin-right: auto;">
+              <th>ID</th>
+              <th>Organisation Name</th>
+            <th>Company ID</th>
+                                      <th>Company Name</th>
+
+
+              <th> Action </th>
+
+            </tr>
+          </thead>
+          <tbody>
+ 
+                  {% for organisation in organisations %}
+
+
+    <tr>
+      <td > {{ organisation.organization_id }} </td>
+      <td > {{ organisation.name }} </td>
+
+            <td > {{ organisation.company_id }} </td>
+
+
+            <td > {{ organisation.company_name }} </td>
+
+
+
+ 
+        <td class="text-center">
+        <a href="{% url 'edit_organisation' %}?organisation_id={{organisation.organization_id}}&company_id={{organisation.company_id}}&session_id={{session_id}}"> <span data-feather="edit-2" class="align-text-bottom"></span></a>
+         <span data-feather="x" class="align-text-bottom text-danger"></span>
+       </td>
+              
+
+    </tr>
+
+  {% endfor %}
+
+
+
+          </tbody>
+          </table>
+
+
+
+
+                     {% endblock %}

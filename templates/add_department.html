@@ -1,0 +1,66 @@
+
+
+
+{% extends "base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+      <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="card bg-success text-white mt-5">
+                <div class="card-body">
+                                                                {% if access_granted == 1 %}
+
+                  <div class="card-title">Department</div>
+                </div>
+              </div>
+              <form class="table_shadow p-3" method="POST">
+                                  {% csrf_token %}
+
+                  <div class="col-12">
+                      <label for="department_name" class="form-label">Department Name</label>
+                      <input type="text" class="form-control" id="department_name" name="department_name" placeholder="Department Name">
+                    </div>
+                    <div class="col-12 mt-3">
+                      <label for="orgName" class="form-label">Organization Name</label>
+                     <select id="orgName" name="orgName" class="form-control" >
+                     {% for organisation in organisations %}
+    <option value="{{ organisation.organization_id }}">{{ organisation.name }}</option>
+        {% endfor %}
+                      
+                      </select>
+                    </div>
+                <button type="submit" class="btn btn-success ms-auto mt-2">Add</button>
+              </form>
+                              {% endif %}
+
+                                              {% if access_granted == 0 %}
+
+                <h1> Access Denied </h1>
+
+                {% endif %}
+
+            </div>
+            <div class="col">
+            </div>
+          </div>
+          </div>
+
+          
+
+
+
+                       {% endblock %}
