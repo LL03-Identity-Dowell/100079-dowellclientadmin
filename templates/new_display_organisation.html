@@ -29,7 +29,18 @@
 
       <div class="container mt-5">
         <div class="row" style="border: thin solid black">
-          <table class="table table-borderless" style="width: 80%; text-align: center">           
+          <table class="table table-borderless" style="width: 80%; text-align: center" id="organisation-table">           
+
+                            <thead>
+        <tr>
+            <th>Desc</th>
+            <th>Value</th>
+            <th>Desc</th>
+            <th>Value</th>            
+            <th>Edit</th>
+            <th>Delete</th>           
+        </tr>
+    </thead>
             <tbody>
 
                               {% for organisation in organisations %}
@@ -39,9 +50,8 @@
                 <td>{{ organisation.name }} </td>
                 <td><b>Company:</b></td>
                 <td>{{ organisation.company_name }}</td>
-                <td><a href="{% url 'edit_organisation' %}?organisation_id={{organisation.organization_id}}&company_id={{organisation.company_id}}&session_id={{session_id}}"><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></a>
-                  <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button>
-              </td>
+                <td><a href="{% url 'edit_organisation' %}?organisation_id={{organisation.organization_id}}&company_id={{organisation.company_id}}&session_id={{session_id}}"><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></a></td>
+                 <td> <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button></td>
               </tr> 
 
               {% endfor %}
@@ -53,5 +63,12 @@
         </div>
       </div>
     </div>
+
+    <script>
+
+          $(document).ready( function () {
+    $('#organisation-table').DataTable();
+} );
+    </script>
 
                          {% endblock %}

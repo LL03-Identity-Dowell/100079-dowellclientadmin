@@ -27,7 +27,20 @@
 
       <div class="container mt-5">
         <div class="row" style="border: thin solid black">
-          <table class="table table-borderless" style="width: 80%; text-align: center">           
+          <table class="table table-borderless" style="width: 80%; text-align: center" id="project-table">    
+
+
+
+                                      <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>            
+            <th></th>
+            <th></th>           
+        </tr>
+    </thead>       
             <tbody>
 
                               {% for project in projects %}
@@ -38,7 +51,7 @@
                 <td><b>Department:</b></td>
                 <td>{{ project.department_name }}</td>
                 <td><a href="{% url 'edit_project' %}?project_id={{project.project_id}}&department_id={{project.department_id}}&session_id={{session_id}}"><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></a>
-                  <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button>
+                 </td><td> <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button>
               </td>
               </tr> 
 
@@ -51,6 +64,12 @@
       </div>
     </div>
 
+    <script>
+
+          $(document).ready( function () {
+    $('#project-table').DataTable();
+} );
+    </script>
 
 
     {% endblock %}
