@@ -7,6 +7,30 @@
 
 {% block content %}
 
+
+<div class="modal fade" id="commonModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+Add Roles
+      </div>
+      <div class="modal-body">
+<form class="card table_shadow p-3" method="POST">
+                                           {% csrf_token %}
+
+                        <div class="form-group mt-3">
+                            <label for="addRoles" class="form-label">Role Name</label>
+                          <input type="text" class="form-control" id="addRole" name="addRole"  aria-describedby="role" placeholder="Role">
+                        </div>
+                        <button type="submit" name="add_roles_btn" class="btn card_bg text-white ms-auto mt-2">Add</button>
+                      </form>      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
 {% if messages %}
 <ul class="messages">
   {% for message in messages %}
@@ -40,20 +64,26 @@
         {% endfor %}
                   </select>
                 </div>
-<div class="loadingMask" id="loadingMask" style="visibility: hidden;"></div>
 
 
                 <div class="col-12 mt-3">
                   <label for="roles_" class="form-label">Roles</label>
+
                  <select name="roles" id="roles_" class="form-control" >
 
                             {% if access_level == 'Admin' %}
-
+{% comment %} 
                     <option value="company_lead">Company Lead</option>
                     <option value="organisation_lead">Organisation Lead</option>
                     <option value="department_lead">Department Lead</option>
                     <option value="project_lead">Project Lead</option>
-                    <option value="team_member">Team Member</option>
+                    <option value="team_member">Team Member</option> {% endcomment %}
+                {% for role in roles_list %}
+
+                <option value="{{role.id}}">{{role.role}}</option> 
+                      {% endfor %}
+
+
                               {% endif %}
 
 
@@ -86,14 +116,22 @@
                   </select>
                 </div>
 
+
                 <div class="col-12 mt-3">
+                            {% comment %} <a class="btn btn-primary" href = "{% url 'add_roles'%}?session_id={{session_id}}" >  Add Roles </a> {% endcomment %}
+
+                            <button type="button" class="btn btn-secondary btn-add-role" data-toggle="modal"> Add a Role </button>
+                    <br />
                   <label for="category" class="form-label">Category</label>
                  <select name="category" id="category" class="form-control" >
                       <option>Select value</option>
                   </select>
                 </div>
-            <button type="submit" class="btn text-white card_bg ms-auto mt-2">Add</button>
+            <button type="submit" name="assign_roles_btn" class="btn text-white card_bg ms-auto mt-2">Add</button>
           </form>
+
+                            <div class="loader" id="loadingMask" style="visibility: hidden;"></div>
+
                           {% endif %}
 
 
@@ -166,7 +204,7 @@
 
 
    
-                  if ( $('#roles_').val()== 'company_lead') {
+                  if ( $('#roles_').val()== '1') {
 
                     for (let i = 0; i < totalCount_comp; i++) {
 
@@ -176,7 +214,7 @@
                     }
                   }
 
-                                    else if ( $('#roles_').val()== 'organisation_lead') {
+                                    else if ( $('#roles_').val()== '2') {
 
                     for (let i = 0; i < totalCount_org; i++) {
 
@@ -188,7 +226,7 @@
 
 
 
-                                                      else if ( $('#roles_').val()== 'department_lead') {
+                                                      else if ( $('#roles_').val()== '3') {
 
                     for (let i = 0; i < totalCount_dept; i++) {
 
@@ -201,7 +239,7 @@
 
 
 
-                                                      else if ( $('#roles_').val()== 'project_lead') {
+                                                      else if ( $('#roles_').val()== '4') {
 
                     for (let i = 0; i < totalCount_proj; i++) {
 
@@ -211,19 +249,17 @@
                     }
                   }
 
-                        $('#select_jobcode').change(function(){
-                        for (let i = 0; i < totalCount1; i++) {
-
-                        var jobCode =  $('#select_jobcode').val().substring(0,4)
-                        $('#jobCode').val(jobCode);
-                                                        }
-
-                })
 
                 }
             });
         });
 
+
+  $(document).ready(function() {
+        $('button.btn-add-role').on('click', function() {
+          $('#commonModal').modal('show');
+        })
+      })
 
 </script>
            {% endblock %}

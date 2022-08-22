@@ -1,4 +1,5 @@
 from distutils import unixccompiler
+from multiprocessing.spawn import old_main_modules
 from unicodedata import category
 from django.db import connection
 from django.shortcuts import render, HttpResponse,redirect
@@ -87,7 +88,10 @@ def loginuser(request):
 
 def logout(request):
     # del request.session['jwt']
-    del request.session['session_id']
+
+    # request.session.modified = True
+    # for key in request.session.keys():
+    #     del request.session[key]
 
     return HttpResponseRedirect('/')  
 
@@ -203,15 +207,38 @@ def get_all_users(request):
     r = p.text
     r = json.loads(r)
     users = r
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')    
-    project_number = request.session.get('project_number')
-    context = {'session_id':session_id,'users':users,'access_granted':access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}         
+    context = {'session_id':session_id,'users':users,'access_granted':access_granted}         
 
     # print(Dowell_Login("username","password","location","device","os","browser","time","ip","type_of_conn"))
     return render(request, 'new_users.html', context) 
 
+@authenticationrequired
+def get_organisation_lead(request):
+    session_id = request.session.get('session_id')
+
+    current_user = request.session.get('current_user')
+    access_granted = 0
+    try:
+        if 'Admin' in current_user['role']:
+            access_granted = 1
+
+    
+    except :
+        return HttpResponse('No suitable role to access the page.')    
+    # context = {'session_id':session_id,'access_granted':access_granted}         
+    url = 'https://100014.pythonanywhere.com/api/listusers/'
+    data={"pwd":"d0wellre$tp@$$"}
+
+    s = requests.session()
+    p = s.post(url, data=data)
+    r = p.text  
+    r = json.loads(r)
+    users = r
+ 
+    context = {'session_id':session_id,'users':users,'access_granted':access_granted}         
+
+    # print(Dowell_Login("username","password","location","device","os","browser","time","ip","type_of_conn"))
+    return render(request, 'organisation_leads.html', context) 
 
 # @loginrequired
 # def index(request):
@@ -285,10 +312,11 @@ def get_all_users(request):
 
 #     return render(request, 'index.html',{'users':users})
 
-@authenticationrequired
+# @authenticationrequired
 def index(request):
     session_id = request.session.get('session_id')
-
+    current_user = request.session.get('current_user')
+    username = current_user['username']
     hit0 =get_company(request)
     hit = get_organisation(request)
     hit1 = get_department(request)
@@ -298,7 +326,7 @@ def index(request):
     organisation_number = request.session.get('organisation_number')
     department_number = request.session.get('department_number')
     project_number = request.session.get('project_number')
-    context = {'session_id':session_id,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+    context = {'session_id':session_id,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number,"username":username}
 
     return render(request, 'new_base.html',context)
 
@@ -350,12 +378,8 @@ def add_user(request):
                 messages.success(request, "User with Username : "+username+" Already Existis")
                 return HttpResponseRedirect('/add_user/?session_id='+session_id) 
     
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
 
-    context=  {"session_id":session_id,'access_granted':access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+    context=  {"session_id":session_id,'access_granted':access_granted}
 
     return render(request, 'add_user.html',context)
 
@@ -423,12 +447,9 @@ def add_organisation(request):
     
     # except ValueError:
     #     print('No suitable role to access the page.')
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
 
-    context = {'session_id':session_id,'companies':result,'access_granted':access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+
+    context = {'session_id':session_id,'companies':result,'access_granted':access_granted}
     # print(request.session.get('current_user'))
 
 
@@ -537,12 +558,8 @@ def edit_organisation(request):
             return HttpResponseRedirect('/display_organisation/?session_id='+session_id)         
 
 
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
 
-    context = {'session_id':session_id,"organisation_placeholder":organisation_placeholder,"company_placeholder":company_placeholder,"company_id":c_id,"company":company,'access_granted':access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+    context = {'session_id':session_id,"organisation_placeholder":organisation_placeholder,"company_placeholder":company_placeholder,"company_id":c_id,"company":company,'access_granted':access_granted}
 
 
     return render(request, 'new_edit_organisation.html',context)
@@ -636,12 +653,8 @@ def edit_department(request):
             update = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","update",field,update_field)
             return HttpResponseRedirect('/display_department/?session_id='+session_id)         
     
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
 
-    context = {'session_id':session_id,"department_placeholder":department_placeholder,"organisation_placeholder":organisation_placeholder,"organisation_id":o_id,"organisation":organisation,"access_granted":access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+    context = {'session_id':session_id,"department_placeholder":department_placeholder,"organisation_placeholder":organisation_placeholder,"organisation_id":o_id,"organisation":organisation,"access_granted":access_granted}
 
 
     return render(request, 'new_edit_department.html',context)
@@ -749,13 +762,8 @@ def edit_project(request):
             return HttpResponseRedirect('/display_project/?session_id='+session_id)   
 
 
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')      
 
-    context = {'session_id':session_id,"department_placeholder":department_placeholder,"project_placeholder":project_placeholder,"department_id":d_id,"department":department,"access_granted":access_granted,
-                'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+    context = {'session_id':session_id,"department_placeholder":department_placeholder,"project_placeholder":project_placeholder,"department_id":d_id,"department":department,"access_granted":access_granted}
 
 
     return render(request, 'new_edit_project.html',context)
@@ -868,12 +876,9 @@ def edit_company(request):
             update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field,update_field)
             return HttpResponseRedirect('/display_company/?session_id='+session_id)         
 
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
 
-    context = {'session_id':session_id,"company_placeholder":company_placeholder,"access_granted":access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+
+    context = {'session_id':session_id,"company_placeholder":company_placeholder,"access_granted":access_granted}
 
 
     return render(request, 'new_edit_company.html',context)
@@ -907,7 +912,7 @@ def edit_company(request):
 
 #     return render(request, 'add_company.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_company(request):
     # field= {}
     # session_id = request.session.get('session_id')
@@ -941,14 +946,11 @@ def get_company(request):
         return HttpResponse('No suitable role to access the page.')
     
     request.session['company_number'] = len(result)
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-    context = {'session_id':session_id,'company':result,"company_number":company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+ 
+    context = {'session_id':session_id,'company':result}
     return render(request, 'new_display_company.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_organisation(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -1069,16 +1071,13 @@ def get_organisation(request):
     #             new_item = copy(item)
     #             new_item['company_name'] = item2['company']
     # print(result)
-    company_number = request.session.get('company_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-    organisation_number = request.session.get('organisation_number')
-    context = {"session_id":session_id, "organisations":organisations, "companies":companies,"union":union, "company_number":company_number,"organisation_number":organisation_number,"department_number":department_number,"project_number":project_number}
+
+    context = {"session_id":session_id, "organisations":organisations, "companies":companies,"union":union}
     # print(add)
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_organisation.html', context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_department(request):
     field= {}
     union =[]
@@ -1180,16 +1179,12 @@ def get_department(request):
         dc1 = {'organisation_name' : union[i]}
         departments[i].update(dc1)
 
-    company_number = request.session.get('company_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-    organisation_number = request.session.get('organisation_number')
-    context = {"session_id":session_id, "departments":departments, "union":union,"organisations":organisations,"company_number":company_number,"project_number":project_number,"department_number":department_number,"organisation_number":organisation_number}
+    context = {"session_id":session_id, "departments":departments, "union":union,"organisations":organisations}
 
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_department.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_project(request):
     field= {}
     union =[]
@@ -1322,11 +1317,7 @@ def get_project(request):
         dc1 = {'department_name' : union[i]}
         projects[i].update(dc1)
 
-    company_number = request.session.get('company_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-    organisation_number = request.session.get('organisation_number')
-    context = {"session_id":session_id, "projects":projects,"union":union,"departments":departments,"organisation_number":organisation_number, "company_number": company_number,"department_number":department_number,"project_number":project_number}
+    context = {"session_id":session_id, "projects":projects,"union":union,"departments":departments}
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_project.html',context)
 
@@ -1387,12 +1378,7 @@ def add_department(request):
     except IndexError as I:
         return HttpResponse('No suitable role to access the page.')
 
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-
-    context = {'session_id':session_id,'organisations':result,'access_granted':access_granted,"organisation_number":organisation_number, "company_number": company_number,"department_number":department_number,"project_number":project_number}
+    context = {'session_id':session_id,'organisations':result,'access_granted':access_granted}
 
     if request.method == "POST":
             field= {}
@@ -1495,12 +1481,7 @@ def add_project(request):
         return HttpResponse('No suitable role to access the page.')
 
 
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-
-    context = {'session_id':session_id,'departments':result,'access_granted':access_granted,"organisation_number":organisation_number, "company_number": company_number,"department_number":department_number,"project_number":project_number}
+    context = {'session_id':session_id,'departments':result,'access_granted':access_granted}
 
     if request.method == "POST":
             field= {}
@@ -1554,10 +1535,13 @@ def get_all_data(request):
 
 
 
-@authenticationrequired
+# @authenticationrequired
 def assign_roles(request):
     current_user = request.session.get('current_user')
     access_granted = 0
+    field ={}
+    # r =dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+    # print(r)
     try:
         if 'Admin' in current_user['role']:
             access_granted = 1
@@ -1613,13 +1597,32 @@ def assign_roles(request):
     p = s.post(url, data=data)
     r = p.text
     r = json.loads(r)
-    f = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+    # f = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+    roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+    roles = json.loads(roles)
+    roles_list = roles['data']
     users = r
 
-    if request.method == "POST":
+
+    if request.method == "POST" and 'add_roles_btn' in request.POST:
+        field= {}
+        role = request.POST.get('addRole')
+        roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+        r = json.loads(roles)
+        result = r['data']
+        role_length = len(result)
+        field_add = {"id": role_length+1,"role": role }
+        add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Role Successfully Added" )
+        return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
+
+
+
+
+    if request.method == "POST" and 'assign_roles_btn' in request.POST:
         role_assigned = 0
         data = request.POST.dict()
-        user_id = int(data['users'])
+        user_id = int(data['users'])    
         role = data['roles']
         category = data['category']
         role_String = f'{role}@{category}'
@@ -1643,15 +1646,155 @@ def assign_roles(request):
             messages.success(request, "Problem Assigning Role" )
 
 
-    company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')    
-    project_number = request.session.get('project_number')
-        
 
-    context = {'access_level':access_level,'session_id':session_id,'users':users,'access_granted':access_granted,"organisation_number":organisation_number, "company_number": company_number,"department_number":department_number,"project_number":project_number}
+    context = {'access_level':access_level,'session_id':session_id,'users':users,'access_granted':access_granted,"roles_list":roles_list}
 
     return render(request, 'assign_roles.html',context)
+
+
+
+# @authenticationrequired
+def add_roles(request):
+    session_id = request.session.get('session_id')
+
+    access_granted = 0
+  
+    result = []
+    current_user = request.session.get('current_user')
+    try:
+        if 'Admin' in current_user['role']:
+            # result = organisations['data']   
+            access_granted = 1
+ 
+        # elif 'organisation_lead@' in current_user['role']:
+        #     user_org = current_user['role'].split("@",1)[1]
+        #     for org in organisations['data']:
+        #         for k,v in org.items():
+        #             if user_org == v:
+        #                 result.append(org)
+        #                 access_granted = 1
+
+        #             else:
+        #                 pass
+        # else: 
+        #     return HttpResponse('No suitable role to access the page.')
+    
+    except :
+        return HttpResponse('No suitable role to access the page.')
+
+
+
+    if request.method == "POST":
+        field= {}
+        role = request.POST.get('addRole')
+        roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+        r = json.loads(roles)
+        result = r['data']
+        role_length = len(result)
+        field_add = {"id": role_length+1,"role": role }
+        add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Role Successfully Added" )
+
+
+
+    context = {'session_id':session_id,'access_granted':access_granted}
+
+    return render(request, 'add_roles.html',context)
+
+
+
+
+# @authenticationrequired
+def profile(request):
+    session_id = request.session.get('session_id')
+    current_user = request.session.get('current_user')
+    url = 'https://100014.pythonanywhere.com/api/listusers/'
+    data={"pwd":"d0wellre$tp@$$"}
+
+    s = requests.session()
+    p = s.post(url, data=data)
+    r = p.text
+    r = json.loads(r)
+    users = r
+
+    context =   {'session_id':session_id,'users':users,'current_user':current_user}
+
+    return render(request, 'profile.html',context)
+
+
+
+
+# @authenticationrequired
+def change_password(request):
+    url="https://100014.pythonanywhere.com/api/login/"
+    userurl="http://100014.pythonanywhere.com/api/user/"
+    usersurl="http://100014.pythonanywhere.com/api/users/"
+    users = []
+    payload = {
+        'username': 'Jazz3650',
+        'password': 'Jazz@Fiverr@91',
+            }
+    with requests.Session() as s:
+        p = s.post(url, data=payload)
+        r = p.text
+        # jwt = json.loads(r)
+        # print(jwt)
+        # request.session['jwt_value'] = jwt['jwt']
+  
+        # if "Username" in p.text:
+        #     Dowell_Users(request,users)
+        #     print( p.text)
+        # else:
+        user = s.get(userurl)
+        users = s.get(usersurl)
+        users = users.text
+        users = json.loads(users)
+        Dowell_Users(request,users)
+        all_users = users['data']
+
+    current_user = request.session.get('current_user')
+  
+    registerurl = 'https://100014.pythonanywhere.com/api/register/'
+
+    session_id = request.session.get('session_id')
+
+    if request.method == "POST":
+        old_password = request.POST.get('old')
+        password = request.POST.get('new')
+        print(old_password)
+        print(password)
+        password_change = 0
+
+        ss = requests.session()
+        payload = {
+         'username' : current_user['username'] ,
+        'password': password,
+            }
+        for dict in all_users:
+            if dict['Username'] == current_user['username'] and dict['Password'] == old_password:
+                p = ss.post(registerurl, data=payload)
+                print(p.text)
+                password_change = 1
+        # messages.success(request, "Problem changing password")
+
+
+        print(password_change)
+        if password_change == 1 :
+            messages.success(request, "Password has been updated successfully")
+        elif password_change == 0:
+            messages.success(request, "Problem changing password")
+                
+
+
+    
+
+    
+    
+    context=  {"session_id":session_id,'current_user': current_user}
+
+    return render(request, 'change_password.html',context)
+
+
 
 @authenticationrequired
 def main(request):
@@ -1715,3 +1858,273 @@ def main(request):
 
 
 #     return render(request, 'login.html', context) 
+
+
+
+# @authenticationrequired
+def add_device(request):
+    session_id = request.session.get('session_id')
+
+    access_granted = 0
+  
+    result = []
+    current_user = request.session.get('current_user')
+
+
+    if request.method == "POST":
+        field= {}
+        device = request.POST.get('devicename')
+        devices = dowellconnection("login","bangalore","login","devices","devices","1106","ABCDE","fetch",field,"nil")
+        r = json.loads(devices)
+        result = r['data']
+        device_length = len(result)
+        field_add = {"user":current_user['username'],"id": device_length+1,"device": device }
+        add = dowellconnection("login","bangalore","login","devices","devices","1106","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Device Successfully Added" )
+        return HttpResponseRedirect('/display_device/?session_id='+session_id) 
+
+
+
+    context = {'session_id':session_id}
+
+    return render(request, 'add_device.html',context)
+
+
+# @authenticationrequired
+def display_device(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    devices = dowellconnection("login","bangalore","login","devices","devices","1106","ABCDE","fetch",field,"nil")
+    r = json.loads(devices)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'devices':result,'current_user':current_user}
+
+    return render(request, 'display_device.html',context)
+
+
+
+
+
+
+# @authenticationrequired
+def add_location(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+
+
+    if request.method == "POST":
+        field= {}
+        location = request.POST.get('locname')
+        locations = dowellconnection("login","bangalore","login","locations","locations","1107","ABCDE","fetch",field,"nil")
+        r = json.loads(locations)
+        result = r['data']
+        location_length = len(result)
+        field_add = {"user":current_user['username'],"id": location_length+1,"location": location }
+        add = dowellconnection("login","bangalore","login","locations","locations","1107","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Location Successfully Added" )
+        return HttpResponseRedirect('/display_location/?session_id='+session_id) 
+
+
+
+    context = {'session_id':session_id}
+
+    return render(request, 'add_location.html',context)
+
+
+# @authenticationrequired
+def display_location(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    locations = dowellconnection("login","bangalore","login","locations","locations","1107","ABCDE","fetch",field,"nil")
+    r = json.loads(locations)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'locations':result,'current_user':current_user}
+
+    return render(request, 'display_location.html',context)
+
+
+
+
+
+# @authenticationrequired
+def add_os(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+
+
+    if request.method == "POST":
+        field= {}
+        os = request.POST.get('osname')
+        oses = dowellconnection("login","bangalore","login","os","os","1108","ABCDE","fetch",field,"nil")
+        r = json.loads(oses)
+        result = r['data']
+        os_length = len(result)
+        field_add = {"user":current_user['username'],"id": os_length+1,"os": os }
+        add = dowellconnection("login","bangalore","login","os","os","1108","ABCDE","insert",field_add,"nil")
+        messages.success(request, "OS Successfully Added" )
+        return HttpResponseRedirect('/display_os/?session_id='+session_id) 
+
+
+
+    context = {'session_id':session_id}
+
+    return render(request, 'add_os.html',context)
+
+
+# @authenticationrequired
+def display_os(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    oses = dowellconnection("login","bangalore","login","os","os","1108","ABCDE","fetch",field,"nil")
+    r = json.loads(oses)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'oses':result,'current_user':current_user}
+
+    return render(request, 'display_os.html',context)
+
+
+
+# @authenticationrequired
+def add_connection(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+
+
+    if request.method == "POST":
+        field= {}
+        connection = request.POST.get('connection_name')
+        connections = dowellconnection("login","bangalore","login","connections","connections","1110","ABCDE","fetch",field,"nil")
+        r = json.loads(connections)
+        result = r['data']
+        connection_length = len(result)
+        field_add = {"user":current_user['username'],"id": connection_length+1,"connection": connection}
+        add = dowellconnection("login","bangalore","login","connections","connections","1110","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Connection Successfully Added" )
+        return HttpResponseRedirect('/display_connection/?session_id='+session_id) 
+
+
+
+    context = {'session_id':session_id}
+
+    return render(request, 'add_connection.html',context)
+
+
+# @authenticationrequired
+def display_connection(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    connections = dowellconnection("login","bangalore","login","connections","connections","1110","ABCDE","fetch",field,"nil")
+    r = json.loads(connections)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'connections':result,'current_user':current_user}
+
+    return render(request, 'display_connection.html',context)
+
+
+
+
+# @authenticationrequired
+def add_browser(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+
+
+    if request.method == "POST":
+        field= {}
+        browser = request.POST.get('browsername')
+        browsers = dowellconnection("login","bangalore","login","browsers","browsers","1109","ABCDE","fetch",field,"nil")
+        r = json.loads(browsers)
+        result = r['data']
+        browser_length = len(result)
+        field_add = {"user":current_user['username'],"id": browser_length+1,"browser": browser}
+        add = dowellconnection("login","bangalore","login","browsers","browsers","1109","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Browser Successfully Added" )
+        return HttpResponseRedirect('/display_browser/?session_id='+session_id) 
+
+
+
+    context = {'session_id':session_id}
+
+    return render(request, 'add_browser.html',context)
+
+
+# @authenticationrequired
+def display_browser(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    browsers = dowellconnection("login","bangalore","login","browsers","browsers","1109","ABCDE","fetch",field,"nil")
+    r = json.loads(browsers)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'browsers':result,'current_user':current_user}
+
+    return render(request, 'display_browser.html',context)
+
+
+
+
+
+
+# @authenticationrequired
+def add_process(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+
+
+    if request.method == "POST":
+        field= {}
+        process = request.POST.get('processname')
+        processes = dowellconnection("login","bangalore","login","processes","processes","1111","ABCDE","fetch",field,"nil")
+        r = json.loads(processes)
+        result = r['data']
+        process_length = len(result)
+        field_add = {"user":current_user['username'],"id": process_length+1,"process": process}
+        add = dowellconnection("login","bangalore","login","processes","processes","1111","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Process Successfully Added" )
+        return HttpResponseRedirect('/display_process/?session_id='+session_id) 
+
+
+
+    context = {'session_id':session_id}
+
+    return render(request, 'add_process.html',context)
+
+
+# @authenticationrequired
+def display_process(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    processes = dowellconnection("login","bangalore","login","processes","processes","1111","ABCDE","fetch",field,"nil")
+    r = json.loads(processes)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'processes':result,'current_user':current_user}
+
+    return render(request, 'display_process.html',context)
