@@ -1,0 +1,201 @@
+
+
+
+
+
+
+{% extends "new_base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+
+
+
+   <div class="container" style="margin-top: 64px;">
+      <div class="row">
+        <div class="col-sm-12 col-lg-6">
+            <div class="mt-3">
+                
+          <!-- <button type="button" id="viewDepart" class="btn ml-2 btn-lg card_bg text-white">Back</button> -->
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-6">
+          <div class="input-group mt-3 float-right" style="float: right !important; width:66%">
+            <div class="form-outline ">
+              <input type="search" id="form1" class="form-control" placeholder="Search anything"/>
+            </div>
+            <button type="button" class="btn btn-primary">
+              <i class="bx bx-search"></i>
+
+            </button>
+          </div>
+        </div>
+      </div>
+<!-- container start  -->
+      <div class="mt-3">
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <div class="card card_bg text-white mt-5">
+                        <div class="card-body">
+                          <div class="card-title">Rights</div>
+                        </div>
+                      </div>
+                      <form class="card table_shadow p-3" method="POST">
+                                           {% csrf_token %}
+
+                        <div class="col-12 ">
+                          <label for="orgName" class="form-label">Users</label>
+                         <select name="users" id="users" class="users-select"  >
+
+                         {% for user in users %}
+
+                              <option value="{{user.id}}">{{user.username}}</option>
+                        {% endfor %}
+                          
+                          </select>
+
+
+
+                        </div>
+                            <div class="col-12 ">
+                          <label for="oses" class="form-label">OS</label>
+
+                                                <select name="oses" id="oses" class="os-select" multiple="multiple" >
+
+                         {% for os in oses %}
+
+                              <option value="{{os.os}}">{{os.os}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+
+
+                                                     <div class="col-12 ">
+                          <label for="devices" class="form-label">Device</label>
+
+                                                <select name="devices" id="devices" class="device-select" multiple="multiple" >
+
+                         {% for device in devices %}
+
+                              <option value="{{device.device}}">{{device.device}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+
+                                                     <div class="col-12 ">
+                          <label for="locations" class="form-label">Location</label>
+
+                                                <select name="locations" id="locations" class="location-select" multiple="multiple" >
+
+                         {% for location in locations %}
+
+                              <option value="{{location.location}}">{{location.location}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+
+                                                     <div class="col-12 ">
+                          <label for="connections" class="form-label">Connection</label>
+
+                                                <select name="connections" id="connections" class="connection-select" multiple="multiple" >
+
+                         {% for connection in connections %}
+
+                              <option value="{{connection.connection}}">{{connection.connection}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+
+                                                     <div class="col-12 ">
+                          <label for="browsers" class="form-label">Browser</label>
+
+                                                <select name="browsers" id="browsers" class="browser-select" multiple="multiple" >
+
+                         {% for browser in browsers %}
+
+                              <option value="{{browser.browser}}">{{browser.browser}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+
+                                                     <div class="col-12 ">
+                          <label for="processes" class="form-label">Process</label>
+
+                                                <select name="processes" id="processes" class="process-select" multiple="multiple" >
+
+                         {% for process in processes %}
+
+                              <option value="{{process.process}}">{{process.process}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+
+                                                     <div class="col-12 ">
+                          <label for="playlists" class="form-label">YouTube Play List</label>
+
+                                                <select name="playlists" id="playlists" class="playlist-select" multiple="multiple" >
+
+                         {% for playlist in playlists %}
+
+                              <option value="{{playlist.playlist}}">{{playlist.playlist}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
+                        <div class="col-12 mt-3">
+                          <label for="products" class="form-label">Rights</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                        {% comment %} <div class="col-12 mt-3">
+                            <label for="products" class="form-label">Products</label>
+                            <input type="text" class="form-control" id="products" placeholder="Product name">
+                          </div> {% endcomment %}
+                         
+                      <button type="submit" class="btn text-white card_bg ms-auto mt-2">Add</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
+      </div>
+      <!-- contain er end  -->
+    </div>
+
+    <script>
+$(document).ready(function() {
+   // $('.users-select').select2();
+        $('.os-select').select2();
+        $('.device-select').select2();
+        $('.connection-select').select2();
+        $('.browser-select').select2();
+        $('.process-select').select2();
+        $('.playlist-select').select2();
+        $('.location-select').select2();
+
+
+
+});
+
+
+    </script>
+
+            {% endblock %}

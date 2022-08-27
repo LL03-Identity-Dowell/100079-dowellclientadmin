@@ -49,12 +49,12 @@ Add Roles
               <div class="card-title">Assign Roles</div>
             </div>
           </div>
-          <form class="table_shadow p-3" method = "POST">
+          <form name="assignRole" class="table_shadow p-3" method = "POST" onsubmit="return validateform()" >
                 {% csrf_token %}
 
                 <div class="col-12 mt-3">
                   <label for="user_" class="form-label">User</label>
-                 <select name="users" id="user_" class="form-control" >
+                 <select name="users" id="user_" class="users-select"  multiple= "multiple">
            {% for user in users %}
            {% if user.role == 'User' %}
 
@@ -124,7 +124,7 @@ Add Roles
                     <br />
                   <label for="category" class="form-label">Category</label>
                  <select name="category" id="category" class="form-control" >
-                      <option>Select value</option>
+                      {% comment %} <option>Select value</option> {% endcomment %}
                   </select>
                 </div>
             <button type="submit" name="assign_roles_btn" class="btn text-white card_bg ms-auto mt-2">Add</button>
@@ -260,6 +260,26 @@ Add Roles
           $('#commonModal').modal('show');
         })
       })
+
+      $(document).ready(function() {
+    $('.users-select').select2();
+});
+
+function validateform(){  
+var users=document.assignRole.users.value;  
+var category =document.assignRole.category.value;  
+  
+if (users==null || users==""){  
+  alert("Please Select Users");  
+  return false;  
+}
+else if(category==null || category==""){
+    alert("Please Select Category");  
+  return false;  
+}
+}  
+
+
 
 </script>
            {% endblock %}

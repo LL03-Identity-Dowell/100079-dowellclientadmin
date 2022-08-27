@@ -1,5 +1,6 @@
 from distutils import unixccompiler
 from multiprocessing.spawn import old_main_modules
+from sqlite3 import connect
 from unicodedata import category
 from django.db import connection
 from django.shortcuts import render, HttpResponse,redirect
@@ -9,7 +10,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import user_passes_test
 import json
 import base64
-from .decorators import authenticationrequired, loginrequired, unauthenticated_user
+from .decorators import authenticationrequired, is_client_admin, is_client_and_super_admin, is_super_admin, loginrequired, unauthenticated_user
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .login import get_user_profile
@@ -312,7 +313,7 @@ def get_organisation_lead(request):
 
 #     return render(request, 'index.html',{'users':users})
 
-# @authenticationrequired
+@authenticationrequired
 def index(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
@@ -1535,15 +1536,17 @@ def get_all_data(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def assign_roles(request):
     current_user = request.session.get('current_user')
     access_granted = 0
     field ={}
+    access_level = 0
     # r =dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
     # print(r)
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             access_granted = 1
             access_level = 'Admin'
         elif 'project_lead@' in current_user['role']:
@@ -1622,15 +1625,20 @@ def assign_roles(request):
     if request.method == "POST" and 'assign_roles_btn' in request.POST:
         role_assigned = 0
         data = request.POST.dict()
+        print(data)
+        selected_users = request.POST.getlist('users')
+        print(selected_users)
         user_id = int(data['users'])    
         role = data['roles']
         category = data['category']
         role_String = f'{role}@{category}'
-        update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
-        update_data={
-        "role": role_String
-            }
-        response=s.put(update_url,data=update_data)
+        for user in selected_users:           
+            user_id = int(user)
+            update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
+            update_data={
+            "role": role_String
+                }
+            response=s.put(update_url,data=update_data)
         response= json.loads(response.text)
 
         for k,v in response.items():
@@ -1653,7 +1661,8 @@ def assign_roles(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_roles(request):
     session_id = request.session.get('session_id')
 
@@ -1687,6 +1696,8 @@ def add_roles(request):
     if request.method == "POST":
         field= {}
         role = request.POST.get('addRole')
+        role = role.replace(" ", "_")
+        print(role)
         roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
         r = json.loads(roles)
         result = r['data']
@@ -1704,7 +1715,7 @@ def add_roles(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
 def profile(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
@@ -1724,7 +1735,7 @@ def profile(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
 def change_password(request):
     url="https://100014.pythonanywhere.com/api/login/"
     userurl="http://100014.pythonanywhere.com/api/user/"
@@ -1861,15 +1872,14 @@ def main(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_device(request):
     session_id = request.session.get('session_id')
-
     access_granted = 0
-  
+    context = {'session_id':session_id}
     result = []
     current_user = request.session.get('current_user')
-
 
     if request.method == "POST":
         field= {}
@@ -1878,19 +1888,17 @@ def add_device(request):
         r = json.loads(devices)
         result = r['data']
         device_length = len(result)
-        field_add = {"user":current_user['username'],"id": device_length+1,"device": device }
+        # field_add = {"user":current_user['username'],"id": device_length+1,"device": device }
+        field_add = {"id": device_length+1,"device": device }
         add = dowellconnection("login","bangalore","login","devices","devices","1106","ABCDE","insert",field_add,"nil")
         messages.success(request, "Device Successfully Added" )
         return HttpResponseRedirect('/display_device/?session_id='+session_id) 
 
-
-
-    context = {'session_id':session_id}
-
     return render(request, 'add_device.html',context)
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def display_device(request):
     session_id = request.session.get('session_id')  
     result = []
@@ -1910,12 +1918,13 @@ def display_device(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_location(request):
     session_id = request.session.get('session_id')  
     result = []
     current_user = request.session.get('current_user')
-
+    context = {'session_id':session_id}
 
     if request.method == "POST":
         field= {}
@@ -1924,19 +1933,19 @@ def add_location(request):
         r = json.loads(locations)
         result = r['data']
         location_length = len(result)
-        field_add = {"user":current_user['username'],"id": location_length+1,"location": location }
+        # field_add = {"user":current_user['username'],"id": location_length+1,"location": location }
+        field_add = {"id": location_length+1,"location": location }
         add = dowellconnection("login","bangalore","login","locations","locations","1107","ABCDE","insert",field_add,"nil")
         messages.success(request, "Location Successfully Added" )
         return HttpResponseRedirect('/display_location/?session_id='+session_id) 
 
 
-
-    context = {'session_id':session_id}
-
     return render(request, 'add_location.html',context)
 
 
-# @authenticationrequired
+
+@authenticationrequired
+@is_client_and_super_admin
 def display_location(request):
     session_id = request.session.get('session_id')  
     result = []
@@ -1955,12 +1964,13 @@ def display_location(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_os(request):
     session_id = request.session.get('session_id')  
     result = []
     current_user = request.session.get('current_user')
-
+    context = {'session_id':session_id}
 
     if request.method == "POST":
         field= {}
@@ -1969,19 +1979,19 @@ def add_os(request):
         r = json.loads(oses)
         result = r['data']
         os_length = len(result)
-        field_add = {"user":current_user['username'],"id": os_length+1,"os": os }
+        # field_add = {"user":current_user['username'],"id": os_length+1,"os": os }
+        field_add = {"id": os_length+1,"os": os }
+
         add = dowellconnection("login","bangalore","login","os","os","1108","ABCDE","insert",field_add,"nil")
         messages.success(request, "OS Successfully Added" )
         return HttpResponseRedirect('/display_os/?session_id='+session_id) 
 
-
-
-    context = {'session_id':session_id}
-
     return render(request, 'add_os.html',context)
 
 
-# @authenticationrequired
+
+@authenticationrequired
+@is_client_and_super_admin
 def display_os(request):
     session_id = request.session.get('session_id')  
     result = []
@@ -1998,12 +2008,13 @@ def display_os(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_connection(request):
     session_id = request.session.get('session_id')  
     result = []
     current_user = request.session.get('current_user')
-
+    context = {'session_id':session_id}
 
     if request.method == "POST":
         field= {}
@@ -2012,19 +2023,19 @@ def add_connection(request):
         r = json.loads(connections)
         result = r['data']
         connection_length = len(result)
-        field_add = {"user":current_user['username'],"id": connection_length+1,"connection": connection}
+        # field_add = {"user":current_user['username'],"id": connection_length+1,"connection": connection}
+        field_add = {"id": connection_length+1,"connection": connection}
+
         add = dowellconnection("login","bangalore","login","connections","connections","1110","ABCDE","insert",field_add,"nil")
         messages.success(request, "Connection Successfully Added" )
         return HttpResponseRedirect('/display_connection/?session_id='+session_id) 
 
-
-
-    context = {'session_id':session_id}
-
     return render(request, 'add_connection.html',context)
 
 
-# @authenticationrequired
+
+@authenticationrequired
+@is_client_and_super_admin
 def display_connection(request):
     session_id = request.session.get('session_id')  
     result = []
@@ -2042,12 +2053,13 @@ def display_connection(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_browser(request):
     session_id = request.session.get('session_id')  
     result = []
     current_user = request.session.get('current_user')
-
+    context = {'session_id':session_id}
 
     if request.method == "POST":
         field= {}
@@ -2056,19 +2068,18 @@ def add_browser(request):
         r = json.loads(browsers)
         result = r['data']
         browser_length = len(result)
-        field_add = {"user":current_user['username'],"id": browser_length+1,"browser": browser}
+        # field_add = {"user":current_user['username'],"id": browser_length+1,"browser": browser}
+        field_add = {"id": browser_length+1,"browser": browser}
+
         add = dowellconnection("login","bangalore","login","browsers","browsers","1109","ABCDE","insert",field_add,"nil")
         messages.success(request, "Browser Successfully Added" )
         return HttpResponseRedirect('/display_browser/?session_id='+session_id) 
 
-
-
-    context = {'session_id':session_id}
-
     return render(request, 'add_browser.html',context)
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def display_browser(request):
     session_id = request.session.get('session_id')  
     result = []
@@ -2088,12 +2099,13 @@ def display_browser(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
+@is_client_and_super_admin
 def add_process(request):
     session_id = request.session.get('session_id')  
     result = []
     current_user = request.session.get('current_user')
-
+    context = {'session_id':session_id}
 
     if request.method == "POST":
         field= {}
@@ -2102,19 +2114,23 @@ def add_process(request):
         r = json.loads(processes)
         result = r['data']
         process_length = len(result)
-        field_add = {"user":current_user['username'],"id": process_length+1,"process": process}
+        # field_add = {"user":current_user['username'],"id": process_length+1,"process": process}
+        field_add = {"id": process_length+1,"process": process}
+
         add = dowellconnection("login","bangalore","login","processes","processes","1111","ABCDE","insert",field_add,"nil")
         messages.success(request, "Process Successfully Added" )
         return HttpResponseRedirect('/display_process/?session_id='+session_id) 
 
 
 
-    context = {'session_id':session_id}
 
     return render(request, 'add_process.html',context)
 
 
-# @authenticationrequired
+  
+
+@authenticationrequired
+@is_client_and_super_admin
 def display_process(request):
     session_id = request.session.get('session_id')  
     result = []
@@ -2128,3 +2144,140 @@ def display_process(request):
     context = {'session_id':session_id,'processes':result,'current_user':current_user}
 
     return render(request, 'display_process.html',context)
+
+
+
+@authenticationrequired
+@is_client_and_super_admin
+def add_youtube_playlist(request):
+    current_user = request.session.get('current_user')
+    session_id = request.session.get('session_id')  
+    result = []
+    context = {'session_id':session_id}
+
+
+    if request.method == "POST":
+        field= {}
+        playlist = request.POST.get('playlistname')
+        playlists = dowellconnection("login","bangalore","login","youtube_playlist","youtube_playlist","1112","ABCDE","fetch",field,"nil")
+        r = json.loads(playlists)
+        result = r['data']
+        list_length = len(result)
+        # field_add = {"user":current_user['username'],"id": list_length+1,"playlist": playlist}
+        field_add = {"id": list_length+1,"playlist": playlist}
+        add = dowellconnection("login","bangalore","login","youtube_playlist","youtube_playlist","1112","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Playlist Successfully Added" )
+        return HttpResponseRedirect('/display_youtube_playlist/?session_id='+session_id) 
+
+
+
+
+    return render(request, 'add_youtube_playlist.html',context)
+
+
+
+@authenticationrequired
+@is_client_and_super_admin
+def display_youtube_playlist(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field= {}
+    playlists = dowellconnection("login","bangalore","login","youtube_playlist","youtube_playlist","1112","ABCDE","fetch",field,"nil")
+    r = json.loads(playlists)
+    result = r['data']
+
+
+    context = {'session_id':session_id,'playlists':result,'current_user':current_user}
+
+    return render(request, 'display_youtube_playlist.html',context)
+
+
+
+
+@authenticationrequired
+@is_client_and_super_admin
+def add_rights(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    field = {}
+    url = 'https://100014.pythonanywhere.com/api/listusers/'
+    data={"pwd":"d0wellre$tp@$$"}
+    s = requests.session()
+    p = s.post(url, data=data)
+    r = p.text
+    r = json.loads(r)
+    users = r
+    devices = dowellconnection("login","bangalore","login","devices","devices","1106","ABCDE","fetch",field,"nil")
+    devices = json.loads(devices)
+    devices = devices['data']
+    locations = dowellconnection("login","bangalore","login","locations","locations","1107","ABCDE","fetch",field,"nil")
+    locations = json.loads(locations)
+    locations = locations['data']
+    oses = dowellconnection("login","bangalore","login","os","os","1108","ABCDE","fetch",field,"nil")
+    oses= json.loads(oses)
+    oses = oses['data']
+    connections = dowellconnection("login","bangalore","login","connections","connections","1110","ABCDE","fetch",field,"nil")
+    connections = json.loads(connections)
+    connections = connections['data']
+    browsers = dowellconnection("login","bangalore","login","browsers","browsers","1109","ABCDE","fetch",field,"nil")
+    browsers = json.loads(browsers)
+    browsers = browsers['data']
+    processes = dowellconnection("login","bangalore","login","processes","processes","1111","ABCDE","fetch",field,"nil")
+    processes = json.loads(processes)
+    processes = processes['data']
+    playlists = dowellconnection("login","bangalore","login","youtube_playlist","youtube_playlist","1112","ABCDE","fetch",field,"nil")
+    playlists = json.loads(playlists)
+    playlists = playlists['data']
+
+    if request.method == "POST":
+        field= {}
+        field_add= {}
+        user_id = int(request.POST.get('users'))
+        os = request.POST.getlist('oses')
+        device = request.POST.getlist('devices')
+        location = request.POST.getlist('locations')
+        browser = request.POST.getlist('browsers')
+        process = request.POST.getlist('processes')
+        playlist = request.POST.getlist('playlists')
+        connection = request.POST.getlist('connections')
+        fetch = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","fetch",field,"nil")
+        r = json.loads(fetch)
+        result = r['data']
+        list_length = len(result)
+        username = current_user['username']
+        user_found = 0
+        for r in result:
+            if r['user'] == user_id :
+                user_found = 1 
+                break
+            
+        if user_found == 0 :
+            field_add = {"id": list_length+1,'user':user_id,'os':os,'device':device,'location':location,'browser':browser,'process':process,'playlist':playlist,'connection':connection}
+            add = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","insert",field_add,"nil")
+            messages.success(request, "Added rights" )   
+        elif user_found ==1:
+            messages.success(request, "Already Exist" )   
+
+        fetch_again = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","fetch",field,"nil")
+        r1 = json.loads(fetch_again)
+        result1 = r1['data']
+        print(result1)
+
+
+
+
+
+
+    context = {'session_id':session_id,'users':users,'oses':oses,'locations':locations,'devices':devices,'connections':connections,'browsers':browsers,'processes':processes,'playlists':playlists}
+
+    return render(request, 'rights.html',context)
+
+
+
+def access_denied(request):
+    session_id = request.session.get('session_id')  
+    context = {'session_id':session_id}
+
+    return render(request,'access_denied.html',context)

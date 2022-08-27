@@ -50,3 +50,43 @@ def authenticationrequired(view_func):
         return view_func(request, *args, **kwargs)
     return wrapper_func
 
+
+def is_super_admin(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        key = request.session.get('session_id')
+        user = get_user_profile(key)
+        # jwt = request.session.get('jwt_value')
+        if user['role'] == 'Admin':
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect('access_denied')
+    
+    return wrapper_func
+
+def is_client_admin(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        # key = request.GET.get('session_id', '')
+        key = request.session.get('session_id')
+        user = get_user_profile(key)
+        # jwt = request.session.get('jwt_value')
+        if user['role'] == 'client_admin':
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect('access_denied')
+    
+    return wrapper_func
+
+
+
+def is_client_and_super_admin(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        # key = request.GET.get('session_id', '')
+        key = request.session.get('session_id')
+        user = get_user_profile(key)
+        # jwt = request.session.get('jwt_value')
+        if user['role'] == 'client_admin' or user['role'] == 'Admin':
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect('access_denied')
+    
+    return wrapper_func
