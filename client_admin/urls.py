@@ -1,7 +1,7 @@
 from pkgutil import get_data
 from django.urls import path,re_path
 from . import views
-from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_os, display_process, display_youtube_playlist, edit_organisation, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device
+from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device
 from django.contrib.auth.views import LoginView, LogoutView
 
 
@@ -25,6 +25,7 @@ re_path(r'^edit_project/$', edit_project, name='edit_project'),
 re_path(r'^add_department/$', add_department, name='add_department'),
 re_path(r'^add_project/$', add_project, name='add_project'),
 re_path(r'^users/$',get_all_users, name='get_all_users'),
+re_path(r'^edit_user/$',edit_user, name='edit_user'),
 re_path(r'^organisation_leads/$',get_organisation_lead, name='get_organisation_lead'),
 re_path(r'^display_company/$',get_company, name='get_company'),
 re_path(r'^display_organisation/$',get_organisation, name='get_organisation'),

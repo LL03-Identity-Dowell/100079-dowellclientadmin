@@ -386,6 +386,68 @@ def add_user(request):
     return render(request, 'add_user.html',context)
 
 
+@authenticationrequired
+def edit_user(request):
+    u_id=int(request.GET.get('user_id',''))
+    username = request.GET.get('user_username','')
+    email = request.GET.get('user_email','')
+    firstname = request.GET.get('user_firstname','')
+    lastname = request.GET.get('user_lastname','')
+    role = request.GET.get('user_role','')
+    phone = request.GET.get('user_phone','')
+    teamcode = request.GET.get('user_teamcode','')
+    current_user = request.session.get('current_user')
+    access_granted = 0
+    try:
+        if 'Admin' and 'client_admin' in current_user['role']:
+            access_granted = 1
+
+    
+    except :
+        return HttpResponse('No suitable role to access the page.')    
+    registerurl = 'https://100014.pythonanywhere.com/api/register/'
+
+    session_id = request.session.get('session_id')
+
+    response_data = {}
+    if request.method == "POST":
+            # username = request.POST.get('username')
+            email = request.POST.get('inputEmail4')
+            fname = request.POST.get('firstname')
+            lname = request.POST.get('lastname')
+            password = request.POST.get('inputPassword4')
+            phcode = request.POST.get('phonecode')
+            ph = request.POST.get('phone')
+            tcode = request.POST.get('teamcode')
+            update_url = "https://100014.pythonanywhere.com/api/update/"+str(u_id)
+            update_data={
+                "email":email,
+            "role": role,
+            "first_name":fname,
+            "last_name":lname,
+            "phone":ph,
+            "phonecode":phcode,
+            "teamcode":tcode,
+
+                }
+            s = requests.session()
+            p=s.put(update_url,data=update_data)
+            r = p.text
+            r = json.loads(r)
+            print(r)
+            if len(r) > 2:
+                messages.success(request, "User Has Been Successfully updated with Username : "+username+"")
+                return HttpResponseRedirect('/users/?session_id='+session_id) 
+
+            else:
+                messages.error(request, "Problem updating user : "+username+"")
+                return HttpResponseRedirect('/add_user/?session_id='+session_id) 
+    
+
+    context=  {"session_id":session_id,'access_granted':access_granted,'username':username,'email':email,'firstname':firstname,'lastname':lastname,'role':role,'phone':phone,'teamcode':teamcode}
+
+    return render(request, 'edit_user.html',context)
+
 
 @authenticationrequired
 def add_organisation(request):
@@ -511,7 +573,7 @@ def edit_organisation(request):
     access_granted = 0
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_Admin' in current_user['role']:
             company = result1 
             access_granted = 1
  
@@ -594,7 +656,7 @@ def edit_department(request):
 
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             organisation = result1 
             access_granted = 1
  
@@ -690,7 +752,7 @@ def edit_project(request):
 
     current_user = request.session.get('current_user')  
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             department = r1['data']    
             access_granted = 1
         elif 'department_lead@' in current_user['role']:
@@ -781,7 +843,7 @@ def add_company(request):
     result = []
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             # result = organisations['data']   
             access_granted = 1
  
@@ -836,7 +898,7 @@ def edit_company(request):
     current_user = request.session.get('current_user')
     access_granted = 0
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             # result = organisations['data']   
             access_granted = 1
  
@@ -933,7 +995,7 @@ def get_company(request):
     result = []
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin'in current_user['role']:
             result = companies['data']    
         elif 'company_lead@' in current_user['role']:
             user_company = current_user['role'].split("@",1)[1]
@@ -967,7 +1029,7 @@ def get_organisation(request):
 
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             result = r['data']    
             result1 = r1['data']
         elif 'organisation_lead@' in current_user['role']:
@@ -1103,7 +1165,7 @@ def get_department(request):
 
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             result = r['data']    
             result1 = r1['data']
         elif 'department_lead@' in current_user['role']:
@@ -1213,7 +1275,7 @@ def get_project(request):
 
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             result = r['data']    
             result1 = r1['data']
         elif 'project_lead@' in current_user['role']:
@@ -1342,7 +1404,7 @@ def add_department(request):
 
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             result = organisations['data']   
             access_granted = 1
  
@@ -1432,7 +1494,7 @@ def add_project(request):
 
     current_user = request.session.get('current_user')  
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             result = departments['data']    
             access_granted = 1
         elif 'department_lead@' in current_user['role']:
@@ -1672,7 +1734,7 @@ def add_roles(request):
     result = []
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             # result = organisations['data']   
             access_granted = 1
  

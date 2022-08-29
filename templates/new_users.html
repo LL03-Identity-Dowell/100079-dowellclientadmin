@@ -51,7 +51,7 @@
         <td><b>First Name:</b> {{ user.first_name }} </td>
      <td><b>Last Name: </b> {{ user.last_name }} </td>
     <td><b> Role:</b> {{ user.role }} </td>
-                        <td><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></td>
+                        <td><a href="{% url 'edit_user' %}?user_id={{user.id}}&user_email={{user.email}}&user_username={{user.username}}&user_firstname={{user.first_name}}&user_lastname={{user.last_name}}&user_role={{user.role}}&user_phone={{user.phone}}&user_teamcode={{user.teamcode}}&session_id={{session_id}}"> <button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></a></td>
                         <td><button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button></td>
 
 

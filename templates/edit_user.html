@@ -45,8 +45,7 @@
             <label for="upload-photo" class="upfont">Upload Photo</label>
             <input type="file" name="photo" id="upload-photo" />
           </span>
-          <h4>User Name</h4>
-          <h6>Role</h6>
+          <h4>{{username}}</h4>
         </div>
         <div class="col-sm-5"></div>
 
@@ -56,7 +55,7 @@
           <div class="form-group col-md-6 d-flex">
             <label for="Email" class="col-sm-3  col-form-label">Email:</label>
             <div class="col-sm-6">
-              <input type="email" class="form-control input_box" id="inputEmail4" name="inputEmail4">
+              <input type="email" class="form-control input_box" id="inputEmail4" name="inputEmail4" value="{{email}}">
             </div>
           </div>
           <div class="form-group col-md-6 d-flex">
@@ -71,13 +70,13 @@
           <div class="form-group col-md-6 d-flex">
             <label for="firstname" class="col-sm-3  col-form-label">First Name:</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control input_box" id="firstname" name="firstname">
+              <input type="text" class="form-control input_box" id="firstname" name="firstname"  value="{{firstname}}">
             </div>
           </div>
           <div class="form-group col-md-6 d-flex">
             <label for="lastname" class="col-sm-3 col-form-label">Last Name:</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control input_box" id="lastname" name="lastname">
+              <input type="text" class="form-control input_box" id="lastname" name="lastname"  value="{{lastname}}">
             </div>
           </div>
         </div>
@@ -91,13 +90,13 @@
             </div> -->
 
            <label for="phone" class="col-sm-3  col-form-label">Phone:</label>
-   <input id="phone" type="tel" class="form-control input_box" name="phone" />
+   <input id="phone" type="tel" class="form-control input_box" name="phone"  value="{{phone}}">
    <!-- <input type="submit" class="btn" value="Verify" /> -->
           </div>
           <div class="form-group col-md-6 d-flex">
             <label for="teamcode" class="col-sm-3 col-form-label">Team Code:</label>
             <div class="col-sm-6">
-              <input type="number" class="form-control input_box" id="teamcode" name="teamcode">
+              <input type="number" class="form-control input_box" id="teamcode" name="teamcode"  value="{{teamcode}}">
             </div>
           </div>
         </div>
@@ -106,6 +105,9 @@
           <div class="form-group col-md-6 d-flex">
             <label for="phone" class="col-sm-3  col-form-label">Role:</label>
             <div class="col-sm-6">
+
+                          <input type="text" class="form-control input_box" id="role" name="role"  value="{{role}}">
+
               {% comment %} <select name="selectuser" id="selectuser" class="form-control input_box" >
                    <option value="fiver">Jim</option>
                
