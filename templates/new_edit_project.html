@@ -5,13 +5,6 @@
 
 {% block content %}
 
-{% if messages %}
-<ul class="messages">
-  {% for message in messages %}
-  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-  {% endfor %}
-</ul>
-{% endif %}
 
 
  <div class="container" style="margin-top: 64px;">
@@ -63,6 +56,15 @@
                         
                         </select>
                       </div>
+
+                        {% if messages %}
+                  <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+
                   <button type="submit" class="btn text-white card_bg ms-auto mt-2">Update</button>
                 </form>
 

@@ -19,6 +19,8 @@
 
 </head>
   <body id="body-pd">
+
+
     <header class="header" id="header">
         <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
 
@@ -44,6 +46,8 @@
         </div> {% endcomment %}
     </header>
     <div class="l-navbar" id="nav-bar">
+
+
         <nav class="nav">
             <div> <a href="/?session_id={{session_id}}" class="nav_logo"> <i class='bx bx-user nav_logo-icon'></i> <span class="nav_logo-name">Admin Panel</span> </a>
                 <div class="nav_list"> 
@@ -82,11 +86,15 @@
                 </div> 
         </nav>
     </div>
+
     <!--Container Main start-->
 
 <!-- container start  -->
 
  {% block content %}{% endblock %}
+
+{% include 'message.html' %}
+
       <!-- contain er end  -->
     </div>
     <!--Container Main end-->
@@ -100,5 +108,16 @@
    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    {% if messages %}
+  <script>
+      {% for message in messages %}
+          $(document).ready(function () {
+              $('.toast').toast('show');
+          });
+      {% endfor %}
+  </script>
+{% endif %}
+
 </body>
 </html>

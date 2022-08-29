@@ -70,14 +70,15 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
                 'client_admin.custom_context_processor.username_render',
                 'client_admin.custom_context_processor.counter_render',
-
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'dowell_admin.wsgi.application'
 

@@ -5,13 +5,6 @@
 
 {% block content %}
 
-{% if messages %}
-<ul class="messages">
-  {% for message in messages %}
-  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-  {% endfor %}
-</ul>
-{% endif %}
 
 
   <div class="container" style="margin-top: 64px;">
@@ -53,6 +46,7 @@
                             <label for="addCompany" class="form-label">Company Name</label>
                           <input type="text" class="form-control" id="addCompany" aria-describedby="company" placeholder="Company">
                         </div>
+
                         <button type="submit" class="btn card_bg text-white ms-auto mt-2">Add</button>
                       </form>
 

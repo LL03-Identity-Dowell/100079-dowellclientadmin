@@ -12,6 +12,7 @@ import json
 import base64
 from .decorators import authenticationrequired, is_client_admin, is_client_and_super_admin, is_super_admin, loginrequired, unauthenticated_user
 from django.contrib import messages
+from django.contrib.messages import get_messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .login import get_user_profile
 from .dowellconnection import dowellconnection 
@@ -376,7 +377,7 @@ def add_user(request):
             if len(r) > 2:
                 messages.success(request, "User Has Been Successfully Added with Username : "+username+"")
             else:
-                messages.success(request, "User with Username : "+username+" Already Existis")
+                messages.error(request, "User with Username : "+username+" Already Existis")
                 return HttpResponseRedirect('/add_user/?session_id='+session_id) 
     
 
@@ -403,7 +404,7 @@ def add_organisation(request):
     result = []
     current_user = request.session.get('current_user')
     try:
-        if 'Admin' in current_user['role']:
+        if 'Admin' or 'client_admin' in current_user['role']:
             result = companies['data']   
             access_granted = 1
  
@@ -460,11 +461,11 @@ def add_organisation(request):
             organisation = request.POST.get('org_name')
             # company = form.data['companyName']
             if request.POST.get('companyName') is None:
-                messages.success(request, "No Companies Assigned")
+                messages.error(request, "No Companies Assigned")
                 return HttpResponseRedirect('/add_organisation/?session_id='+session_id) 
 
             if len(request.POST.get('org_name')) < 4:
-                messages.success(request, "Please Enter 4 or More Characters ")
+                messages.error(request, "Please Enter 4 or More Characters ")
                 return HttpResponseRedirect('/add_organisation/?session_id='+session_id) 
 
             company = int(request.POST.get('companyName'))
@@ -482,7 +483,7 @@ def add_organisation(request):
             if new_company_length == organisation_length + 1:
                 messages.success(request, "Organisation Successfully added with Organisation  Name : "+organisation)
             else:
-                messages.success(request, "Problem Adding Organisation")
+                messages.error(request, "Problem Adding Organisation")
                 return HttpResponseRedirect('/add_organisation/?session_id='+session_id) 
             
             
@@ -818,7 +819,7 @@ def add_company(request):
             if new_company_length == company_length + 1:
                 messages.success(request, "Company Successfully added with Company  Name : "+company )
             else:
-                messages.success(request, "Problem Adding Company")
+                messages.error(request, "Problem Adding Company")
                 return HttpResponseRedirect('/add_company/?session_id='+session_id) 
 
     company_number = request.session.get('company_number')
@@ -1386,11 +1387,11 @@ def add_department(request):
             department = request.POST.get('department_name')
 
             if request.POST.get('orgName') is None:
-                messages.success(request, "No Organisations Assigned")
+                messages.error(request, "No Organisations Assigned")
                 return HttpResponseRedirect('/add_department/?session_id='+session_id) 
 
             if len(request.POST.get('department_name')) < 4:
-                messages.success(request, "Please Enter 4 or More Characters ")
+                messages.error(request, "Please Enter 4 or More Characters ")
                 return HttpResponseRedirect('/add_department/?session_id='+session_id) 
 
             organisation = int(request.POST.get('orgName'))
@@ -1408,7 +1409,7 @@ def add_department(request):
             if new_company_length == company_length + 1:
                 messages.success(request, "Department Successfully added with  Name : "+department )
             else:
-                messages.success(request, "Problem Adding Department")
+                messages.error(request, "Problem Adding Department")
                 return HttpResponseRedirect('/add_department/?session_id='+session_id) 
 
     return render(request, 'new_add_department.html',context)
@@ -1502,7 +1503,7 @@ def add_project(request):
             if new_company_length == company_length + 1:
                 messages.success(request, "Project Successfully added with  Name : "+project )
             else:
-                messages.success(request, "Problem Adding Project")
+                messages.error(request, "Problem Adding Project")
                 return HttpResponseRedirect('/add_project/?session_id='+session_id) 
     return render(request, 'new_add_project.html',context)
 
@@ -1651,7 +1652,7 @@ def assign_roles(request):
             return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
         else:
-            messages.success(request, "Problem Assigning Role" )
+            messages.error(request, "Problem Assigning Role" )
 
 
 
@@ -1793,7 +1794,7 @@ def change_password(request):
         if password_change == 1 :
             messages.success(request, "Password has been updated successfully")
         elif password_change == 0:
-            messages.success(request, "Problem changing password")
+            messages.error(request, "Problem changing password")
                 
 
 
@@ -2232,42 +2233,43 @@ def add_rights(request):
     playlists = playlists['data']
 
     if request.method == "POST":
-        field= {}
-        field_add= {}
-        user_id = int(request.POST.get('users'))
-        os = request.POST.getlist('oses')
-        device = request.POST.getlist('devices')
-        location = request.POST.getlist('locations')
-        browser = request.POST.getlist('browsers')
-        process = request.POST.getlist('processes')
-        playlist = request.POST.getlist('playlists')
-        connection = request.POST.getlist('connections')
-        fetch = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","fetch",field,"nil")
-        r = json.loads(fetch)
-        result = r['data']
-        list_length = len(result)
-        username = current_user['username']
-        user_found = 0
-        for r in result:
-            if r['user'] == user_id :
-                user_found = 1 
-                break
-            
-        if user_found == 0 :
-            field_add = {"id": list_length+1,'user':user_id,'os':os,'device':device,'location':location,'browser':browser,'process':process,'playlist':playlist,'connection':connection}
-            add = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","insert",field_add,"nil")
-            messages.success(request, "Added rights" )   
-        elif user_found ==1:
-            messages.success(request, "Already Exist" )   
+            field= {}
+            field_add= {}
+            user_id = int(request.POST.get('users'))
+            os = request.POST.getlist('oses')
+            device = request.POST.getlist('devices')
+            location = request.POST.getlist('locations')
+            browser = request.POST.getlist('browsers')
+            process = request.POST.getlist('processes')
+            playlist = request.POST.getlist('playlists')
+            connection = request.POST.getlist('connections')
+            fetch = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","fetch",field,"nil")
+            r = json.loads(fetch)
+            result = r['data']
+            list_length = len(result)
+            username = current_user['username']
+            user_found = 0
+            for r in result:
+                if r['user'] == user_id :
+                    user_found = 1 
+                    break
+                
+            if user_found == 0 :
+                field_add = {"id": list_length+1,'user':user_id,'os':os,'device':device,'location':location,'browser':browser,'process':process,'playlist':playlist,'connection':connection}
+                add = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","insert",field_add,"nil")
+                messages.success(request, 'Added rights' )   
+            elif user_found ==1:
+                messages.error(request, 'Already Exist' )   
 
-        fetch_again = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","fetch",field,"nil")
-        r1 = json.loads(fetch_again)
-        result1 = r1['data']
-        print(result1)
-
+            fetch_again = dowellconnection("login","bangalore","login","rights","rights","1113","ABCDE","fetch",field,"nil")
+            r1 = json.loads(fetch_again)
+            # print(result1)
 
 
-
+            storage = get_messages(request)
+            print(storage)
+            for message in storage:
+                print(message)
 
 
     context = {'session_id':session_id,'users':users,'oses':oses,'locations':locations,'devices':devices,'connections':connections,'browsers':browsers,'processes':processes,'playlists':playlists}
