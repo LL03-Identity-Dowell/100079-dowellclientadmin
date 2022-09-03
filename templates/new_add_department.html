@@ -38,7 +38,7 @@
                           <div class="card-title">Department</div>
                         </div>
                       </div>
-              <form class="table_shadow p-3" method="POST">
+              <form name="addDepartment" class="table_shadow p-3" method="POST" onsubmit="return validateform()">
                                   {% csrf_token %}
 
                   <div class="col-12">
@@ -74,7 +74,19 @@
     </div>
 
 
+    <script>
+  
 
+        function validateform(){  
+var company=document.addDepartment.department_name.value;  
+  
+if (company==null || company==""){  
+  alert("Department Name Can not be blank");  
+  return false;  
+}
+}  
+     
+    </script>
 
 
 

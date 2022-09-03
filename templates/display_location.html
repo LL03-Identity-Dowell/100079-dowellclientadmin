@@ -39,11 +39,11 @@
                       <ul class="list-group table_shadow">
                                                     {% for location in locations %}
 
-                                                        {% if location.user == current_user.username %}
+                                                        {% comment %} {% if location.user == current_user.username %} {% endcomment %}
 
 
                         <li class="list-group-item list-group-item-action oslist">{{location.location}}</li>
-                        {% endif %}
+                        {% comment %} {% endif %} {% endcomment %}
 
                                           {% endfor %}
 

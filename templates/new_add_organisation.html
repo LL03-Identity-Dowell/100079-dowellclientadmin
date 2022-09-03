@@ -38,7 +38,7 @@
                           <div class="card-title">Organization</div>
                         </div>
                       </div>
-                <form class="card table_shadow p-3" method ="POST">
+                <form name="addOrganisation" class="card table_shadow p-3" method ="POST" onsubmit="return validateform()">
                     {% csrf_token %}
 
                     <div class="col-12">
@@ -72,5 +72,21 @@
       </div>
       <!-- contain er end  -->
     </div>
+
+
+
+    <script>
+  
+
+        function validateform(){  
+var organisation=document.addOrganisation.org_name.value;  
+  
+if (organisation=null || organisation==""){  
+  alert("Organisation Name Can not be blank");  
+  return false;  
+}
+}  
+     
+    </script>
 
     {% endblock %}

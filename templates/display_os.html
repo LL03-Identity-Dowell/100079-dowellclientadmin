@@ -39,12 +39,12 @@
                       <ul class="list-group table_shadow">
                                                     {% for os in oses %}
 
-                                                        {% if os.user == current_user.username %}
+                                                        {% comment %} {% if os.user == current_user.username %} {% endcomment %}
 
 
                         <li class="list-group-item list-group-item-action oslist">{{os.os}}</li>
 
-                        {% endif %}
+                        {% comment %} {% endif %} {% endcomment %}
 
                                           {% endfor %}
 

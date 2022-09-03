@@ -38,11 +38,11 @@
                       </div>
                       <ul class="list-group table_shadow">
                                                     {% for conn in connections %}
-                                            {% if conn.user == current_user.username %}
+                                            {% comment %} {% if conn.user == current_user.username %} {% endcomment %}
 
 
                         <li class="list-group-item list-group-item-action oslist">{{conn.connection}}</li>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                                           {% endfor %}
 
                       </ul>

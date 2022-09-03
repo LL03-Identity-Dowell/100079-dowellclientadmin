@@ -84,7 +84,7 @@ def is_client_and_super_admin(view_func):
         key = request.session.get('session_id')
         user = get_user_profile(key)
         # jwt = request.session.get('jwt_value')
-        if user['role'] == 'client_admin' or user['role'] == 'Admin':
+        if 'client_admin' in user['role'] or 'Admin' in user['role']:
             return view_func(request, *args, **kwargs)
         else:
             return redirect('access_denied')

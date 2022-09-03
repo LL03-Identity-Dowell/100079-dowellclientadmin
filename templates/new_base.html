@@ -22,7 +22,8 @@
 
 
     <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+        <div class="header_toggle"> 
+        </div>
 
                 <div style="display: flex;">  
           <i class='bx bx-user-circle nav_icon bx-md' style="vertical-align: sub"></i> 
@@ -45,13 +46,16 @@
 
         </div> {% endcomment %}
     </header>
-    <div class="l-navbar" id="nav-bar">
+    <div class="l-navbar show" id="nav-bar">
 
 
-        <nav class="nav">
+ <nav class="navbar-primary">
+
+          <a href="#" class="btn-expand-collapse"><i class='bx bx-menu' id="header-toggle"></i> </a>
+
             <div> <a href="/?session_id={{session_id}}" class="nav_logo"> <i class='bx bx-user nav_logo-icon'></i> <span class="nav_logo-name">Admin Panel</span> </a>
                 <div class="nav_list"> 
-                  <a href="/display_company/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-building-house nav_icon'></i> <span class="nav_name">Companies [ {{ company_number}} ]</span> </a> 
+                  <a href="/display_company/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-building-house nav_icon'></i> <span class="nav_name">Brands[ {{ company_number}} ]</span> </a> 
                   <a href="/display_organisation/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-sitemap nav_icon'></i> <span class="nav_name">Organizations [ {{ organisation_number }} ]</span> </a> 
                   <a href="/display_department/?session_id={{session_id}}" class="nav_link active"> <i class='bx bx-home nav_icon'></i> <span class="nav_name">Departments [ {{ department_number}} ]</span> </a> 
                   <a href="/display_project/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Projects [ {{ project_number }} ]</span> </a> 
@@ -84,8 +88,24 @@
                     </li>
                   </ul>
                 </div> 
-        </nav>
+        </nav> 
+
+
+        {% comment %} <nav class="navbar-primary">
+  <a href="#" class="btn-expand-collapse"><span class="glyphicon glyphicon-menu-left"></span></a>
+  <ul class="navbar-primary-menu">
+    <li>
+      <a href="#"><span class="glyphicon glyphicon-list-alt"></span><span class="nav-label">Dashboard</span></a>
+      <a href="#"><span class="glyphicon glyphicon-envelope"></span><span class="nav-label">Profile</span></a>
+      <a href="#"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Settings</span></a>
+      <a href="#"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Notification</span></a>
+      <a href="#"><span class="glyphicon glyphicon-calendar"></span><span class="nav-label">Monitor</span></a>
+    </li>
+  </ul>
+</nav> {% endcomment %}
     </div>
+
+
 
     <!--Container Main start-->
 
@@ -116,6 +136,8 @@
               $('.toast').toast('show');
           });
       {% endfor %}
+
+      
   </script>
 {% endif %}
 

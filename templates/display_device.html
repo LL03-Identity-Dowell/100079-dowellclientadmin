@@ -38,10 +38,10 @@
                       </div>
                       <ul class="list-group table_shadow">
                                                     {% for device in devices %}
-                            {% if device.user == current_user.username %}
+                            {% comment %} {% if device.user == current_user.username %} {% endcomment %}
 
                         <li class="list-group-item list-group-item-action oslist">{{device.device}}</li>
-                            {% endif %}
+                            {% comment %} {% endif %} {% endcomment %}
                                           {% endfor %}
 
                       </ul>

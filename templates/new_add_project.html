@@ -39,7 +39,7 @@
                           <div class="card-title">Project</div>
                         </div>
                       </div>
-                                     <form class="table_shadow p-3" method="POST">
+                                     <form name="addProject" class="table_shadow p-3" method="POST" onsubmit="return validateform()" >
                                                   {% csrf_token %}
 
                     <div class="col-12">
@@ -79,5 +79,19 @@
       <!-- contain er end  -->
     </div>
 
+
+    <script>
+  
+
+        function validateform(){  
+var project=document.addProject.project_name.value;  
+  
+if (project=null || project==""){  
+  alert("Project Name Can not be blank");  
+  return false;  
+}
+}  
+     
+    </script>
 
    {% endblock %}

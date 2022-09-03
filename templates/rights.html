@@ -61,10 +61,23 @@
 
 
                         </div>
+
+                            <div class="col-12 ">
+                          <label for="oses" class="form-label">Projects</label>
+
+                                                <select name="projects" id="projects" class="project-select form-control" multiple="multiple" >
+
+                         {% for project in projects %}
+
+                              <option value="{{project.project}}">{{project.project}}</option>
+                        {% endfor %}
+                          
+                          </select>
+                          </div>
                             <div class="col-12 ">
                           <label for="oses" class="form-label">OS</label>
 
-                                                <select name="oses" id="oses" class="os-select" multiple="multiple" >
+                                                <select name="oses" id="oses" class="os-select form-control" multiple="multiple" >
 
                          {% for os in oses %}
 
@@ -74,11 +87,10 @@
                           </select>
                           </div>
 
-
                                                      <div class="col-12 ">
                           <label for="devices" class="form-label">Device</label>
 
-                                                <select name="devices" id="devices" class="device-select" multiple="multiple" >
+                                                <select name="devices" id="devices" class="device-select form-control" multiple="multiple" >
 
                          {% for device in devices %}
 
@@ -91,7 +103,7 @@
                                                      <div class="col-12 ">
                           <label for="locations" class="form-label">Location</label>
 
-                                                <select name="locations" id="locations" class="location-select" multiple="multiple" >
+                                                <select name="locations" id="locations" class="location-select form-control" multiple="multiple" >
 
                          {% for location in locations %}
 
@@ -104,7 +116,7 @@
                                                      <div class="col-12 ">
                           <label for="connections" class="form-label">Connection</label>
 
-                                                <select name="connections" id="connections" class="connection-select" multiple="multiple" >
+                                                <select name="connections" id="connections" class="connection-select form-control" multiple="multiple" >
 
                          {% for connection in connections %}
 
@@ -117,7 +129,7 @@
                                                      <div class="col-12 ">
                           <label for="browsers" class="form-label">Browser</label>
 
-                                                <select name="browsers" id="browsers" class="browser-select" multiple="multiple" >
+                                                <select name="browsers" id="browsers" class="browser-select form-control" multiple="multiple" >
 
                          {% for browser in browsers %}
 
@@ -130,7 +142,7 @@
                                                      <div class="col-12 ">
                           <label for="processes" class="form-label">Process</label>
 
-                                                <select name="processes" id="processes" class="process-select" multiple="multiple" >
+                                                <select name="processes" id="processes" class="process-select form-control" multiple="multiple" >
 
                          {% for process in processes %}
 
@@ -143,7 +155,7 @@
                                                      <div class="col-12 ">
                           <label for="playlists" class="form-label">YouTube Play List</label>
 
-                                                <select name="playlists" id="playlists" class="playlist-select" multiple="multiple" >
+                                                <select name="playlists" id="playlists" class="playlist-select form-control" multiple="multiple" >
 
                          {% for playlist in playlists %}
 
@@ -184,6 +196,7 @@ $(document).ready(function() {
         $('.process-select').select2();
         $('.playlist-select').select2();
         $('.location-select').select2();
+        $('.project-select').select2();
 
 
 
