@@ -531,12 +531,22 @@ def add_organisation(request):
                 return HttpResponseRedirect('/add_organisation/?session_id='+session_id) 
 
             company = int(request.POST.get('companyName'))
+            layer = request.POST.get('layers')
+            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+            # print(layer)
+            if layer:
+                for i in range(1,7):
+                    if str(i) in layer:
+                        layer_dict['layer%s' % i]  = 1
+                        layer = 'layer' +str(i+1)
+                        # layer+ str(i) = 1
             r = dowellconnection("login","bangalore","login","organization","organization","1084","ABCDE","fetch",field,"nil")
             r = json.loads(r)
             # print(company)
             result = r['data']
             organisation_length = len(result)
             field_add = {"name": organisation,"company_id" : company,"organization_id": organisation_length}
+            field_add = {**field_add, **layer_dict}
             add = dowellconnection("login","bangalore","login","organization","organization","1084","ABCDE","insert",field_add,"nil")
             r1 = dowellconnection("login","bangalore","login","organization","organization","1084","ABCDE","fetch",field,"nil")
             r1 = json.loads(r1)
@@ -868,11 +878,21 @@ def add_company(request):
     if request.method == "POST":
             field= {}
             company = request.POST.get('addCompany')
+            layer = request.POST.get('layers')
+            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+            # print(layer)
+            if layer:
+                for i in range(1,7):
+                    if str(i) in layer:
+                        layer_dict['layer%s' % i]  = 1
+                        layer = 'layer' +str(i+1)
+                        # layer+ str(i) = 1
             r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
             r = json.loads(r)
             result = r['data']
             company_length = len(result)
             field_add = {"company": company, "company_id" : company_length+1}
+            field_add = {**field_add, **layer_dict}
             add = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","insert",field_add,"nil")
             r1 = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
             r1 = json.loads(r1)
@@ -992,6 +1012,7 @@ def get_company(request):
     session_id = request.session.get('session_id')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
+    print(companies)
     result = []
     current_user = request.session.get('current_user')
     try:
@@ -1453,6 +1474,15 @@ def add_department(request):
     if request.method == "POST":
             field= {}
             department = request.POST.get('department_name')
+            layer = request.POST.get('layers')
+            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+            # print(layer)
+            if layer:
+                for i in range(1,7):
+                    if str(i) in layer:
+                        layer_dict['layer%s' % i]  = 1
+                        layer = 'layer' +str(i+1)
+                        # layer+ str(i) = 1
 
             if request.POST.get('orgName') is None:
                 messages.error(request, "No Organisations Assigned")
@@ -1469,6 +1499,7 @@ def add_department(request):
             result = r['data']
             company_length = len(result)
             field_add = {"department": department,"organization_id":organisation , "department_id" : company_length+1}
+            field_add = {**field_add, **layer_dict}
             add = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","insert",field_add,"nil")
             r1 = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
             r1 = json.loads(r1)
@@ -1558,11 +1589,21 @@ def add_project(request):
             project = request.POST.get('project_name')
             # print(project)
             department = int(request.POST.get('department_name'))
+            layer = request.POST.get('layers')
+            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+            # print(layer)
+            if layer:
+                for i in range(1,7):
+                    if str(i) in layer:
+                        layer_dict['layer%s' % i]  = 1
+                        layer = 'layer' +str(i+1)
+                        # layer+ str(i) = 1
             r = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","fetch",field,"nil")
             r = json.loads(r)
             result = r['data']
             company_length = len(result)
             field_add = {"project": project,"department_id":department , "project_id" : company_length+1}
+            field_add = {**field_add, **layer_dict}
             add = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","insert",field_add,"nil")
             r1 = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","fetch",field,"nil")
             r1 = json.loads(r1)
@@ -1641,6 +1682,7 @@ def assign_roles(request):
 
     session_id = request.session.get('session_id')
     field = {}
+    field1 = {}
     url = 'https://100014.pythonanywhere.com/api/listusers/'
     data={"pwd":"d0wellre$tp@$$"}
 
@@ -1673,6 +1715,10 @@ def assign_roles(request):
     roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
     roles = json.loads(roles)
     roles_list = roles['data']
+    designations = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","fetch",field1,"nil")
+    designations = json.loads(designations)
+    designations_list = designations['data']
+    print(designations_list)
     users = r
 
 
@@ -1681,13 +1727,24 @@ def assign_roles(request):
         role = request.POST.get('addRole')
         roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
         r = json.loads(roles)
-        result = r['data']
-        role_length = len(result)
+        # result = r['data']
+        role_length = 100
         field_add = {"id": role_length+1,"role": role }
         add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
         messages.success(request, "Role Successfully Added" )
         return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
+    if request.method == "POST" and 'add_designation_btn' in request.POST:
+        field= {}
+        designation = request.POST.get('addDesignation')
+        designations = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","fetch",field,"nil")
+        r = json.loads(designations)
+        # result = r['data']
+        designation_length = 1000
+        field_add = {"id": designation_length+1,"designation": designation }
+        add = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","insert",field_add,"nil")
+        messages.success(request, "Designation Successfully Added" )
+        return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
 
 
@@ -1724,7 +1781,7 @@ def assign_roles(request):
 
 
 
-    context = {'access_level':access_level,'session_id':session_id,'users':users,'access_granted':access_granted,"roles_list":roles_list}
+    context = {'access_level':access_level,'session_id':session_id,'users':users,'access_granted':access_granted,"roles_list":roles_list,"designations_list":designations_list}
 
     return render(request, 'assign_roles.html',context)
 
@@ -2366,6 +2423,20 @@ def add_rights(request):
 
     return render(request, 'rights.html',context)
 
+
+
+@authenticationrequired
+@is_client_and_super_admin
+def add_layers(request):
+    session_id = request.session.get('session_id')  
+    result = []
+    current_user = request.session.get('current_user')
+    context = {'session_id':session_id}
+
+    if request.method == "POST":
+        pass
+
+    return render(request, 'add_layers.html',context)
 
 
 def access_denied(request):

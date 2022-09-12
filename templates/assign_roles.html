@@ -31,6 +31,28 @@ Add Roles
 </div>
 
 
+<div class="modal fade" id="designationModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+Add Designation
+      </div>
+      <div class="modal-body">
+<form class="card table_shadow p-3" method="POST">
+                                           {% csrf_token %}
+
+                        <div class="form-group mt-3">
+                            <label for="addDesignation" class="form-label">Designation Name</label>
+                          <input type="text" class="form-control" id="addDesignation" name="addDesignation"  aria-describedby="role" placeholder="Designation">
+                        </div>
+                        <button type="submit" name="add_designation_btn" class="btn card_bg text-white ms-auto mt-2">Add</button>
+                      </form>      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <div class="container" style="margin-top: 64px;">
       <div class="row">
@@ -115,13 +137,67 @@ Add Roles
 
                             <button type="button" class="btn btn-secondary btn-add-role" data-toggle="modal"> Add a Role </button>
                     <br />
-                  <label for="category" class="form-label">Category</label>
-                 <select name="category" id="category" class="form-control" >
-                      {% comment %} <option>Select value</option> {% endcomment %}
+
+
+                </div>
+
+
+<div class="col-12 mt-3">
+                  <label for="designations" class="form-label">Designations</label>
+
+                 <select name="designations" id="designations" class="form-control" >
+
+{% comment %} 
+                    <option value="company_lead">Company Lead</option>
+                    <option value="organisation_lead">Organisation Lead</option>
+                    <option value="department_lead">Department Lead</option>
+                    <option value="project_lead">Project Lead</option>
+                    <option value="team_member">Team Member</option> {% endcomment %}
+
+                           {% if access_level == 'Admin' %}
+{% comment %} 
+                    <option value="company_lead">Company Lead</option>
+                    <option value="organisation_lead">Organisation Lead</option>
+                    <option value="department_lead">Department Lead</option>
+                    <option value="project_lead">Project Lead</option>
+                    <option value="team_member">Team Member</option> {% endcomment %}
+                {% for designation in designations_list %}
+
+                <option value="{{designation.id}}">{{designation.designation}}</option> 
+                      {% endfor %}
+
+
+                              {% endif %}
                   </select>
                 </div>
 
 
+                <div class="col-12 mt-3">
+                            {% comment %} <a class="btn btn-primary" href = "{% url 'add_roles'%}?session_id={{session_id}}" >  Add Roles </a> {% endcomment %}
+
+                            <button type="button" class="btn btn-secondary btn-add-designation" data-toggle="modal"> Add a Designation </button>
+                    <br />
+
+
+
+
+                                      <label for="category" class="form-label">Category</label>
+                 <select name="category" id="category" class="form-control" >
+                      {% comment %} <option>Select value</option> {% endcomment %}
+                  </select>
+
+
+
+
+                  <label for="data_type" class="form-label">Data Type</label>
+                 <select name="data_type" id="data_type" class="form-control" >
+                      {% comment %} <option>Select value</option> {% endcomment %}
+                                          <option value="test_data"> Test Data</option>
+                    <option value="learning_data">Learning Data</option>
+                    <option value="live_data">Live Data</option>
+
+                  </select>
+                  </div>
                         {% if messages %}
                   <ul class="messages">
                     {% for message in messages %}
@@ -261,6 +337,9 @@ Add Roles
   $(document).ready(function() {
         $('button.btn-add-role').on('click', function() {
           $('#commonModal').modal('show');
+        })
+          $('button.btn-add-designation').on('click', function() {
+          $('#designationModal').modal('show');
         })
       })
 

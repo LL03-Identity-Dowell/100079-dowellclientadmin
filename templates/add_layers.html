@@ -1,0 +1,161 @@
+
+
+{% extends "new_base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+
+
+    <div class="container" style="margin-top: 64px;">
+      <div class="row">
+        <div class="col">
+          <h3>Dowell Layers</h3>
+        </div>
+        <div class="col">
+          <div class="input-group mt-3" style="float: right; width:66%">
+            <div class="form-outline">
+              <input type="search" id="form1" class="form-control" placeholder="Search anything"/>
+            </div>
+            <button type="button" class="btn btn-primary">
+              <i class="bx bx-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
+        <div class="row">
+            <form>
+                <div class="form-group row">
+                    <label for="dataLayers" class="col-sm-2 col-form-label">Data Layers</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="dataLayers" placeholder="Data Layers">
+                    </div>
+                  </div>
+                  
+                <div class="form-group row mt-2">
+                  <label for="dataLocation" class="col-sm-2 col-form-label">Data Location</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="dataLocation" placeholder="Data Location">
+                  </div>
+</div>
+                  <div class="form-group row mt-2">
+                    <label for="passwordSeverity" class="col-sm-2 col-form-label">Password Severity</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="passwordSeverity" placeholder="Password Severity & Where to Save">
+                    </div>
+                  </div>
+
+                  <div class="form-group row mt-2">
+                    <label for="dataAccessedBy" class="col-sm-2 col-form-label">Data Accessed By</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="dataAccessedBy" placeholder="Data Accessed By/Generating Forms">
+                    </div>
+                  </div>                   
+
+                  <div class="form-group row mt-2">
+                    <label for="mediumOfAccess" class="col-sm-2 col-form-label">Medium Of Access</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="mediumOfAccess" placeholder="Medium of Access (Severity)">
+                    </div>
+                  </div>  
+                  
+                  <div class="form-group row mt-2">
+                    <label for="mobile-phones" class="col-sm-2 col-form-label">Mobile Phones</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="mobile-phones" placeholder="Mobile Phones">
+                    </div>
+                  </div> 
+                  
+                  <div class="form-group row mt-2">
+                    <label for="laptops" class="col-sm-2 col-form-label">Laptops</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="laptops" placeholder="Laptops">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="camera" class="col-sm-2 col-form-label">Camera</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="camera" placeholder="Camera">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="voice-recorders" class="col-sm-2 col-form-label">Voice Recorders</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="voice-recorders" placeholder="Voice Recorders">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="printers" class="col-sm-2 col-form-label">Printers</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="printers" placeholder="Printers">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="others" class="col-sm-2 col-form-label">Others</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="others" placeholder="Others - memory cards, portable HDD, pen drives">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="textData" class="col-sm-2 col-form-label">Text Data</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="textData" placeholder="Text Data - Key notes, MS Office, PDF readers, Panda doc, G doc">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="media" class="col-sm-2 col-form-label">Media (Audio / Video) data</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="media" placeholder="Media data - G Drive, Physical Storage(Imovie, cameras, other editing tools)">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="chatData" class="col-sm-2 col-form-label">Chat Data</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="chatData" placeholder="Chat data - Skype, Hangout, Samepage, Zoom, Whatsapp">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="Images" class="col-sm-2 col-form-label">Images</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="Images" placeholder="Images - Phone Gallery, Camera memory, Whatsapp">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group row mt-2">
+                    <label for="operating-rules" class="col-sm-2 col-form-label">Operating Rules</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="operating-rules" placeholder="Operating Rules">
+                    </div>
+                  </div> 
+
+                  <div class="form-group row mt-2">
+                    <label for="legal" class="col-sm-2 col-form-label">Legal Binding</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="legal" placeholder="Legal Binding">
+                    </div>
+                  </div> 
+
+<div class="form-group mt-4 text-center mb-5">
+    <button type="button" class="btn btn-primary btn-lg">Submit</button>
+<button type="button" class="btn btn-secondary btn-lg">Cancel</button>
+</div>
+                  
+              </form>
+        </div>
+      </div>
+    </div>
+
+                {% endblock %}

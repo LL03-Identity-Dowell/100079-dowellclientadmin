@@ -12,7 +12,7 @@
         <div class="col-sm-12 col-lg-6">
             <div class="mt-3">
                 
-         <a href="{% url 'get_company' %}?session_id={{session_id}}">  <button type="button" id="viewCompany" class="btn ml-2 btn-lg card_bg text-white">Back</button>
+         <a href="{% url 'get_company' %}?session_id={{session_id}}">  <button type="button" id="viewCompany" class="btn ml-2 btn-lg card_bg text-white">Back</button></a>
             </div>
         </div>
         <div class="col-sm-12 col-lg-6">
@@ -44,7 +44,35 @@
 
                         <div class="form-group mt-3">
                             <label for="addCompany" class="form-label">Brand Name</label>
-                          <input type="text" class="form-control" id="addCompany" aria-describedby="company" placeholder="Company">
+                          <input type="text" class="form-control" id="addCompany" name="addCompany" aria-describedby="company" placeholder="Company">
+                        </div>
+
+                                       <div class="form-group mt-3">
+                          <label class="form-label">Select Dowell Layer</label><br/>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="layer1" name="layers" value="layer1" onClick="ckChange(this)">
+                            <label class="form-check-label" for="layer1">Layer 1</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="layer2" name="layers" value="layer2" onClick="ckChange(this)">
+                            <label class="form-check-label" for="layer2">Layer 2</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="layer3" name="layers" value="layer3" onClick="ckChange(this)">
+                            <label class="form-check-label" for="layer3">Layer 3</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="layer4" name="layers" value="layer4" onClick="ckChange(this)">
+                            <label class="form-check-label" for="layer4">Layer 4</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="layer5" name="layers" value="layer5" onClick="ckChange(this)">
+                            <label class="form-check-label" for="layer5">Layer 5</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="layer6" name="layers" value="layer6" onClick="ckChange(this)">
+                            <label class="form-check-label" for="layer6">Layer 6</label>
+                          </div> 
                         </div>
 
                         <button type="submit" class="btn card_bg text-white ms-auto mt-2">Add</button>
@@ -80,5 +108,29 @@ if (company==null || company==""){
 }  
      
     </script>
+
+        <script>
+function ckChange(ckType){
+    var ckName = document.getElementsByName(ckType.name);
+    var checked = document.getElementById(ckType.id);
+
+    if (checked.checked) {
+      for(var i=0; i < ckName.length; i++){
+
+          if(!ckName[i].checked){
+              ckName[i].disabled = true;
+          }else{
+              ckName[i].disabled = false;
+          }
+      } 
+    }
+    else {
+      for(var i=0; i < ckName.length; i++){
+        ckName[i].disabled = false;
+      } 
+    }    
+}
+</script>
+
 
                              {% endblock %}

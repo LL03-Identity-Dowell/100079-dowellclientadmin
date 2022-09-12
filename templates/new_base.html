@@ -86,7 +86,11 @@
 
                       </ul>
                     </li>
+
                   </ul>
+
+                  <a href="/add_layers/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Layers</span> </a> 
+
                 </div> 
         </nav> 
 
@@ -128,6 +132,29 @@
    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+function ckChange(ckType){
+    var ckName = document.getElementsByName(ckType.name);
+    var checked = document.getElementById(ckType.id);
+
+    if (checked.checked) {
+      for(var i=0; i < ckName.length; i++){
+
+          if(!ckName[i].checked){
+              ckName[i].disabled = true;
+          }else{
+              ckName[i].disabled = false;
+          }
+      } 
+    }
+    else {
+      for(var i=0; i < ckName.length; i++){
+        ckName[i].disabled = false;
+      } 
+    }    
+}
+</script>
 
     {% if messages %}
   <script>

@@ -1,7 +1,7 @@
 from pkgutil import get_data
 from django.urls import path,re_path
 from . import views
-from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device
+from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_layers, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device
 from django.contrib.auth.views import LoginView, LogoutView
 
 
@@ -51,6 +51,7 @@ re_path(r'^display_process/$', display_process, name='display_process'),
 re_path(r'^add_youtube_playlist/$', add_youtube_playlist, name='add_youtube_playlist'),
 re_path(r'^display_youtube_playlist/$', display_youtube_playlist, name='display_youtube_playlist'),
 re_path(r'^rights/$', add_rights, name='add_rights'),
+re_path(r'^add_layers/$', add_layers, name='add_layers'),
 re_path(r'^access_denied/$', access_denied, name='access_denied'),
 
 
