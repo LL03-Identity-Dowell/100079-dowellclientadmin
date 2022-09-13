@@ -1488,8 +1488,8 @@ def add_department(request):
                 messages.error(request, "No Organisations Assigned")
                 return HttpResponseRedirect('/add_department/?session_id='+session_id) 
 
-            if len(request.POST.get('department_name')) < 4:
-                messages.error(request, "Please Enter 4 or More Characters ")
+            if len(request.POST.get('department_name')) < 2:
+                messages.error(request, "Please Enter 2 or More Characters ")
                 return HttpResponseRedirect('/add_department/?session_id='+session_id) 
 
             organisation = int(request.POST.get('orgName'))
@@ -1727,10 +1727,11 @@ def assign_roles(request):
         role = request.POST.get('addRole')
         roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
         r = json.loads(roles)
-        # result = r['data']
-        role_length = 100
+        result = r['data']
+        role_length = len(result) + 100
+        print(role_length)
         field_add = {"id": role_length+1,"role": role }
-        add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
+        # add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
         messages.success(request, "Role Successfully Added" )
         return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
@@ -1739,10 +1740,10 @@ def assign_roles(request):
         designation = request.POST.get('addDesignation')
         designations = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","fetch",field,"nil")
         r = json.loads(designations)
-        # result = r['data']
-        designation_length = 1000
+        result = r['data']
+        designation_length = len(result) + 1000
         field_add = {"id": designation_length+1,"designation": designation }
-        add = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","insert",field_add,"nil")
+        # add = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","insert",field_add,"nil")
         messages.success(request, "Designation Successfully Added" )
         return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
@@ -1756,13 +1757,15 @@ def assign_roles(request):
         print(selected_users)
         user_id = int(data['users'])    
         role = data['roles']
+        datatype = data['data_type']
         category = data['category']
         role_String = f'{role}@{category}'
         for user in selected_users:           
             user_id = int(user)
             update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
             update_data={
-            "role": role_String
+            "role": role_String,
+            "datatype": datatype
                 }
             response=s.put(update_url,data=update_data)
         response= json.loads(response.text)
