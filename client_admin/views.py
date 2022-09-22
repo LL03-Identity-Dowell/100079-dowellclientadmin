@@ -76,7 +76,7 @@ def loginuser(request):
             return HttpResponseRedirect('/home/') 
         messages.success(request, "Sorry Login Failed. Try Again") 
         return HttpResponseRedirect('/login/')
-
+ 
 
 
         return JsonResponse(p, safe=False)
@@ -526,8 +526,8 @@ def add_organisation(request):
                 messages.error(request, "No Companies Assigned")
                 return HttpResponseRedirect('/add_organisation/?session_id='+session_id) 
 
-            if len(request.POST.get('org_name')) < 4:
-                messages.error(request, "Please Enter 4 or More Characters ")
+            if len(request.POST.get('org_name')) < 2:
+                messages.error(request, "Please Enter 2 or More Characters ")
                 return HttpResponseRedirect('/add_organisation/?session_id='+session_id) 
 
             company = int(request.POST.get('companyName'))

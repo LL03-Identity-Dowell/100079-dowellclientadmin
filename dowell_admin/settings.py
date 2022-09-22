@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'client_admin',
     'bootstrap5',
     'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

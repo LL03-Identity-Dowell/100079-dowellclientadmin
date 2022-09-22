@@ -24,7 +24,16 @@ def loginrequired(view_func):
             return redirect('loginuser')
         return view_func(request, *args, **kwargs)
     return wrapper_func
+    
 
+# def api(view_func):
+#     def wrapper_func(request, *args, **kwargs):
+#         username = request.session.get('username')
+#         # jwt = request.session.get('jwt_value')
+#         if username is None:
+#             return redirect('loginuser')
+#         return view_func(request, *args, **kwargs)
+#     return wrapper_func
 
 def authenticationrequired(view_func):
     def wrapper_func(request, *args, **kwargs):

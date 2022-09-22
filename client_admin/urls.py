@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
 # path('register', registeruser , name='registeruser'),
 path('login/', loginuser , name='loginuser'),
+
 path('', index , name='index'),
 re_path(r'^register/$', registeruser, name='registeruser'),
 re_path(r'^home/$', home, name='home'),

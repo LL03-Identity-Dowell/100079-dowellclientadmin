@@ -1,121 +1,207 @@
+{% extends 'network/index.html' %}
 
+{% load static %}
 
-
-{% extends "new_base.html" %}
-
- {% load static %}
-
-
-{% block content %}
-    <div class="container" style="margin-top: 64px;">
-      <div class="row">
-        <div class="col-sm-12 col-lg-6">
-            <div class="mt-3">
-                
-          <button type="button" id="viewUser" class="btn ml-2 btn-lg card_bg text-white">Back</button>
-            </div>
-        </div>
-        <div class="col-sm-12 col-lg-6">
-          <div class="input-group mt-3 float-right" style="float: right !important; width:66%">
-            <div class="form-outline ">
-              <input type="search" id="form1" class="form-control" placeholder="Search anything"/>
-            </div>
-            <button type="button" class="btn btn-primary">
-              <i class="bx bx-search"></i>
-
-            </button>
-          </div>
-        </div>
-      </div>
-
-<div class="row" style="border: thin solid black">
-    <div class="row container ms-auto me-auto mt-3">
-      <div class="row">
-        <div class="col-sm-5"></div>
-        <div class="col-sm-2" style="text-align: center;">
-
-                    <img src="http://100014.pythonanywhere.com/{{current_user.profile_image}}" style="width:200px; border-radius:50%" >
-
-         
-          {% comment %} <span class="dot"> 
-            <i class="bx bx-camera bx-md" style="position: relative; top: 20px;"></i>            
-            <label for="upload-photo" class="upfont">Profile Photo</label>
-            <input type="file" name="photo" id="upload-photo" />
-          </span> {% endcomment %}
-          <h4>{{current_user.username}}</h4>
-          <h6>{{current_user.role}}</h6>
-        </div>
-        <div class="col-sm-5"></div>
-
-      </div>
-
-        <div class="form-row" style="display: flex; margin-left: 114px;">
-          <div class="form-group col-md-6 d-flex">
-            <label for="Email" class="col-sm-3  col-form-label">Email:</label>
-            <div class="col-sm-6">
-            {{current_user.email}}
-              {% comment %} <input type="email" class="form-control input_box" id="Email"> {% endcomment %}
-            </div>
-          </div>
-
-        </div>
-
-        <div class="form-row mt-4" style="display: flex; margin-left: 114px;">
-          <div class="form-group col-md-6 d-flex">
-            <label for="firstname" class="col-sm-3  col-form-label">First Name:</label>
-            <div class="col-sm-6">
-              {% comment %} <input type="text" class="form-control input_box" id="firstname"> {% endcomment %}
-                          {{current_user.first_name}}
-
-            </div>
-          </div>
-          <div class="form-group col-md-6 d-flex">
-            <label for="lastname" class="col-sm-3 col-form-label">Last Name:</label>
-            <div class="col-sm-6">
-                                      {{current_user.last_name}}
-
-              {% comment %} <input type="text" class="form-control input_box" id="lastname"> {% endcomment %}
-            </div>
-          </div>
-        </div>
-       
-
-        <div class="form-row mt-4" style="display: flex; margin-left: 114px;">
-          <div class="form-group col-md-6 d-flex">
-            <!-- <label for="phone" class="col-sm-3  col-form-label">Phone:</label>
-            <div class="col-sm-6">
-              <input type="number" class="form-control input_box" id="phone">
-            </div> -->
-
-           <label for="phone" class="col-sm-3  col-form-label">Phone:</label>
-   {% comment %} <input id="phone" type="tel" class="form-control input_box" name="phone" /> {% endcomment %}
-                             {{current_user.phone}}
-
-   <!-- <input type="submit" class="btn" value="Verify" /> -->
-          </div>
-          <div class="form-group col-md-6 d-flex">
-            <label for="teamcode" class="col-sm-3 col-form-label">Team Code:</label>
-            <div class="col-sm-6">
-                                      {{current_user.teamcode}}
-
-              {% comment %} <input type="number" class="form-control input_box" id="teamcode"> {% endcomment %}
-            </div>
-          </div>
-        </div>
-
-        <div class="form-row mt-4" style="display: flex; margin-left: 114px;">
-          <div class="form-group col-md-6 d-flex">
-            <div class="col-sm-6">
-          </div>
-          </div>
-    
-        </div>
-
-        
-      <div class="alert alert-info" style="display: none;"></div>
-
+{% block profile %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">
+      ×
+      </button>
+      <strong>{{message}}</strong>
     </div>
+ {% endfor %}
+{% endif %}
+
+<div class="container">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="account-settings">
+			<div class="user-profile">
+				<div class="user-avatar">
+					<img class="profile-image" src="/media/{{username.profile_pic}}" alt="Maxwell Admin" height="160px" width="160px">
+				</div>
+				<h5 class="user-name">@{{user.username}}</h5>
+				
+				{% comment %} <h6 class="user-email">{{user.email}}</h6> {% endcomment %}
+			</div>
+			{% comment %} <div class="about">
+				<h5>About</h5>
+				<p>{{user.bio}}</p>
+			</div> {% endcomment %}
+
+		</div>									
+		<button name="submit" class="btn btn-primary">Add Pets</button>
+
+	</div>
+
 </div>
+</div>
+<div id = "editProfile"class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+        				<form  method="post" id="update-form" style="width: 100%;margin-bottom: 5vh;"  enctype="multipart/form-data">
+						{% csrf_token %}
+
+<div class="card h-100">
+	<div class="card-body">
+
+		<div class="row gutters">
+						{% comment %} <h6 class="mb-2 text-primary">Edit Profile</h6> {% endcomment %}
+
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mb-2 text-primary">Personal Details</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+
+
+				<div class="form-group">
+					<label for="firstName">First Name</label>
+					<input type="text" class="form-control" id="firstName" name="firstName" placeholder="Enter First Name" value="{{user.first_name}}">
+				</div>
+			</div>
+
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="lastName">Last Name</label>
+					<input type="text" class="form-control" id="firstName" name="lastName" placeholder="Enter Last Name" value="{{user.last_name}}">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="eMail">Email</label>
+					<input type="email" class="form-control" id="eMail" name="eMail"  placeholder="Enter email ID" value="{{user.email}}">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="phone">Phone</label>
+					<input type="text" class="form-control" id="phone" placeholder="Enter phone number">
+				</div>
+			</div>
+
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="profile">Profile Pic</label>
+		 <input type="file" name="profile" class="form-control" id="profile" accept="image/jpeg,image/png,image/webp,image/gif" data-focusable="true" aria-describedby="inputGroupFileAddon01">
+				</div>
+			</div>
+
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="profile">Cover Pic</label>
+		 <input type="file" name="cover" class="form-control" id="cover" accept="image/jpeg,image/png,image/webp,image/gif" data-focusable="true" aria-describedby="inputGroupFileAddon01">
+				</div>
+			</div>
+			
+
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="profile">Say Something about your Pet</label>
+		 <textarea class="form-control" id="bio"  name= "bio" >{{user.bio}} </textarea>
+				</div>
+			</div>
+
+		</div>
+
+
+
+
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mt-3 mb-2 text-primary">Address</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="Street">Street</label>
+					<input type="name" class="form-control" id="Street" placeholder="Enter Street">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="ciTy">City</label>
+					<input type="name" class="form-control" id="ciTy" placeholder="Enter City">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="sTate">State</label>
+					<input type="text" class="form-control" id="sTate" placeholder="Enter State">
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="zIp">Zip Code</label>
+					<input type="text" class="form-control" id="zIp" placeholder="Zip Code">
+				</div>
+			</div>
+		</div>
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<div class="text-right">
+					<button type="submit" id="submit" name="submit" class="btn btn-primary">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+</div>
+    
+<div id ="addPets">
+    
+    
+     <form id="regForm" action="">
+
+<h1>Add Pets:</h1>
+
+<!-- One "tab" for each step in the form: -->
+<div class="tab">Name:
+  <p><input placeholder="First name..." oninput="this.className = ''"></p>
+  <p><input placeholder="Last name..." oninput="this.className = ''"></p>
 </div>
 
-           {% endblock %}
+<div class="tab">Contact Info:
+  <p><input placeholder="E-mail..." oninput="this.className = ''"></p>
+  <p><input placeholder="Phone..." oninput="this.className = ''"></p>
+</div>
+
+<div class="tab">Birthday:
+  <p><input placeholder="dd" oninput="this.className = ''"></p>
+  <p><input placeholder="mm" oninput="this.className = ''"></p>
+  <p><input placeholder="yyyy" oninput="this.className = ''"></p>
+</div>
+
+<div class="tab">Login Info:
+  <p><input placeholder="Username..." oninput="this.className = ''"></p>
+  <p><input placeholder="Password..." oninput="this.className = ''"></p>
+</div>
+
+<div style="overflow:auto;">
+  <div style="float:right;">
+    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+  </div>
+</div>
+
+<!-- Circles which indicates the steps of the form: -->
+<div style="text-align:center;margin-top:40px;">
+  <span class="step"></span>
+  <span class="step"></span>
+  <span class="step"></span>
+  <span class="step"></span>
+</div>
+
+</form> 
+    </div>    
+    
+    
+    
+</div>
+</div>
+    <div class="space"></div>
+
+
+{% endblock %}
+
