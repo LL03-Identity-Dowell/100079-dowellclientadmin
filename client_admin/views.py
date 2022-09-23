@@ -314,6 +314,7 @@ def get_organisation_lead(request):
 
 #     return render(request, 'index.html',{'users':users})
 
+@authenticationrequired
 def index(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
@@ -1018,12 +1019,6 @@ def get_company(request):
     # # print(result)
     # context = {"company":result,"session_id":session_id}
 
-    url = 'https://100014.pythonanywhere.com/api/listusers/'
-    data={"pwd":"d0wellre$tp@$$"}
-    s = requests.session()
-    p = s.post(url, data=data)
-    r = p.text
-    print()
     field = {}
     session_id = request.session.get('session_id')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
@@ -1034,7 +1029,6 @@ def get_company(request):
     try:
         if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
             result = companies['data']    
-            print(current_user["role"])
         elif 'company_lead@' in current_user['role']:
             print(current_user["role"])
             user_company = current_user['role'].split("@",1)[1]
@@ -1046,7 +1040,7 @@ def get_company(request):
                         pass
     
     except :
-        return HttpResponse('No suitable role to access the page.')
+        pass
     
     request.session['company_number'] = len(result)
  
