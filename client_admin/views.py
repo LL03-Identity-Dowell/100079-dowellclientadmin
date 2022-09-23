@@ -314,7 +314,6 @@ def get_organisation_lead(request):
 
 #     return render(request, 'index.html',{'users':users})
 
-@authenticationrequired
 def index(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
@@ -449,7 +448,7 @@ def edit_user(request):
     return render(request, 'edit_user.html',context)
 
 
-@authenticationrequired
+# @authenticationrequired
 def add_organisation(request):
     field = {}
     session_id = request.session.get('session_id')
@@ -564,7 +563,7 @@ def add_organisation(request):
 
 
 
-@authenticationrequired
+# @authenticationrequired
 def edit_organisation(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -639,7 +638,7 @@ def edit_organisation(request):
     return render(request, 'new_edit_organisation.html',context)
 
 
-@authenticationrequired
+# @authenticationrequired
 def edit_department(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -734,7 +733,7 @@ def edit_department(request):
     return render(request, 'new_edit_department.html',context)
 
 
-@authenticationrequired
+# @authenticationrequired
 def edit_project(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -842,7 +841,7 @@ def edit_project(request):
 
     return render(request, 'new_edit_project.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def add_company(request):
     session_id = request.session.get('session_id')
 
@@ -913,7 +912,7 @@ def add_company(request):
 
     return render(request, 'new_add_company.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def edit_company(request):
     current_user = request.session.get('current_user')
     access_granted = 0
@@ -996,7 +995,7 @@ def edit_company(request):
 
 #     return render(request, 'add_company.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_company(request):
     # field= {}
     # session_id = request.session.get('session_id')
@@ -1035,7 +1034,7 @@ def get_company(request):
     context = {'session_id':session_id,'company':result}
     return render(request, 'new_display_company.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_organisation(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -1168,7 +1167,7 @@ def get_organisation(request):
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_organisation.html', context)
 
-@authenticationrequired
+# @authenticationrequired
 def get_department(request):
     field= {}
     union =[]
@@ -1412,7 +1411,7 @@ def get_project(request):
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_project.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def add_department(request):
     field = {}
     session_id = request.session.get('session_id')
@@ -1513,7 +1512,7 @@ def add_department(request):
 
     return render(request, 'new_add_department.html',context)
 
-@authenticationrequired
+# @authenticationrequired
 def add_project(request):
     field = {}
     session_id = request.session.get('session_id')
@@ -1715,6 +1714,7 @@ def assign_roles(request):
     roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
     roles = json.loads(roles)
     roles_list = roles['data']
+    print(roles)
     designations = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","fetch",field1,"nil")
     designations = json.loads(designations)
     designations_list = designations['data']
@@ -1731,7 +1731,7 @@ def assign_roles(request):
         role_length = len(result) + 100
         print(role_length)
         field_add = {"id": role_length+1,"role": role }
-        # add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
+        add = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","insert",field_add,"nil")
         messages.success(request, "Role Successfully Added" )
         return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
@@ -1743,7 +1743,7 @@ def assign_roles(request):
         result = r['data']
         designation_length = len(result) + 1000
         field_add = {"id": designation_length+1,"designation": designation }
-        # add = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","insert",field_add,"nil")
+        add = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","insert",field_add,"nil")
         messages.success(request, "Designation Successfully Added" )
         return HttpResponseRedirect('/assign_roles/?session_id='+session_id) 
 
@@ -2447,3 +2447,36 @@ def access_denied(request):
     context = {'session_id':session_id}
 
     return render(request,'access_denied.html',context)
+
+
+def invite(request):
+    session_id = request.session.get('session_id')
+    field = {}
+    field1 = {}
+    url = 'https://100014.pythonanywhere.com/api/listusers/'
+    data={"pwd":"d0wellre$tp@$$"}
+
+    s = requests.session()
+    p = s.post(url, data=data)
+    r = p.text
+    r = json.loads(r)
+    users = r
+    context = {'users':users,'session_id':session_id}
+    flag = True
+    if request.method == "POST":
+        user_id = int(request.POST.get('users'))
+        email = request.POST.get('eMail')
+        print(email)
+        for user in users:
+            if user["email"] == email:
+                print(user["email"])
+                flag = False
+
+        if flag == False:
+            messages.error(request, 'Email Not Found' )
+        elif flag == True:
+            messages.success(request, 'Email Found' )  
+
+
+
+    return render(request,'invite.html',context)
