@@ -928,7 +928,7 @@ def add_company(request):
 @authenticationrequired
 def edit_company(request):
     current_user = request.session.get('current_user')
-    access_granted = 0
+    access_granted = 1
     try:
         if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
             # result = organisations['data']   
