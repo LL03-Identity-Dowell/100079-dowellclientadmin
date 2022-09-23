@@ -448,7 +448,7 @@ def edit_user(request):
     return render(request, 'edit_user.html',context)
 
 
-# @authenticationrequired
+@authenticationrequired
 def add_organisation(request):
     field = {}
     session_id = request.session.get('session_id')
@@ -563,7 +563,7 @@ def add_organisation(request):
 
 
 
-# @authenticationrequired
+@authenticationrequired
 def edit_organisation(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -638,7 +638,7 @@ def edit_organisation(request):
     return render(request, 'new_edit_organisation.html',context)
 
 
-# @authenticationrequired
+@authenticationrequired
 def edit_department(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -733,7 +733,7 @@ def edit_department(request):
     return render(request, 'new_edit_department.html',context)
 
 
-# @authenticationrequired
+@authenticationrequired
 def edit_project(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -841,16 +841,20 @@ def edit_project(request):
 
     return render(request, 'new_edit_project.html',context)
 
-# @authenticationrequired
+
+
+
+@authenticationrequired
 def add_company(request):
     session_id = request.session.get('session_id')
 
-    access_granted = 0
+    access_granted = 1
   
 
 
     result = []
     current_user = request.session.get('current_user')
+    user_id = current_user["id"]
     try:
         if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
             # result = organisations['data']   
@@ -899,6 +903,14 @@ def add_company(request):
             new_company_length = len(result1)
             if new_company_length == company_length + 1:
                 messages.success(request, "Company Successfully added with Company  Name : "+company )
+                s = requests.session()
+                update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
+                update_data={
+                "role": "company_lead@"+company,
+                    }
+                response=s.put(update_url,data=update_data)
+
+
             else:
                 messages.error(request, "Problem Adding Company")
                 return HttpResponseRedirect('/add_company/?session_id='+session_id) 
@@ -912,7 +924,7 @@ def add_company(request):
 
     return render(request, 'new_add_company.html',context)
 
-# @authenticationrequired
+@authenticationrequired
 def edit_company(request):
     current_user = request.session.get('current_user')
     access_granted = 0
@@ -995,7 +1007,7 @@ def edit_company(request):
 
 #     return render(request, 'add_company.html',context)
 
-# @authenticationrequired
+@authenticationrequired
 def get_company(request):
     # field= {}
     # session_id = request.session.get('session_id')
@@ -1006,18 +1018,25 @@ def get_company(request):
     # # print(result)
     # context = {"company":result,"session_id":session_id}
 
-
+    url = 'https://100014.pythonanywhere.com/api/listusers/'
+    data={"pwd":"d0wellre$tp@$$"}
+    s = requests.session()
+    p = s.post(url, data=data)
+    r = p.text
+    print()
     field = {}
     session_id = request.session.get('session_id')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
-    print(companies)
     result = []
     current_user = request.session.get('current_user')
+
     try:
         if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
             result = companies['data']    
+            print(current_user["role"])
         elif 'company_lead@' in current_user['role']:
+            print(current_user["role"])
             user_company = current_user['role'].split("@",1)[1]
             for company in companies['data']:
                 for k,v in company.items():
@@ -1034,7 +1053,7 @@ def get_company(request):
     context = {'session_id':session_id,'company':result}
     return render(request, 'new_display_company.html',context)
 
-# @authenticationrequired
+@authenticationrequired
 def get_organisation(request):
     field= {}
     session_id = request.session.get('session_id')
@@ -1167,7 +1186,7 @@ def get_organisation(request):
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_organisation.html', context)
 
-# @authenticationrequired
+@authenticationrequired
 def get_department(request):
     field= {}
     union =[]
@@ -1274,7 +1293,7 @@ def get_department(request):
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_department.html',context)
 
-# @authenticationrequired
+@authenticationrequired
 def get_project(request):
     field= {}
     union =[]
@@ -1411,7 +1430,7 @@ def get_project(request):
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_project.html',context)
 
-# @authenticationrequired
+@authenticationrequired
 def add_department(request):
     field = {}
     session_id = request.session.get('session_id')
@@ -1512,7 +1531,7 @@ def add_department(request):
 
     return render(request, 'new_add_department.html',context)
 
-# @authenticationrequired
+@authenticationrequired
 def add_project(request):
     field = {}
     session_id = request.session.get('session_id')

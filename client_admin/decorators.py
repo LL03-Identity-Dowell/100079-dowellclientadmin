@@ -52,8 +52,8 @@ def authenticationrequired(view_func):
             users = users.text
             request.session['current_user'] = user
             # print(users)
-            if user['role'] == 'User':
-                return HttpResponse("Your Role Does Not Have Permission To Access Admin Panel. Please Login with Authorized Credentials <a href ='https://100014.pythonanywhere.com/'> Here </a>")
+            # if user['role'] == 'User':
+            #     return HttpResponse("Your Role Does Not Have Permission To Access Admin Panel. Please Login with Authorized Credentials <a href ='https://100014.pythonanywhere.com/'> Here </a>")
         except ValueError:
             return HttpResponseRedirect("https://100014.pythonanywhere.com/")
         return view_func(request, *args, **kwargs)

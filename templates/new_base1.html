@@ -56,6 +56,41 @@
             <div> <a href="/?session_id={{session_id}}" class="nav_logo"> <i class='bx bx-user nav_logo-icon'></i> <span class="nav_logo-name">Admin Panel</span> </a>
                 <div class="nav_list"> 
                   <a href="/display_company/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-building-house nav_icon'></i> <span class="nav_name">Brands[ {{ company_number}} ]</span> </a> 
+                  <a href="/display_organisation/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-sitemap nav_icon'></i> <span class="nav_name">Organizations [ {{ organisation_number }} ]</span> </a> 
+                  <a href="/display_department/?session_id={{session_id}}" class="nav_link active"> <i class='bx bx-home nav_icon'></i> <span class="nav_name">Departments [ {{ department_number}} ]</span> </a> 
+                  <a href="/display_project/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Projects [ {{ project_number }} ]</span> </a> 
+                   <ul>                  
+                      <li>
+                        <a href="/users/?session_id={{session_id}}" class="nav_link" style="margin-bottom: 0 !important; margin-left: -32px;"> <i class="bx bx-user-circle nav_icon"></i> Users &#9662;</a>
+                        <ul class="dropdown">
+                          <li><a href="#" class="dropdown-item text-white">Organization Lead</a></li>
+                          <li><a href="#" class="dropdown-item text-white">Department Lead</a></li>
+                          <li><a href="#" class="dropdown-item text-white">Project Lead</a></li>
+                          <li><a href="#" class="dropdown-item text-white">Members</a></li>
+                        </ul>
+                      </li>
+                  </ul>
+                  <a href="/assign_roles/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-user-check nav_icon'></i> <span class="nav_name">Assign Roles</span> </a> </div>
+                                    <ul>                  
+
+                    <li>
+                      <a href="{% url 'add_rights'%}?session_id={{session_id}}" class="nav_link" style="margin-bottom: 0 !important; margin-left: -32px;"> <i class="bx bx-lock-open nav_icon"></i> Rights &#9662;</a>
+                      <ul class="dropdown">
+                        <li><a href="{% url 'display_os'%}?session_id={{session_id}}" class="dropdown-item text-white">OS</a></li>
+                        <li><a href="{% url 'display_device'%}?session_id={{session_id}}" class="dropdown-item text-white">Device</a></li>
+                        <li><a href="{% url 'display_location'%}?session_id={{session_id}}" class="dropdown-item text-white">Location</a></li>
+                        <li><a href="{% url 'display_connection'%}?session_id={{session_id}}" class="dropdown-item text-white">Connection</a></li>
+                        <li><a href="{% url 'display_browser'%}?session_id={{session_id}}" class="dropdown-item text-white">Browser</a></li>
+                        <li><a href="{% url 'display_process'%}?session_id={{session_id}}" class="dropdown-item text-white">Processes</a></li>
+                        <li><a href="{% url 'display_youtube_playlist'%}?session_id={{session_id}}" class="dropdown-item text-white">YouTube Playlist</a></li>
+
+                      </ul>
+                    </li>
+
+                  </ul>
+
+                  <a href="/add_layers/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Layers</span> </a> 
+
                   <a href="/invite/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Invite</span> </a> 
 
                 </div> 
