@@ -24,13 +24,11 @@
                 {% csrf_token %}
 
                 <div class="col-12 mt-3">
-                  <label for="user_" class="form-label">User</label>
-                 <select name="users" id="user_" class="users-select form-control"  multiple= "multiple">
-           {% for user in users %}
-           {% if user.role == 'User' %}
+                  <label for="company" class="form-label">Brand</label>
+                 <select name="companies" id="company" class="users-select form-control"  multiple= "multiple">
+           {% for comp in company %}
 
-    <option value="{{ user.id }}">{{ user.username }}</option>
-                  {% endif %}
+    <option value="{{ comp.company }}">{{ comp.company }}</option>
 
         {% endfor %}
                   </select>

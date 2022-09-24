@@ -19,6 +19,7 @@ from .dowellconnection import dowellconnection
 from copy import copy
 from collections import defaultdict
 import re
+from django.core.mail import send_mail
 # from rest_framework.decorators import api_view, schema
 
 
@@ -895,7 +896,7 @@ def add_company(request):
             r = json.loads(r)
             result = r['data']
             company_length = len(result)
-            field_add = {"company": company, "company_id" : company_length+1}
+            field_add = {"owner":current_user["username"],"company": company, "company_id" : company_length+1}
             field_add = {**field_add, **layer_dict}
             add = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","insert",field_add,"nil")
             r1 = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
@@ -1026,18 +1027,23 @@ def get_company(request):
     current_user = request.session.get('current_user')
 
     try:
-        if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
-            result = companies['data']    
-        elif 'company_lead@' in current_user['role']:
-            print(current_user["role"])
-            user_company = current_user['role'].split("@",1)[1]
-            for company in companies['data']:
-                for k,v in company.items():
-                    if user_company == v:
-                        result.append(company)
-                    else:
-                        pass
-    
+        # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
+        #     result = companies['data']    
+        # if 'company_lead@' in current_user['role']:
+        #     print(current_user["role"])
+        #     user_company = current_user['role'].split("@",1)[1]
+        #     for company in companies['data']:
+        #         for k,v in company.items():
+        #             if user_company == v:
+        #                 result.append(company)
+        #             else:
+        #                 pass
+        for company in companies['data']:
+            for k,v in company.items():
+                if k == 'owner' and v == current_user['username']:
+                    result.append(company)
+                else:
+                    pass
     except :
         pass
     
@@ -2462,8 +2468,20 @@ def access_denied(request):
 
 @authenticationrequired
 def invite(request):
-    session_id = request.session.get('session_id')
     field = {}
+    session_id = request.session.get('session_id')
+    current_user = request.session.get('current_user')
+    companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    companies = json.loads(companies)
+    user_company = current_user['role'].split("@",1)[1]
+    result = []
+    for company in companies['data']:
+        for k,v in company.items():
+            if k == 'owner' and v == current_user['username']:
+                result.append(company)
+            else:
+                pass
+    
     field1 = {}
     url = 'https://100014.pythonanywhere.com/api/listusers/'
     data={"pwd":"d0wellre$tp@$$"}
@@ -2473,21 +2491,32 @@ def invite(request):
     r = p.text
     r = json.loads(r)
     users = r
-    context = {'users':users,'session_id':session_id}
+    context = {'users':users,'session_id':session_id,'company':result}
     flag = False
     if request.method == "POST":
-        user_id = int(request.POST.get('users'))
+        brand = request.POST.getlist('companies')
+        print(brand)
         email = request.POST.get('eMail')
-        print(email)
         for user in users:
             if user["email"] == email:
                 print(user["email"])
                 flag = True
 
-        if flag == False:
-            messages.error(request, 'Email Not Found' )
-        elif flag == True:
-            messages.success(request, 'Email Found' )  
+        # if flag == False:
+        #     messages.error(request, 'Email Not Found' )
+        # elif flag == True:
+        #     messages.success(request, 'Email Found' )  
+        messages.success(request, 'Invitation Sent' )  
+
+        htmlgen = f'You have been invited by {current_user["username"]} for joining his/her brand  {brand}<br> Click on this <a href="https://100014.pythonanywhere.com/?company={brand}&email={email}"> link </a>'
+        # send_mail('Email','jaheer@alfotechindia.com','sending email',email, fail_silently=False, html_message=htmlgen)
+        send_mail(
+            subject='Invitation to Join Brand',
+            message=htmlgen,
+            from_email='',
+            recipient_list=[email],
+            fail_silently=False
+        )
 
 
 
