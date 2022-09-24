@@ -958,7 +958,6 @@ def edit_company(request):
     r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     r = json.loads(r)
     result = r['data']
-    # print(result)
     for r in result:
         if r['company_id'] == c_id:
             company_placeholder = r['company']
@@ -2461,7 +2460,7 @@ def access_denied(request):
 
     return render(request,'access_denied.html',context)
 
-
+@authenticationrequired
 def invite(request):
     session_id = request.session.get('session_id')
     field = {}
@@ -2475,7 +2474,7 @@ def invite(request):
     r = json.loads(r)
     users = r
     context = {'users':users,'session_id':session_id}
-    flag = True
+    flag = False
     if request.method == "POST":
         user_id = int(request.POST.get('users'))
         email = request.POST.get('eMail')
@@ -2483,7 +2482,7 @@ def invite(request):
         for user in users:
             if user["email"] == email:
                 print(user["email"])
-                flag = False
+                flag = True
 
         if flag == False:
             messages.error(request, 'Email Not Found' )
