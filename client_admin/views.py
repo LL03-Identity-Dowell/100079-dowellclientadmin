@@ -898,8 +898,9 @@ def add_company(request):
             r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
             r = json.loads(r)
             result = r['data']
+            members = []
             company_length = len(result)
-            field_add = {"owner":current_user["username"],"company": company, "company_id" : company_length+1}
+            field_add = {"owner":current_user["username"],"company": company, "company_id" : company_length+1,"members":members}
             field_add = {**field_add, **layer_dict}
             add = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","insert",field_add,"nil")
             r1 = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
@@ -2497,7 +2498,7 @@ def invite(request):
     context = {'users':users,'session_id':session_id,'company':result}
     flag = False
     if request.method == "POST":
-        brand = request.POST.getlist('companies')
+        brand = request.POST.get('companies')
         print(brand)
         email = request.POST.get('eMail')
         for user in users:
@@ -2511,15 +2512,15 @@ def invite(request):
         #     messages.success(request, 'Email Found' )  
         messages.success(request, 'Invitation Sent' )  
 
-        htmlgen = f'You have been invited by {current_user["username"]} for joining his/her brand  {brand[0]}<br> Click on this <a href="https://100079.pythonanywhere.com/linklogin/?company={brand[0]}&email={email}"> link </a>'
-        # send_mail('Email','jaheer@alfotechindia.com','sending email',email, fail_silently=False, html_message=htmlgen)
-        send_mail(
-            subject='Invitation to Join Brand',
-            message=htmlgen,
-            from_email='coolguyjazz365@gmail.com',
-            recipient_list=[email],
-            fail_silently=False
-        )
+        # htmlgen = f'You have been invited by {current_user["username"]} for joining his/her brand  {brand}<br> Click on this <a href="https://100079.pythonanywhere.com/linklogin/?company={brand[0]}&email={email}"> link </a>'
+        # # send_mail('Email','jaheer@alfotechindia.com','sending email',email, fail_silently=False, html_message=htmlgen)
+        # send_mail(
+        #     subject='Invitation to Join Brand',
+        #     message=htmlgen,
+        #     from_email='coolguyjazz365@gmail.com',
+        #     recipient_list=[email],
+        #     fail_silently=False
+        # )
 
                 # import html message.html file
         # html_template = 'invitation_email.html'
@@ -2539,7 +2540,7 @@ def invite(request):
                                         <td class="" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #38414a; margin: 0; padding: 20px;"
                                             align="center" bgcolor="#71b6f9" valign="top">
                                             <a href="#" style="font-size:32px;color:#fff;"> Dowell</a> <br>
-                                            <span style="margin-top: 10px;display: block;">Hello, You have been Invited to Join the Brand {{ brand|safe|escape }}.</span>
+                                            <span style="margin-top: 10px;display: block;">Hello, You have been Invited to Join the Brand {{brand}}.</span>
                                         </td>
                                     </tr>
                                     <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
@@ -2558,7 +2559,7 @@ def invite(request):
                                                     </tr>
                                                     <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                                                         <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
-                                                            <a href="https://100079.pythonanywhere.com/linklogin/?company={brand[0]}&email={email}" class="btn-primary" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f1556c; margin: 0; border-color: #f1556c; border-style: solid; border-width: 8px 16px;">
+                                                            <a href="https://100079.pythonanywhere.com/linklogin/?company={{brand}}&email={{email}}" class="btn-primary" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f1556c; margin: 0; border-color: #f1556c; border-style: solid; border-width: 8px 16px;">
                                             Join</a>
                                                         </td>
                                                     </tr>
@@ -2590,6 +2591,8 @@ def invite(request):
             </tbody>
         </table>
         """
+
+        email_body = email_body.replace('{{brand}}',brand).replace('{{email}}',email)
         # html_template = get_template('invitation_email.html')
         # html_message = render_to_string(html_template, { 'context': context, })
         subject='Invitation to Join Brand'
@@ -2598,6 +2601,10 @@ def invite(request):
         message = EmailMessage(subject, email_body, from_email, [to_email])
         message.content_subtype = 'html' # this is required because there is no plain text email message
         message.send()
+
+        # update_field = {"owner":"rahulworkflowai","company": "UXlivinglab", "company_id" : 6}
+        # update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field,update_field)
+
 
     return render(request,'invite.html',context)
 
@@ -2612,18 +2619,37 @@ def linklogin(request):
     r = p.text
     r = json.loads(r)
     users = r
+    members = []
+
+    field = {}
+    companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    companies = json.loads(companies)
+    companies = companies['data']
+    print(companies)
+    for comp in companies:
+        if comp["company"]== brand:
+            current = comp
+            members.append(comp["members"])
     for user in users:
         if user["email"] == email:
             username = user["username"]
             print(user["email"])
             flag = True
 
+
     if flag == False:
         messages.error(request, 'Email Not Found please Sign Up' )
         return HttpResponseRedirect("https://100014.pythonanywhere.com/register?brand="+brand)
         
     elif flag == True:
-        messages.success(request, 'You have been added as brand lead of '+ brand )  
+        field1 = {"company_id":current["company_id"]}
+        members.append(username)    
+        update_field = {"members":members}
+        if not username in members:
+            update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field1,update_field)
+            messages.success(request, 'You have been added as brand member of '+ brand )  
+        else:
+            messages.error(request, 'Member already present in Brand '+ brand ) 
 
 
     context = {'email':email}
