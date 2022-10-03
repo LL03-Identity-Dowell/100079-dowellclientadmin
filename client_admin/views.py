@@ -20,6 +20,9 @@ from copy import copy
 from collections import defaultdict
 import re
 from django.core.mail import send_mail
+from django.template.loader import render_to_string 
+from django.core.mail import EmailMessage
+from django.template.loader import get_template
 # from rest_framework.decorators import api_view, schema
 
 
@@ -1040,7 +1043,7 @@ def get_company(request):
         #                 pass
         for company in companies['data']:
             for k,v in company.items():
-                if k == 'owner' and v == current_user['username']:
+                if k == 'owner' and current_user['username'] in v:
                     result.append(company)
                 else:
                     pass
@@ -2508,16 +2511,121 @@ def invite(request):
         #     messages.success(request, 'Email Found' )  
         messages.success(request, 'Invitation Sent' )  
 
-        htmlgen = f'You have been invited by {current_user["username"]} for joining his/her brand  {brand}<br> Click on this <a href="https://100014.pythonanywhere.com/?company={brand}&email={email}"> link </a>'
+        htmlgen = f'You have been invited by {current_user["username"]} for joining his/her brand  {brand[0]}<br> Click on this <a href="https://100079.pythonanywhere.com/linklogin/?company={brand[0]}&email={email}"> link </a>'
         # send_mail('Email','jaheer@alfotechindia.com','sending email',email, fail_silently=False, html_message=htmlgen)
         send_mail(
             subject='Invitation to Join Brand',
             message=htmlgen,
-            from_email='',
+            from_email='coolguyjazz365@gmail.com',
             recipient_list=[email],
             fail_silently=False
         )
 
+                # import html message.html file
+        # html_template = 'invitation_email.html'
 
+        email_body = """\
+        <table class="body-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;" bgcolor="#f6f6f6">
+            <tbody>
+                <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                    <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+                    <td class="container" width="600" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto;"
+                        valign="top">
+                        <div class="content" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;">
+                            <table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;"
+                                bgcolor="#fff">
+                                <tbody>
+                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                        <td class="" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #38414a; margin: 0; padding: 20px;"
+                                            align="center" bgcolor="#71b6f9" valign="top">
+                                            <a href="#" style="font-size:32px;color:#fff;"> Dowell</a> <br>
+                                            <span style="margin-top: 10px;display: block;">Hello, You have been Invited to Join the Brand {{ brand|safe|escape }}.</span>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                        <td class="content-wrap" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 20px;" valign="top">
+                                            <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                <tbody>
+                                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                                            Please click on the link below to Join the Brand.
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                                            <a href="https://100079.pythonanywhere.com/linklogin/?company={brand[0]}&email={email}" class="btn-primary" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #f1556c; margin: 0; border-color: #f1556c; border-style: solid; border-width: 8px 16px;">
+                                            Join</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                                        <td class="content-block" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+                                                            Thanks for choosing <b>Dowell</b> .
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="footer" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
+                                <table width="100%" style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+                                    <tbody>
+                                        <tr style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;" valign="top"></td>
+                </tr>
+            </tbody>
+        </table>
+        """
+        # html_template = get_template('invitation_email.html')
+        # html_message = render_to_string(html_template, { 'context': context, })
+        subject='Invitation to Join Brand'
+        from_email='coolguyjazz365@gmail.com'
+        to_email = email
+        message = EmailMessage(subject, email_body, from_email, [to_email])
+        message.content_subtype = 'html' # this is required because there is no plain text email message
+        message.send()
 
     return render(request,'invite.html',context)
+
+def linklogin(request):
+    email = request.GET.get('email')
+    brand = request.GET.get('company')
+    userurl = 'https://100014.pythonanywhere.com/api/listusers/'
+    data={"pwd":"d0wellre$tp@$$"}
+    flag = False
+    s = requests.session()
+    p = s.post(userurl, data=data)
+    r = p.text
+    r = json.loads(r)
+    users = r
+    for user in users:
+        if user["email"] == email:
+            username = user["username"]
+            print(user["email"])
+            flag = True
+
+    if flag == False:
+        messages.error(request, 'Email Not Found please Sign Up' )
+        return HttpResponseRedirect("https://100014.pythonanywhere.com/register?brand="+brand)
+        
+    elif flag == True:
+        messages.success(request, 'You have been added as brand lead of '+ brand )  
+
+
+    context = {'email':email}
+
+    return render(request,'linklogin.html',context)

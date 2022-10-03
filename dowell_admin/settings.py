@@ -71,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'client_admin.custom_context_processor.username_render',
+                # 'client_admin.custom_context_processor.username_render',
                 'client_admin.custom_context_processor.counter_render',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -145,8 +145,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = '' #sender's email-id
-EMAIL_HOST_PASSWORD = '' #password associated with above email-id
+EMAIL_HOST_USER = 'coolguyjazz365@gmail.com' #sender's email-id
+EMAIL_HOST_PASSWORD = 'kpcekhxmtutftoey' #password associated with above email-id
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
