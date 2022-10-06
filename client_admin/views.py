@@ -859,6 +859,8 @@ def add_company(request):
 
     result = []
     current_user = request.session.get('current_user')
+    username = current_user['username']
+
     user_id = current_user["id"]
     try:
         if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
@@ -881,8 +883,10 @@ def add_company(request):
     except :
         return HttpResponse('No suitable role to access the page.')
 
+    field = {}
 
-
+    t = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field,"nil")
+    print(t)
     if request.method == "POST":
             field= {}
             company = request.POST.get('addCompany')
@@ -907,7 +911,11 @@ def add_company(request):
             r1 = json.loads(r1)
             result1 = r1['data']
             new_company_length = len(result1)
+            
             if new_company_length == company_length + 1:
+                field= {"Username": current_user["username"]}
+                update_field = {"company_id":company_length + 1}
+                update =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
                 messages.success(request, "Company Successfully added with Company  Name : "+company )
                 s = requests.session()
                 update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
@@ -926,7 +934,7 @@ def add_company(request):
     department_number = request.session.get('department_number')
     project_number = request.session.get('project_number')
 
-    context = {'session_id':session_id,'access_granted':access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number}
+    context = {'session_id':session_id,'access_granted':access_granted,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number,"username":username}
 
     return render(request, 'new_add_company.html',context)
 
@@ -1029,6 +1037,7 @@ def get_company(request):
     companies = json.loads(companies)
     result = []
     current_user = request.session.get('current_user')
+    username = current_user['username']
 
     try:
         # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
@@ -1053,7 +1062,7 @@ def get_company(request):
     
     request.session['company_number'] = len(result)
  
-    context = {'session_id':session_id,'company':result}
+    context = {'session_id':session_id,'company':result,"username":username}
     return render(request, 'new_display_company.html',context)
 
 @authenticationrequired
@@ -2473,6 +2482,7 @@ def access_denied(request):
 @authenticationrequired
 def invite(request):
     field = {}
+    username = current_user['username']
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
@@ -2495,7 +2505,7 @@ def invite(request):
     r = p.text
     r = json.loads(r)
     users = r
-    context = {'users':users,'session_id':session_id,'company':result}
+    context = {'users':users,'session_id':session_id,'company':result,"username":username}
     flag = False
     if request.method == "POST":
         brand = request.POST.get('companies')
@@ -2625,7 +2635,7 @@ def linklogin(request):
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
     companies = companies['data']
-    print(companies)
+    # print(companies)
     for comp in companies:
         if comp["company"]== brand:
             current = comp
@@ -2633,7 +2643,7 @@ def linklogin(request):
     for user in users:
         if user["email"] == email:
             username = user["username"]
-            print(user["email"])
+            # print(user["email"])
             flag = True
 
 
@@ -2647,7 +2657,11 @@ def linklogin(request):
         update_field = {"members":members}
         if not username in members:
             update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field1,update_field)
+            field= {"Username": username}
+            update_field = {"Memberof":current["company_id"]}
+            update1 =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
             messages.success(request, 'You have been added as brand member of '+ brand )  
+            
         else:
             messages.error(request, 'Member already present in Brand '+ brand ) 
 
@@ -2655,3 +2669,41 @@ def linklogin(request):
     context = {'email':email}
 
     return render(request,'linklogin.html',context)
+
+
+
+def display_members(request):
+    field = {}
+    session_id = request.session.get('session_id')
+    companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    companies = json.loads(companies)
+    result = []
+    current_user = request.session.get('current_user')
+    print(companies)
+    try:
+        # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
+        #     result = companies['data']    
+        # if 'company_lead@' in current_user['role']:
+        #     print(current_user["role"])
+        #     user_company = current_user['role'].split("@",1)[1]
+        #     for company in companies['data']:
+        #         for k,v in company.items():
+        #             if user_company == v:
+        #                 result.append(company)
+        #             else:
+        #                 pass
+        for company in companies['data']:
+            for k,v in company.items():
+                if k == 'members' and current_user['username'] in v:
+                    result.append(company)
+                else:
+                    pass
+    except :
+        pass
+
+    print(result)
+
+
+    context = {'company':result,"session_id":session_id}
+
+    return render(request,'brand_members.html',context)

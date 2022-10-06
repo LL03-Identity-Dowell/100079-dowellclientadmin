@@ -29,7 +29,7 @@
           <i class='bx bx-user-circle nav_icon bx-md' style="vertical-align: sub"></i> 
           <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle user_btn ml-5 mr-5" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{user_name}}
+              {{username}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" href="{% url 'profile'%}?session_id={{session_id}}"><i class="bx bx-user nav_icon"></i>  Profile</a>
@@ -57,6 +57,7 @@
                 <div class="nav_list"> 
                   <a href="/display_company/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-building-house nav_icon'></i> <span class="nav_name">Brands[ {{ company_number}} ]</span> </a> 
                   <a href="/invite/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Invite</span> </a> 
+                  <a href="/brandmembers/?session_id={{session_id}}" class="nav_link"> <i class='bx bx-book-content nav_icon'></i> <span class="nav_name">Members</span> </a> 
 
                 </div> 
         </nav> 
