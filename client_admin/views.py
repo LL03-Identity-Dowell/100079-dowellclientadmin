@@ -2694,7 +2694,7 @@ def display_members(request):
         #                 pass
         for company in companies['data']:
             for k,v in company.items():
-                if k == 'members' and current_user['username'] in v:
+                if k == 'owner' and current_user['username'] in v:
                     result.append(company)
                 else:
                     pass
