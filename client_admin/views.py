@@ -324,15 +324,15 @@ def index(request):
     current_user = request.session.get('current_user')
     username = current_user['username']
     hit0 =get_company(request)
-    hit = get_organisation(request)
-    hit1 = get_department(request)
-    hit2 = get_project(request)
+    # hit = get_organisation(request)
+    # hit1 = get_department(request)
+    # hit2 = get_project(request)
     context = {'session_id':session_id}
     company_number = request.session.get('company_number')
-    organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
-    project_number = request.session.get('project_number')
-    context = {'session_id':session_id,'company_number':company_number,'organisation_number':organisation_number,"department_number":department_number, "project_number":project_number,"username":username}
+    # organisation_number = request.session.get('organisation_number')
+    # department_number = request.session.get('department_number')
+    # project_number = request.session.get('project_number')
+    context = {'session_id':session_id,'company_number':company_number,"username":username}
 
     return render(request, 'new_base.html',context)
 
@@ -2482,9 +2482,10 @@ def access_denied(request):
 @authenticationrequired
 def invite(request):
     field = {}
+    current_user = request.session.get('current_user')
+    current_user = request.session.get('current_user')
     username = current_user['username']
     session_id = request.session.get('session_id')
-    current_user = request.session.get('current_user')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
     user_company = current_user['role'].split("@",1)[1]
@@ -2679,6 +2680,7 @@ def display_members(request):
     companies = json.loads(companies)
     result = []
     current_user = request.session.get('current_user')
+    username= current_user["username"]
     print(companies)
     try:
         # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
@@ -2704,6 +2706,6 @@ def display_members(request):
     print(result)
 
 
-    context = {'company':result,"session_id":session_id}
+    context = {'company':result,"session_id":session_id,"username":username}
 
     return render(request,'brand_members.html',context)
