@@ -2481,6 +2481,9 @@ def access_denied(request):
 
 @authenticationrequired
 def invite(request):
+    fieldn= {"Username": "Roshan_4004"}
+    update_fieldn = {"Memberof":""}
+    update1 =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",fieldn,update_fieldn)
     field = {}
     current_user = request.session.get('current_user')
     current_user = request.session.get('current_user')
@@ -2510,7 +2513,7 @@ def invite(request):
     flag = False
     if request.method == "POST":
         brand = request.POST.get('companies')
-        print(brand)
+        # print(brand)
         email = request.POST.get('eMail')
         for user in users:
             if user["email"] == email:
@@ -2622,30 +2625,60 @@ def invite(request):
 def linklogin(request):
     email = request.GET.get('email')
     brand = request.GET.get('company')
-    userurl = 'https://100014.pythonanywhere.com/api/listusers/'
+    field={}
+    #Use registration collection
+    userurl = 'https://100014.pythonanywhere.com/api/listusers/' 
     data={"pwd":"d0wellre$tp@$$"}
     flag = False
     s = requests.session()
     p = s.post(userurl, data=data)
     r = p.text
     r = json.loads(r)
-    users = r
-    members = []
 
+    u = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field,"nil")
+    u = json.loads(u)
+    users = u["data"]
+    # users=r
+    members = []
+    current_members= []
+    memberof_current = []
+    memberof = []
     field = {}
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
     companies = companies['data']
-    # print(companies)
     for comp in companies:
         if comp["company"]== brand:
             current = comp
-            members.append(comp["members"])
-    for user in users:
-        if user["email"] == email:
-            username = user["username"]
-            # print(user["email"])
-            flag = True
+            # members.append(comp["members"])
+            for c in comp["members"]:
+                current_members.append(c)
+        else:
+            HttpResponse("No such brand : "+brand)
+    emails = [d['Email'] for d in users if 'Email' in d]
+    username = [d["Username"] for d in users if "Username" in  d and "Email" in d and d["Email"]== email]
+    memberofs = [d['Memberof'] for d in users if 'Memberof' in d and "Email" in d and d["Email"]== email]
+    if username:
+        flag = True
+    for m in memberofs[0]:
+        memberof_current.append(m)
+    # for user in users:
+
+  
+        # if username:
+        #     flag = True
+        # flag = [True if "Username" in  d and "Email" in d and d["Email"]== email for d in users]
+        # flag = [True for d in users if "Username" in  d and "Email" in d and d["Email"]== email]
+        # for m in memberofs:
+        #     memberof_current.append(m)
+        # for e in emails:
+        #     memberofs = [d['Memberof'] for d in users if 'Memberof' in d]
+        #     if e == email:
+        #         # username = user["Username"]
+        #         for m in memberofs:
+        #             memberof_current.append(m)
+        #         # print(user["email"])
+        #         flag = True
 
 
     if flag == False:
@@ -2654,12 +2687,20 @@ def linklogin(request):
         
     elif flag == True:
         field1 = {"company_id":current["company_id"]}
-        members.append(username)    
+
+        for c in current_members:
+            members.append(c)
+        members.append(username[0])
+        print(members)    
+        for n in memberof_current:
+            memberof.append(n)
+        memberof.append(current["company_id"])
         update_field = {"members":members}
-        if not username in members:
+
+        if not username in current_members:
             update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field1,update_field)
-            field= {"Username": username}
-            update_field = {"Memberof":current["company_id"]}
+            field= {"Username": username[0]}
+            update_field = {"Memberof":memberof}
             update1 =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
             messages.success(request, 'You have been added as brand member of '+ brand )  
             
