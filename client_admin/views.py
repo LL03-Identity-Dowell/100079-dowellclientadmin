@@ -23,6 +23,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string 
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 # from rest_framework.decorators import api_view, schema
 
 
@@ -941,6 +943,9 @@ def add_company(request):
 @authenticationrequired
 def edit_company(request):
     current_user = request.session.get('current_user')
+    host = request.META['HTTP_HOST']
+    print(host)
+
     access_granted = 1
     try:
         if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
@@ -967,21 +972,24 @@ def edit_company(request):
     field= {}
     session_id = request.session.get('session_id')
     context = {'session_id':session_id}
-    c_id=int(request.GET.get('company_id',''))
+    c_id=request.GET.get('company_id','')
     r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     r = json.loads(r)
     result = r['data']
     for r in result:
-        if r['company_id'] == c_id:
+        if r['_id'] == c_id:
             company_placeholder = r['company']
 
     # print(c_id)
     if request.method == "POST":
             field= {}
+            logofile = request.FILES.get("company_logo")
+            default_storage.save(logofile.name,logofile)
             company = request.POST.get('addCompany')
-            field = {"company_id": c_id}
-            update_field={"company":company}
+            field = {"_id": c_id}
+            update_field={"company":company,"logo":host+"/media/"+logofile.name}
             update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field,update_field)
+            messages.success(request,"Brand successfully edited.")
             return HttpResponseRedirect('/display_company/?session_id='+session_id)         
 
 
@@ -1038,7 +1046,7 @@ def get_company(request):
     result = []
     current_user = request.session.get('current_user')
     username = current_user['username']
-
+    c_id = []
     try:
         # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
         #     result = companies['data']    
@@ -1055,14 +1063,15 @@ def get_company(request):
             for k,v in company.items():
                 if k == 'owner' and current_user['username'] in v:
                     result.append(company)
+                    c_id.append(company["_id"])
                 else:
                     pass
     except :
         pass
     
     request.session['company_number'] = len(result)
- 
-    context = {'session_id':session_id,'company':result,"username":username}
+    mylist = zip(result,c_id)
+    context = {'session_id':session_id,'company':result,"username":username,"mylist":mylist}
     return render(request, 'new_display_company.html',context)
 
 @authenticationrequired

@@ -38,12 +38,15 @@
                           <div class="card-title">Company</div>
                         </div>
                       </div>
-                 <form class="table_shadow p-3" method="POST">
+                 <form class="table_shadow p-3" method="POST" enctype="multipart/form-data">
                      {% csrf_token %}
 
                    <div class="form-group mt-3">
                        <label for="addCompany" class="form-label">Company Name</label>
                      <input type="text" class="form-control" id="addCompany" name="addCompany" aria-describedby="company" placeholder="Company" value="{{ company_placeholder }}">
+                                            <label for="company_logo" class="form-label">Company Logo</label>
+
+                     <input class="form-control"  type="file" id="company_logo" name="company_logo" />
                    </div>
 
                         {% if messages %}
