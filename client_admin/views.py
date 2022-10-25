@@ -327,12 +327,12 @@ def index(request):
     username = current_user['username']
     hit0 =get_company(request)
     # hit = get_organisation(request)
-    # hit1 = get_department(request)
+    hit1 = n_get_department(request)
     # hit2 = get_project(request)
     context = {'session_id':session_id}
     company_number = request.session.get('company_number')
     # organisation_number = request.session.get('organisation_number')
-    # department_number = request.session.get('department_number')
+    department_number = request.session.get('department_number')
     # project_number = request.session.get('project_number')
     context = {'session_id':session_id,'company_number':company_number,"username":username}
 
@@ -940,6 +940,100 @@ def add_company(request):
 
     return render(request, 'new_add_company.html',context)
 
+
+
+@authenticationrequired
+def n_add_department(request):
+    session_id = request.session.get('session_id')
+    field = {}
+
+    access_granted = 1
+    result = []
+    current_user = request.session.get('current_user')
+    username = current_user['username']
+    companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    companies = json.loads(companies)
+    current_user = request.session.get('current_user')
+    user_id = current_user["id"]
+    c_id = []
+    try:
+        # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
+        #     result = companies['data']    
+        # if 'company_lead@' in current_user['role']:
+        #     print(current_user["role"])
+        #     user_company = current_user['role'].split("@",1)[1]
+        #     for company in companies['data']:
+        #         for k,v in company.items():
+        #             if user_company == v:
+        #                 result.append(company)
+        #             else:
+        #                 pass
+        for company in companies['data']:
+            for k,v in company.items():
+                if k == 'owner' and current_user['username'] in v:
+                    result.append(company)
+                    c_id.append(company["_id"])
+
+                else:
+                    pass
+    except :
+        pass
+
+
+    t = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field,"nil")
+    if request.method == "POST":
+            field= {}
+            department = request.POST.get('department_name')
+            brand = request.POST.get('brand')
+            layer = request.POST.get('layers')
+            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+            # print(layer)
+            if layer:
+                for i in range(1,7):
+                    if str(i) in layer:
+                        layer_dict['layer%s' % i]  = 1
+                        layer = 'layer' +str(i+1)
+                        # layer+ str(i) = 1
+            r = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
+            r = json.loads(r)
+            result = r['data']
+            members = []
+            company_length = len(result)
+            field_add = {"owner":current_user["username"],"department": department,"brand_id":brand}
+            field_add = {**field_add, **layer_dict}
+            add = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","insert",field_add,"nil")
+            r1 = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
+            r1 = json.loads(r1)
+            result1 = r1['data']
+            new_company_length = len(result1)
+            department_data = []
+            d_id = []
+            if new_company_length == company_length + 1:
+                for dept in result1:
+                    for k,v in dept.items():
+                        if k == 'owner' and current_user['username'] in v:
+                            department_data.append(dept)
+                            d_id.append(dept["_id"])
+                        else:
+                            pass
+                field= {"Username": current_user["username"]}
+                update_field = {"dept_id":d_id}
+                update =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
+                messages.success(request, "Department Successfully added with  Name : "+department )
+
+            else:
+                messages.error(request, "Problem Adding Department")
+                return HttpResponseRedirect('/add_department/?session_id='+session_id) 
+
+    mylist = zip(result,c_id)
+
+    department_number = request.session.get('department_number')
+
+    context = {'session_id':session_id,'access_granted':access_granted,"department_number":department_number,"username":username,"brands":result,"mylist":mylist}
+
+    return render(request, 'n_add_department.html',context)
+
+
 @authenticationrequired
 def edit_company(request):
     current_user = request.session.get('current_user')
@@ -992,7 +1086,7 @@ def edit_company(request):
             messages.success(request,"Brand successfully edited.")
             return HttpResponseRedirect('/display_company/?session_id='+session_id)         
 
-
+    
 
     context = {'session_id':session_id,"company_placeholder":company_placeholder,"access_granted":access_granted}
 
@@ -1073,6 +1167,56 @@ def get_company(request):
     mylist = zip(result,c_id)
     context = {'session_id':session_id,'company':result,"username":username,"mylist":mylist}
     return render(request, 'new_display_company.html',context)
+
+
+
+@authenticationrequired
+def n_get_department(request):
+    # field= {}
+    # session_id = request.session.get('session_id')
+    # r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    # r = json.loads(r)
+    # company = r
+    # result = r['data']
+    # # print(result)
+    # context = {"company":result,"session_id":session_id}
+
+    field = {}
+    session_id = request.session.get('session_id')
+    companies = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
+    companies = json.loads(companies)
+    print(companies)
+    result = []
+    current_user = request.session.get('current_user')
+    username = current_user['username']
+    d_id = []
+    try:
+        # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
+        #     result = companies['data']    
+        # if 'company_lead@' in current_user['role']:
+        #     print(current_user["role"])
+        #     user_company = current_user['role'].split("@",1)[1]
+        #     for company in companies['data']:
+        #         for k,v in company.items():
+        #             if user_company == v:
+        #                 result.append(company)
+        #             else:
+        #                 pass
+        for company in companies['data']:
+            for k,v in company.items():
+                if k == 'owner' and current_user['username'] in v:
+                    result.append(company)
+                    d_id.append(company["_id"])
+                else:
+                    pass
+    except :
+        pass
+    
+    request.session['department_number'] = len(result)
+    mylist = zip(result,d_id)
+    context = {'session_id':session_id,'department':result,"username":username,"mylist":mylist}
+    return render(request, 'n_display_department.html',context)
+
 
 @authenticationrequired
 def get_organisation(request):
@@ -1451,6 +1595,60 @@ def get_project(request):
     # context = {"company":result,"session_id":session_id}
     return render(request, 'new_display_project.html',context)
 
+
+
+@authenticationrequired
+def n_get_project(request):
+    current_user = request.session.get('current_user')
+
+    field= {}
+    union =[]
+    session_id = request.session.get('session_id')
+    r = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","fetch",field,"nil")
+    projects = json.loads(r)
+    # projects = projects['data']
+    r1 = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
+    departments = json.loads(r1)
+    co = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    brands = json.loads(co)
+    # result1 = r1['data']
+    d_id = []
+    p_id=[]
+    depts = []
+    projs = []
+    orgs= []
+    result = []
+    result1 = []
+
+
+    for dept in departments['data']:
+        for k,v in dept.items():
+            if k == 'owner' and v == current_user['username']:
+                depts.append(dept)
+                d_id.append(dept["_id"])
+            else:
+                pass
+
+    for proj in projects['data']:
+        for k,v in proj.items():
+            if k == 'owner' and v == current_user['username']:
+                projs.append(proj)
+                p_id.append(proj["_id"])
+            else:
+                pass
+
+    print(projs)
+    # print(result)
+    # projects = result
+    request.session['project_number'] = len(projs)
+    # departments = result1
+
+    context = {"session_id":session_id, "projects":projs,"union":union,"departments":depts}
+    # context = {"company":result,"session_id":session_id}
+    return render(request, 'n_display_project.html',context)
+
+
+
 @authenticationrequired
 def add_department(request):
     field = {}
@@ -1461,9 +1659,8 @@ def add_department(request):
     co = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     co = json.loads(co)
     # result = organisations['data']  
-    access_granted = 0
+    access_granted = 1
   
-
 
     result = []
     orgs = []
@@ -1654,6 +1851,98 @@ def add_project(request):
                 messages.error(request, "Problem Adding Project")
                 return HttpResponseRedirect('/add_project/?session_id='+session_id) 
     return render(request, 'new_add_project.html',context)
+
+
+
+@authenticationrequired
+def n_add_project(request):
+    field = {}
+    current_user = request.session.get('current_user')  
+    session_id = request.session.get('session_id')
+    context = {'session_id':session_id}
+    departments = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
+    departments = json.loads(departments)
+    co = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+    co = json.loads(co)
+    result_dept = []
+    d_id = []
+    d_names= []
+    result_co = []
+    c_id = []
+    c_names =[]
+    has_department = 0
+    for dept in departments['data']:
+        for k,v in dept.items():
+            if k == 'owner' and v == current_user['username']:
+                result_dept.append(dept)
+                d_id.append(dept["_id"])
+                d_names.append(dept["department"])
+            else:
+                pass
+    if len(result_dept) >= 1:
+        has_department = 1
+
+    if has_department == 0 :
+        for c in co['data']:
+            for k,v in c.items():
+                if k == 'owner' and v == current_user['username']:
+                    result_co.append(c)
+                    c_id.append(c["_id"])
+                    c_names.append(c["company"])
+                else:
+                    pass        
+
+
+    departments = zip(result_dept,d_id)
+    brands = zip(result_co,c_id)
+    # result = departments['data']    
+
+
+
+
+    context = {'session_id':session_id,'departments':departments,'brands':brands,"has_department":has_department}
+
+    if request.method == "POST":
+            field= {}
+            project = request.POST.get('project_name')
+            if request.POST.get('brand_name'):
+                company_id,company_name = request.POST.get('brand_name').split('-')
+
+            # print(project)
+
+            if request.POST.get('department_name'):
+                department_id,department_name = request.POST.get('department_name').split('-')
+            layer = request.POST.get('layers')
+            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+            # print(layer)
+            if layer:
+                for i in range(1,7):
+                    if str(i) in layer:
+                        layer_dict['layer%s' % i]  = 1
+                        layer = 'layer' +str(i+1)
+                        # layer+ str(i) = 1
+            r = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","fetch",field,"nil")
+            r = json.loads(r)
+            result = r['data']
+            company_length = len(result)
+            if has_department == 1:
+                field_add = {"owner":current_user["username"],"project": project,"department_id":department_id,"department_name":department_name}
+            elif has_department == 0:
+                field_add = {"owner":current_user["username"],"project": project,"brand_id":company_id,"brand_name":company_name }
+
+            field_add = {**field_add, **layer_dict}
+            add = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","insert",field_add,"nil")
+            r1 = dowellconnection("login","bangalore","login","project","project","1086","ABCDE","fetch",field,"nil")
+            r1 = json.loads(r1)
+            result1 = r1['data']
+            new_company_length = len(result1)
+            if new_company_length == company_length + 1:
+                messages.success(request, "Project Successfully added with  Name : "+project )
+            else:
+                messages.error(request, "Problem Adding Project")
+                return HttpResponseRedirect('/add_project/?session_id='+session_id) 
+    return render(request, 'n_add_project.html',context)
+
 
 
 def get_all_data(request):
@@ -2490,11 +2779,7 @@ def access_denied(request):
 
 @authenticationrequired
 def invite(request):
-    fieldn= {"Username": "Roshan_4004"}
-    update_fieldn = {"Memberof":""}
-    update1 =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",fieldn,update_fieldn)
     field = {}
-    current_user = request.session.get('current_user')
     current_user = request.session.get('current_user')
     username = current_user['username']
     session_id = request.session.get('session_id')

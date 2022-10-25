@@ -1,0 +1,88 @@
+{% extends "new_base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+
+ <div class="container" style="margin-top: 64px;">
+      <div class="row">
+        <div class="col">
+          <a href="{% url 'n_add_project' %}?session_id={{session_id}}"><button type="button" id="viewProj" class="btn btn-lg" style="border: thin solid black"><i type='solid' class='bx bx-plus-circle bx-md' style="vertical-align: sub; margin-right: 15px;"></i>Add Project</button></a>
+        </div>
+        <div class="col">
+          <div class="input-group mt-3" style="float: right; width:66%">
+            <div class="form-outline ">
+              <input type="search" id="form1" class="form-control" placeholder="Search anything"/>
+            </div>
+            <button type="button" class="btn btn-primary">
+              <i class="bx bx-search"></i>
+
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5">
+        <div class="row" style="border: thin solid black">
+          <table class="table table-borderless" style="width: 80%; text-align: center" id="project-table">    
+
+
+
+                                      <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>            
+            <th></th>
+            <th></th>           
+        </tr>
+    </thead>       
+            <tbody>
+
+                              {% for project in projects %}
+                    {% if "department_id" in project %}
+              <tr>
+                <td><b>Project:</b></td>
+                <td>{{ project.project }}</td>
+                <td><b>Department:</b></td>
+                <td>{{ project.department_name }}</td>
+                <td><a href="{% url 'edit_project' %}?project_id={{project.project_id}}&department_id={{project.department_id}}&session_id={{session_id}}"><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></a>
+                 </td><td> <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button>
+              </td>
+              </tr> 
+              {% endif %}
+
+                           {% if "brand_id" in project %}
+              <tr>
+                <td><b>Project:</b></td>
+                <td>{{ project.project }}</td>
+                <td><b>company:</b></td>
+                <td>{{ project.brand_name }}</td>
+                <td><a href="{% url 'edit_project' %}?project_id={{project.project_id}}&department_id={{project.department_id}}&session_id={{session_id}}"><button class="btn btn-sm"><i class="bx bx-edit bx-sm"></i></button></a>
+                 </td><td> <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button>
+              </td>
+              </tr> 
+              {% endif %}
+
+            {% endfor %}
+
+            
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+          $(document).ready( function () {
+    $('#project-table').DataTable();
+} );
+    </script>
+
+
+    {% endblock %}

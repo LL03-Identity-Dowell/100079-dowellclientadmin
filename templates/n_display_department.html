@@ -1,0 +1,51 @@
+{% extends "new_base.html" %}
+
+ {% load static %}
+
+
+{% block content %}
+
+
+ <!--Container Main start-->
+    <div class="container justify-content-center" style="margin-top: 64px;margin-left:150px">
+      <div class="row">
+        <div class="col" >
+       <a href="{% url 'n_add_department' %}?session_id={{session_id}}">  <button type="button" id="addcompany" class="btn btn-lg" style="border: thin solid black"><i type='solid' class='bx bx-plus-circle bx-md' style="vertical-align: sub; margin-right: 15px;"></i>Add Department</button></a>
+        </div>
+        <div class="col">
+          <div class="input-group mt-3" style="float: right; width:66%">
+            <div class="form-outline">
+              <input type="search" id="form1" class="form-control" placeholder="Search anything"/>
+            </div>
+            <button type="button" class="btn btn-primary">
+              <i class="bx bx-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row" style="border: thin solid black">
+          <table class="table table-borderless" style="width: 55%; text-align:end">           
+            <tbody>
+                              {% for i,j in mylist %}
+
+              <tr>
+                <td>{{ i.department }}</td>
+                <td><a href="{% url 'edit_company' %}?company_id={{j}}&session_id={{session_id}}"> <button class="btn btn-sm" ><i class="bx bx-edit bx-sm"></i></button></a>
+                    <button class="btn btn-sm"><i class="bx bx-trash bx-sm"></i></button>
+                </td>
+
+              </tr> 
+                  {% endfor %}
+
+
+              </tr> 
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+
+                         {% endblock %}
