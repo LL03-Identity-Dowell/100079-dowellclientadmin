@@ -69,11 +69,9 @@ Add Designation
                 <div class="col-12 mt-3">
                   <label for="user_" class="form-label">User</label>
                  <select name="users" id="user_" class="users-select"  multiple= "multiple">
-           {% for user in users %}
-           {% if user.role == 'User' %}
+           {% for member in brand_members %}
 
-    <option value="{{ user.id }}">{{ user.username }}</option>
-    {% endif %}
+    <option value="{{ member}}">{{ member }}</option>
 
         {% endfor %}
                   </select>
@@ -85,48 +83,21 @@ Add Designation
 
                  <select name="roles" id="roles_" class="form-control" >
 
-                            {% if access_level == 'Admin' %}
 {% comment %} 
                     <option value="company_lead">Company Lead</option>
                     <option value="organisation_lead">Organisation Lead</option>
                     <option value="department_lead">Department Lead</option>
                     <option value="project_lead">Project Lead</option>
                     <option value="team_member">Team Member</option> {% endcomment %}
-                {% for role in roles_list %}
+                {% comment %} {% for role in roles_list %}
 
                 <option value="{{role.id}}">{{role.role}}</option> 
-                      {% endfor %}
-
-
-                              {% endif %}
-
-
-                            {% if access_level == 'company_lead' %}
-
-                    <option value="organisation_lead">Organisation Lead</option>
-                    <option value="department_lead">Department Lead</option>
-                    <option value="project_lead">Project Lead</option>
-                    <option value="team_member">Team Member</option>
-                              {% endif %}
-                            {% if access_level == 'organisation_lead' %}
+                      {% endfor %} {% endcomment %}
 
 
                     <option value="department_lead">Department Lead</option>
                     <option value="project_lead">Project Lead</option>
                     <option value="team_member">Team Member</option>
-                              {% endif %}                            
-                            
-                            {% if access_level == 'department_lead' %}
-
-
-                    <option value="project_lead">Project Lead</option>
-                    <option value="team_member">Team Member</option>
-                              {% endif %}
-                            {% if access_level == 'project_lead' %}
-
-                    <option value="team_member">Team Member</option>
-                              {% endif %}
-
                   </select>
                 </div>
 
@@ -134,7 +105,7 @@ Add Designation
                 <div class="col-12 mt-3">
                             {% comment %} <a class="btn btn-primary" href = "{% url 'add_roles'%}?session_id={{session_id}}" >  Add Roles </a> {% endcomment %}
 
-                            <button type="button" class="btn btn-secondary btn-add-role" data-toggle="modal"> Add a Role </button>
+                            {% comment %} <button type="button" class="btn btn-secondary btn-add-role" data-toggle="modal"> Add a Role </button> {% endcomment %}
                     <br />
 
   
@@ -215,7 +186,6 @@ Add Designation
 
                                                 {% comment %} {% if access_granted == 0 %} {% endcomment %}
 
-                <h1> Access Denied </h1>
 
                 {% comment %} {% endif %} {% endcomment %}
        <script>
@@ -264,18 +234,17 @@ Add Designation
             $.ajax({
                 type: 'GET',
                 dataType: 'json',
-                url: "{% url 'get_all_data' %}",        
+                url: "{% url 'n_get_all_data' %}",        
                 beforeSend :function(){
                     $("#loadingMask").css('visibility', 'visible');
                 },
                 success: function (result) {
                   $("#loadingMask").css('visibility', 'hidden');
                    $('#category').empty();
-                   console.log( result.companies );
+                   console.log( result.projects );
                    // var optionText = result.name;
                     //var optionValue = result.name;
                     var totalCount_comp = result.companies.length;
-                    var totalCount_org = result.organisations.length;
                     var totalCount_dept = result.departments.length;
                     var totalCount_proj = result.projects.length;
 
@@ -291,36 +260,28 @@ Add Designation
                     }
                   }
 
-                                    else if ( $('#roles_').val()== '104') {
-
-                    for (let i = 0; i < totalCount_org; i++) {
-
-                    $('#category').append(`<option value="${result.organisations[i].name}">
-                                       ${result.organisations[i].name}
-                    </option>`);
-                    }
-                  }
 
 
+                  else if ( $('#roles_').val()== 'department_lead') {
 
-                                                      else if ( $('#roles_').val()== '105') {
-
+                            
                     for (let i = 0; i < totalCount_dept; i++) {
 
-                    $('#category').append(`<option value="${result.departments[i].department}">
+                    $('#category').append(`<option value="${result.departments[i].department}-${result.departments[i].brand_id}-brand">
                                        ${result.departments[i].department}
                     </option>`);
+
                     }
                   }
 
 
 
 
-                                                      else if ( $('#roles_').val()== '106') {
+                  else if ( $('#roles_').val()== 'project_lead') {
 
                     for (let i = 0; i < totalCount_proj; i++) {
 
-                    $('#category').append(`<option value="${result.projects[i].project}">
+                    $('#category').append(`<option value="${result.projects[i].project}-${result.projects[i].department_id}-department">
                                        ${result.projects[i].project}
                     </option>`);
                     }

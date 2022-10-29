@@ -50,7 +50,7 @@
                         <label for="department_name" class="form-label">Department Name</label>
                        <select name="department_name" id="department_name" class="form-control" >
     {% for department in departments %}
-    <option value="{{ department.department_id }}-{{ department.department }}">{{ department.department }}</option>
+    <option value="{{ department.department_id }}">{{ department.department }}</option>
         {% endfor %}
                       
                         

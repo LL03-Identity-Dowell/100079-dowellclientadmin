@@ -1,7 +1,7 @@
 from pkgutil import get_data
 from django.urls import path,re_path
 from . import views
-from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_layers, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_members, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, invite, linklogin, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device,n_add_department,n_get_department,n_add_project,n_get_project
+from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_layers, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_members, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, find_brands, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, invite, linklogin, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device,n_add_department,n_get_department,n_add_project,n_get_project,n_assign_roles,n_get_all_data
 from django.contrib.auth.views import LoginView, LogoutView
 
 
@@ -31,9 +31,11 @@ re_path(r'^organisation_leads/$',get_organisation_lead, name='get_organisation_l
 re_path(r'^display_company/$',get_company, name='get_company'),
 re_path(r'^display_organisation/$',get_organisation, name='get_organisation'),
 re_path(r'^display_department/$', n_get_department, name='n_get_department'),
-re_path(r'^assign_roles/$', assign_roles, name='assign_roles'),
+re_path(r'^assign_roles/$', n_assign_roles, name='n_assign_roles'),
 re_path(r'^display_project/$', n_get_project, name='n_get_project'),
-re_path(r'^get_data$', get_all_data, name='get_all_data'),
+re_path(r'^get_data$', n_get_all_data, name='n_get_all_data'),
+path('get_company/<str:id>/', find_brands, name='find_brands'),
+
 re_path(r'^add_roles/$', add_roles, name='add_roles'),
 re_path(r'^profile/$', profile, name='profile'),
 re_path(r'^change_password/$', change_password, name='change_password'),

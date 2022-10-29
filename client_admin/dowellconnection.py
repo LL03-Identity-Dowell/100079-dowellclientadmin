@@ -24,3 +24,9 @@ def dowellconnection(cluster,platform,database,collection,document,team_member_I
         return str(response_data[0])
     else:
         return response.text
+# field ={"Email":"nagarajuvuliki@gmail.com"}
+# t = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field,"nil")
+# print(t)
+
+
+    
