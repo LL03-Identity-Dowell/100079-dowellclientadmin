@@ -1,7 +1,7 @@
 from pkgutil import get_data
 from django.urls import path,re_path
 from . import views
-from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_layers, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_members, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, find_brands, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, invite, linklogin, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device,n_add_department,n_get_department,n_add_project,n_get_project,n_assign_roles,n_get_all_data
+from .views import Dowell_Login, access_denied, add_browser, add_connection, add_device, add_layers, add_location, add_os, add_process, add_rights, add_roles, add_youtube_playlist, change_password, display_browser, display_connection, display_location, display_members, display_os, display_process, display_youtube_playlist, edit_organisation, edit_user, find_brands, get_all_users,get_all_data, get_company,get_organisation,get_department,assign_roles, get_organisation_lead, get_project, get_userdata, invite, linklogin, n_brands_belong, profile, registeruser,loginuser,home,logout,index,add_user,add_organisation,main,add_company,add_department,add_project,edit_company,edit_department,edit_project,display_device,n_add_department,n_get_department,n_add_project,n_get_project,n_assign_roles,n_get_all_data
 from django.contrib.auth.views import LoginView, LogoutView
 
 
@@ -59,6 +59,7 @@ re_path(r'^access_denied/$', access_denied, name='access_denied'),
 re_path(r'^invite/$', invite, name='invite'),
 re_path(r'^linklogin/$', linklogin, name='linklogin'),
 re_path(r'^brandmembers/$', display_members, name='display_members'),
+re_path(r'^brandsbelong/$', n_brands_belong, name='n_brands_belong'),
 
 
 

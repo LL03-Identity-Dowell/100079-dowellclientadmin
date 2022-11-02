@@ -66,6 +66,7 @@
                     <li>
                       <a href="{% url 'add_rights'%}?session_id={{session_id}}" class="nav_link" style="margin-bottom: 0 !important; margin-left: -32px;"> <i class="bx bx-lock-open nav_icon"></i> Rights &#9662;</a>
                       <ul class="dropdown">
+                        <li><a href="{% url 'n_brands_belong'%}?session_id={{session_id}}" class="dropdown-item text-white">Brands</a></li>
                         <li><a href="{% url 'display_os'%}?session_id={{session_id}}" class="dropdown-item text-white">OS</a></li>
                         <li><a href="{% url 'display_device'%}?session_id={{session_id}}" class="dropdown-item text-white">Device</a></li>
                         <li><a href="{% url 'display_location'%}?session_id={{session_id}}" class="dropdown-item text-white">Location</a></li>
