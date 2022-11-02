@@ -325,14 +325,17 @@ def index(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
     username = current_user['username']
-    hit0 =get_company(request)
-    # hit = get_organisation(request)
-    hit1 = n_get_department(request)
-    # hit2 = get_project(request)
-    context = {'session_id':session_id}
-    company_number = request.session.get('company_number')
-    # organisation_number = request.session.get('organisation_number')
-    department_number = request.session.get('department_number')
+    try: 
+        hit0 =get_company(request)
+        # hit = get_organisation(request)
+        hit1 = n_get_department(request)
+        # hit2 = get_project(request)
+        context = {'session_id':session_id}
+        company_number = request.session.get('company_number')
+        # organisation_number = request.session.get('organisation_number')
+        department_number = request.session.get('department_number')
+    except:
+        pass
     # project_number = request.session.get('project_number')
     context = {'session_id':session_id,'company_number':company_number,"username":username}
 
@@ -1185,8 +1188,7 @@ def n_get_department(request):
 
     field = {}
     session_id = request.session.get('session_id')
-    companies = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
-    companies = json.loads(companies)
+
     # print(companies)
     result = []
     current_user = request.session.get('current_user')
@@ -1194,6 +1196,8 @@ def n_get_department(request):
     d_id = []
     c_id = []
     try:
+        companies = dowellconnection("login","bangalore","login","department","department","1085","ABCDE","fetch",field,"nil")
+        companies = json.loads(companies)
         # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
         #     result = companies['data']    
         # if 'company_lead@' in current_user['role']:
