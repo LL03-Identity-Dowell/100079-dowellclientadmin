@@ -325,17 +325,18 @@ def index(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
     username = current_user['username']
-    try: 
-        hit0 =get_company(request)
-        # hit = get_organisation(request)
-        hit1 = n_get_department(request)
-        # hit2 = get_project(request)
-        context = {'session_id':session_id}
-        company_number = request.session.get('company_number')
-        # organisation_number = request.session.get('organisation_number')
-        department_number = request.session.get('department_number')
-    except:
-        pass
+    # try: 
+    hit0 =get_company(request)
+    # hit = get_organisation(request)
+    hit1 = n_get_department(request)
+    # hit2 = get_project(request)
+    context = {'session_id':session_id}
+    company_number = request.session.get('company_number')
+    print(company_number)
+    # organisation_number = request.session.get('organisation_number')
+    department_number = request.session.get('department_number')
+    # except:
+    #     pass
     # project_number = request.session.get('project_number')
     context = {'session_id':session_id,'company_number':company_number,"username":username}
 
@@ -1167,7 +1168,12 @@ def get_company(request):
 
     except :
         pass
-    print(result)
+    if result:
+        request.session['company_number'] = len(result)
+    else:
+        request.session['company_number'] = 0
+
+    # print(len(result))
     request.session['company_number'] = len(result)
     mylist = zip(result,c_id)
     context = {'session_id':session_id,'company':result,"username":username,"mylist":mylist}
@@ -1227,7 +1233,7 @@ def n_get_department(request):
         brands = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
         brands = json.loads(brands)
         brand_names.append(brands["data"])
-    print(brand_names[0])
+    print(brand_names)
     print(c_id)
     print(result)
     request.session['department_number'] = len(result)
