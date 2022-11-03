@@ -1247,23 +1247,30 @@ def n_brands_belong(request):
     current_user = request.session.get('current_user')
     username = current_user['username']
     field = {"Username":username}
-    a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","find",field,"nil")
-    a = json.loads(a)
-    a = a["data"]["Role"]
-    roles = a
-    print(type(roles))
-    if type(roles) is str:
-        messages.error(request,"No data found")
-        print(roles)
+    try:
+        a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","find",field,"nil")
+        a = json.loads(a)
+        a = a["data"]["Role"]
+        roles = a
+        print(type(roles))
+        if type(roles) is str:
+            messages.error(request,"No data found")
+            print(roles)
 
-    brands = []
-    if type(roles) is list:
-        for role in roles:
-            brand = role.split("@",1)[-1]
-            brands.append(brand)
+        brands = []
+        if type(roles) is list:
+            for role in roles:
+                brand = role.split("@",1)[-1]
+                brands.append(brand)
+        context = {'session_id':session_id,"brands":brands}
+
+    except:
+        context = {'session_id':session_id}
+
+        pass
 
 
-    context = {'session_id':session_id,"brands":brands}
+    # context = {'session_id':session_id,"brands":brands}
     return render(request, 'n_brands_belong.html',context)
 
 
@@ -1651,7 +1658,7 @@ def get_project(request):
 @authenticationrequired
 def n_get_project(request):
     current_user = request.session.get('current_user')
-
+    username = current_user["username"]
     field= {}
     union =[]
     session_id = request.session.get('session_id')
@@ -1694,7 +1701,7 @@ def n_get_project(request):
     request.session['project_number'] = len(projs)
     # departments = result1
 
-    context = {"session_id":session_id, "projects":projs,"union":union,"departments":depts}
+    context = {"session_id":session_id, "projects":projs,"union":union,"departments":dept,"username":username}
     # context = {"company":result,"session_id":session_id}
     return render(request, 'n_display_project.html',context)
 
@@ -2209,7 +2216,8 @@ def assign_roles(request):
 @authenticationrequired
 def n_assign_roles(request):
     current_user = request.session.get('current_user')
-    print(current_user)
+    username = current_user['username']
+    # print(current_user)
     field ={}
 
     # r =dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
@@ -2337,7 +2345,7 @@ def n_assign_roles(request):
 
 
 
-    context = {'session_id':session_id,"roles_list":roles_list,"designations_list":designations_list,"brand_members":brand_members}
+    context = {'session_id':session_id,"roles_list":roles_list,"designations_list":designations_list,"brand_members":brand_members,"username":username}
 
     return render(request, 'n_assign_roles.html',context)
 
