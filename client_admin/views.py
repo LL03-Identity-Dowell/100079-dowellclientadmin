@@ -2234,9 +2234,10 @@ def n_assign_roles(request):
                 result.append(company)
             else:
                 pass    
-
+    print(result)
     for dict in result:
-        result1.append(dict["members"])
+        if "members" in dict:
+            result1.append(dict["members"])
 
     brand_members = [item for sublist in result1 for item in sublist]
 
