@@ -3142,6 +3142,7 @@ def invite(request):
 def linklogin(request):
     email = request.GET.get('email')
     brand = request.GET.get('company')
+    session_id = request.session.get('session_id')
     field={}
     #Use registration collection
     userurl = 'https://100014.pythonanywhere.com/api/listusers/' 
@@ -3227,7 +3228,7 @@ def linklogin(request):
             messages.error(request, 'Member already present in Brand '+ brand ) 
 
 
-    context = {'email':email}
+    context = {'email':email,'session_id':session_id}
 
     return render(request,'linklogin.html',context)
 
