@@ -3177,12 +3177,14 @@ def linklogin(request):
     emails = [d['Email'] for d in users if 'Email' in d]
     username = [d["Username"] for d in users if "Username" in  d and "Email" in d and d["Email"]== email]
     memberofs = [d['Memberof'] for d in users if 'Memberof' in d and "Email" in d and d["Email"]== email]
+    print(username)
     print(memberofs)
     if username:
         flag = True
     for m in memberofs:
         memberof_current.append(m)
     # for user in users:
+    print(current_members)
 
   
         # if username:
@@ -3202,7 +3204,7 @@ def linklogin(request):
 
 
     if flag == False:
-        messages.error(request, 'Email Not Found please Sign Up' )
+        # messages.error(request, 'Email Not Found please Sign Up' )
         return HttpResponseRedirect("https://100014.pythonanywhere.com/register?brand="+brand)
         
     elif flag == True:
@@ -3217,7 +3219,7 @@ def linklogin(request):
         memberof.append(current["_id"])
         update_field = {"members":members}
 
-        if not username in current_members:
+        if not username[0] in current_members:
             update = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","update",field1,update_field)
             field= {"Username": username[0]}
             update_field = {"Memberof":memberof}
