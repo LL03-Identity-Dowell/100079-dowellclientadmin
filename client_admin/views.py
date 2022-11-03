@@ -3172,6 +3172,7 @@ def linklogin(request):
                 current_members.append(c)
         else:
             HttpResponse("No such brand : "+brand)
+    print(current)
     emails = [d['Email'] for d in users if 'Email' in d]
     username = [d["Username"] for d in users if "Username" in  d and "Email" in d and d["Email"]== email]
     memberofs = [d['Memberof'] for d in users if 'Memberof' in d and "Email" in d and d["Email"]== email]
@@ -3204,7 +3205,7 @@ def linklogin(request):
         return HttpResponseRedirect("https://100014.pythonanywhere.com/register?brand="+brand)
         
     elif flag == True:
-        field1 = {"company_id":current["company_id"]}
+        field1 = {"_id":current["_id"]}
 
         for c in current_members:
             members.append(c)
@@ -3212,7 +3213,7 @@ def linklogin(request):
         print(members)    
         for n in memberof_current:
             memberof.append(n)
-        memberof.append(current["company_id"])
+        memberof.append(current["_id"])
         update_field = {"members":members}
 
         if not username in current_members:
