@@ -3175,9 +3175,10 @@ def linklogin(request):
     emails = [d['Email'] for d in users if 'Email' in d]
     username = [d["Username"] for d in users if "Username" in  d and "Email" in d and d["Email"]== email]
     memberofs = [d['Memberof'] for d in users if 'Memberof' in d and "Email" in d and d["Email"]== email]
+    print(memberofs)
     if username:
         flag = True
-    for m in memberofs[0]:
+    for m in memberofs:
         memberof_current.append(m)
     # for user in users:
 
