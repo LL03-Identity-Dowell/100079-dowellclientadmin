@@ -3007,7 +3007,7 @@ def invite(request):
     session_id = request.session.get('session_id')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
-    user_company = current_user['role'].split("@",1)[1]
+    # user_company = current_user['role'].split("@",1)[1]
     result = []
     for company in companies['data']:
         for k,v in company.items():
