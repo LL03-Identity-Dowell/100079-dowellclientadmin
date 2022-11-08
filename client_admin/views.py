@@ -860,7 +860,10 @@ def add_company(request):
     session_id = request.session.get('session_id')
 
     access_granted = 1
-  
+    # findcompany = {'company':'Dowell Cafe Australia'}
+    # f = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",findcompany,"nil")
+    # f = json.loads(f)
+    # print(f["data"])  
 
 
     result = []
@@ -892,48 +895,60 @@ def add_company(request):
     field = {}
 
     t = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field,"nil")
-    print(t)
+    # print(t)
     if request.method == "POST":
             field= {}
             company = request.POST.get('addCompany')
-            layer = request.POST.get('layers')
-            layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
-            # print(layer)
-            if layer:
-                for i in range(1,7):
-                    if str(i) in layer:
-                        layer_dict['layer%s' % i]  = 1
-                        layer = 'layer' +str(i+1)
-                        # layer+ str(i) = 1
-            r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
-            r = json.loads(r)
-            result = r['data']
-            members = []
-            company_length = len(result)
-            field_add = {"owner":current_user["username"],"company": company, "company_id" : company_length+1,"members":members}
-            field_add = {**field_add, **layer_dict}
-            add = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","insert",field_add,"nil")
-            r1 = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
-            r1 = json.loads(r1)
-            result1 = r1['data']
-            new_company_length = len(result1)
-            
-            if new_company_length == company_length + 1:
-                field= {"Username": current_user["username"]}
-                update_field = {"company_id":company_length + 1}
-                update =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
-                messages.success(request, "Company Successfully added with Company  Name : "+company )
-                s = requests.session()
-                update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
-                update_data={
-                "role": "company_lead@"+company,
-                    }
-                response=s.put(update_url,data=update_data)
+            print(company)
+            findcompany = {"company":company}
+            f = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","find",findcompany,"nil")
+            print(f)
+            f = json.loads(f)
+            cresult = f['data']
+            print(cresult)
+            if not cresult:
+                layer = request.POST.get('layers')
+                layer_dict = {"layer1":0,"layer2":0,"layer3":0,"layer4":0,"layer5":0,"layer6":0}
+                # print(layer)
+                if layer:
+                    for i in range(1,7):
+                        if str(i) in layer:
+                            layer_dict['layer%s' % i]  = 1
+                            layer = 'layer' +str(i+1)
+                            # layer+ str(i) = 1
+                r = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+                r = json.loads(r)
+                result = r['data']
+                members = []
+                company_length = len(result)
+                field_add = {"owner":current_user["username"],"company": company, "company_id" : company_length+1,"members":members}
+                field_add = {**field_add, **layer_dict}
+                add = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","insert",field_add,"nil")
+                r1 = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
+                r1 = json.loads(r1)
+                result1 = r1['data']
+                new_company_length = len(result1)
+                
+                if new_company_length == company_length + 1:
+                    field= {"Username": current_user["username"]}
+                    update_field = {"company_id":company_length + 1}
+                    update =  dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
+                    messages.success(request, "Company Successfully added with Company  Name : "+company )
+                    s = requests.session()
+                    update_url = "https://100014.pythonanywhere.com/api/update/"+str(user_id)
+                    update_data={
+                    "role": "company_lead@"+company,
+                        }
+                    response=s.put(update_url,data=update_data)
 
 
+                else:
+                    messages.error(request, "Problem Adding Company")
+                    return HttpResponseRedirect('/add_company/?session_id='+session_id) 
             else:
-                messages.error(request, "Problem Adding Company")
+                messages.error(request, "Brand Name Already Exists , Try Different Name")
                 return HttpResponseRedirect('/add_company/?session_id='+session_id) 
+
 
     company_number = request.session.get('company_number')
     organisation_number = request.session.get('organisation_number')
@@ -1145,6 +1160,13 @@ def get_company(request):
     current_user = request.session.get('current_user')
     username = current_user['username']
     c_id = []
+
+
+
+    field1 = {"Username": username}
+    a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field1,"nil")
+    a = json.loads(a)
+    print(a)
     try:
         # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
         #     result = companies['data']    
