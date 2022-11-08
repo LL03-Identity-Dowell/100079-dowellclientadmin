@@ -1159,11 +1159,12 @@ def get_company(request):
     result = []
     current_user = request.session.get('current_user')
     username = current_user['username']
+    useremail = current_user['email']
     c_id = []
 
 
-
-    field1 = {"Username": username}
+    print(useremail)
+    field1 = {"Username": username }
     a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field1,"nil")
     a = json.loads(a)
     print(a)
@@ -1188,6 +1189,24 @@ def get_company(request):
                     pass    
 
 
+        username = current_user['username']
+        field1 = {"Username":username}
+        
+        a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","find",field1,"nil")
+        a = json.loads(a)
+        a = a["data"]["Role"]
+        roles = a
+        print(type(roles))
+        if type(roles) is str:
+            messages.error(request,"No data found")
+            print(roles)
+
+        brands = []
+        if type(roles) is list:
+            for role in roles:
+                brand = role.split("@")[-1]
+                brands.append(brand)
+
     except :
         pass
     if result:
@@ -1198,7 +1217,7 @@ def get_company(request):
     # print(len(result))
     request.session['company_number'] = len(result)
     mylist = zip(result,c_id)
-    context = {'session_id':session_id,'company':result,"username":username,"mylist":mylist}
+    context = {'session_id':session_id,'company':result,"username":username,"mylist":mylist,"brands":brands}
     return render(request, 'new_display_company.html',context)
 
 
@@ -1282,7 +1301,7 @@ def n_brands_belong(request):
         brands = []
         if type(roles) is list:
             for role in roles:
-                brand = role.split("@",1)[-1]
+                brand = role.split("@")[-1]
                 brands.append(brand)
         context = {'session_id':session_id,"brands":brands}
 
@@ -2345,7 +2364,10 @@ def n_assign_roles(request):
                 a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","find",field,"nil")
                 a = json.loads(a)
                 print(a)
-                roles=a["data"]["Role"]
+                if type(a["data"]["Role"] is str):
+                    roles.append(a["data"]["Role"])
+                elif type(a["data"]["Role"] is list):
+                    roles=a["data"]["Role"]
                 roles.append(role_String)
                 update_field = {"Role": roles}
                 u = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","update",field,update_field)
@@ -2354,8 +2376,10 @@ def n_assign_roles(request):
                 messages.success(request,"Successfully assigned the role to the member")
 
         except Exception as e:
-                # messages.error(request,e.message)
-                pass
+                messages.error(request,"Could not assign role")
+                print(e)
+                return render(request, 'n_assign_roles.html')
+
 
             
         # if role_assigned == 1:
