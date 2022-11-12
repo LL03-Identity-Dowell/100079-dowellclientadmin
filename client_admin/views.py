@@ -332,13 +332,14 @@ def index(request):
     # hit2 = get_project(request)
     context = {'session_id':session_id}
     company_number = request.session.get('company_number')
-    print(company_number)
+    companies = request.session.get("companies")
+    # print(company_number)
     # organisation_number = request.session.get('organisation_number')
     department_number = request.session.get('department_number')
     # except:
     #     pass
     # project_number = request.session.get('project_number')
-    context = {'session_id':session_id,'company_number':company_number,"username":username}
+    context = {'session_id':session_id,'company_number':company_number,"username":username,"brands":companies}
 
     return render(request, 'new_base.html',context)
 
@@ -1192,6 +1193,7 @@ def get_company(request):
         username = current_user['username']
         field1 = {"Username":username}
         
+        request.session["companies"] = result
         a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","find",field1,"nil")
         a = json.loads(a)
         a = a["data"]["Role"]
@@ -3080,7 +3082,7 @@ def invite(request):
     r = p.text
     r = json.loads(r)
     users = r
-    context = {'users':users,'session_id':session_id,'company':result,"username":username}
+    context = {'users':users,'session_id':session_id,'company':result[0],"username":username}
     flag = False
     if request.method == "POST":
         brand = request.POST.get('companies')

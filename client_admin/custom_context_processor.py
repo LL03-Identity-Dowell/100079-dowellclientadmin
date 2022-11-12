@@ -7,6 +7,13 @@ def username_render(request):
     'user_name': username,
     }
 
+def brands_render(request):
+    brands = request.session.get('companies')
+
+    return {
+    'ownbrands': brands,
+    }
+
 def counter_render(request):
     company_number = request.session.get('company_number')
     organisation_number = request.session.get('organisation_number')

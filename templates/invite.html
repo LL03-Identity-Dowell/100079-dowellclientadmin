@@ -23,14 +23,14 @@
           <form name="invite" class="table_shadow p-3" method = "POST" onsubmit="return validateform()" >
                 {% csrf_token %}
 
-                <div class="col-12 mt-3">
+                <div class="col-12 mt-3 hidden">
                   <label for="company" class="form-label">Brand</label>
                  <select name="companies" id="company" class="form-control"  multiple= "multiple">
-           {% for comp in company %}
+           {% comment %} {% for comp in company %} {% endcomment %}
 
-    <option value="{{ comp.company }}">{{ comp.company }}</option>
+    <option value="{{ company.company }}" selected>{{ company.company }}</option>
 
-        {% endfor %}
+        {% comment %} {% endfor %} {% endcomment %}
                   </select>
 
                   

@@ -73,6 +73,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 # 'client_admin.custom_context_processor.username_render',
                 'client_admin.custom_context_processor.counter_render',
+                'client_admin.custom_context_processor.brands_render',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
