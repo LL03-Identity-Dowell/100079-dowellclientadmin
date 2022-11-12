@@ -1305,7 +1305,7 @@ def n_brands_belong(request):
             for role in roles:
                 brand = role.split("@")[-1]
                 brands.append(brand)
-        context = {'session_id':session_id,"brands":brands}
+        context = {'session_id':session_id,"brands":brands[1:]}
 
     except:
         context = {'session_id':session_id}
