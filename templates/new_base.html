@@ -55,7 +55,7 @@
 
             <div> <a href="/?session_id={{session_id}}" class="nav_logo"> <i class='bx bx-user nav_logo-icon'></i> <span class="nav_logo-name">Admin Panel</span> </a>
                 <div class="nav_list"> 
-                  <a href="{% url 'n_brands_belong'%}?session_id={{session_id}}" class="nav_link"> <i class='bx bx-building-house nav_icon'></i> <span class="nav_name">Brands Belong to</span> </a> 
+                  <a href="{% url 'n_brands_belong'%}?session_id={{session_id}}" class="nav_link"> <i class='bx bx-building-house nav_icon'></i> <span class="nav_name">Member of</span> </a> 
                   {% for brand in ownbrands %}
                   <a href="#" class="nav_link"> <i class='bx bx-dash nav_icon'></i> <span class="nav_name">{{brand.company}}</span> </a> 
                   {% endfor %}
