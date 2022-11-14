@@ -89,15 +89,16 @@ Add Designation
                     <option value="department_lead">Department Lead</option>
                     <option value="project_lead">Project Lead</option>
                     <option value="team_member">Team Member</option> {% endcomment %}
-                {% comment %} {% for role in roles_list %}
-
-                <option value="{{role.id}}">{{role.role}}</option> 
-                      {% endfor %} {% endcomment %}
+              
 
 
                     <option value="department_lead">Department Lead</option>
                     <option value="project_lead">Project Lead</option>
                     <option value="team_member">Team Member</option>
+                       {% for role in roles_list %}
+
+                <option value="{{role.id}}">{{role.role}}</option> 
+                      {% endfor %} 
                   </select>
                 </div>
 
@@ -105,7 +106,7 @@ Add Designation
                 <div class="col-12 mt-3">
                             {% comment %} <a class="btn btn-primary" href = "{% url 'add_roles'%}?session_id={{session_id}}" >  Add Roles </a> {% endcomment %}
 
-                            {% comment %} <button type="button" class="btn btn-secondary btn-add-role" data-toggle="modal"> Add a Role </button> {% endcomment %}
+                            <button type="button" class="btn btn-secondary btn-add-role" data-toggle="modal"> Add a Role </button>
                     <br />
 
   
@@ -124,7 +125,7 @@ Add Designation
                     <option value="project_lead">Project Lead</option>
                     <option value="team_member">Team Member</option> {% endcomment %}
 
-                           {% if access_level == 'Admin' %}
+                           {% comment %} {% if access_level == 'Admin' %} {% endcomment %}
 {% comment %} 
                     <option value="company_lead">Company Lead</option>
                     <option value="organisation_lead">Organisation Lead</option>
@@ -137,7 +138,7 @@ Add Designation
                       {% endfor %}
 
 
-                              {% endif %}
+                              {% comment %} {% endif %} {% endcomment %}
                   </select>
                 </div>
 
