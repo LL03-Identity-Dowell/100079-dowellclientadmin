@@ -2115,9 +2115,11 @@ def n_get_all_data(request):
 @is_client_and_super_admin
 @authenticationrequired
 def assign_roles(request):
+    field ={}
+    roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+    print(roles)
     current_user = request.session.get('current_user')
     access_granted = 0
-    field ={}
     access_level = 0
     # r =dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
     # print(r)
@@ -2181,11 +2183,11 @@ def assign_roles(request):
     roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
     roles = json.loads(roles)
     roles_list = roles['data']
-    print(roles)
+    # print(roles)
     designations = dowellconnection("login","bangalore","login","designation","designation","1120","ABCDE","fetch",field1,"nil")
     designations = json.loads(designations)
     designations_list = designations['data']
-    print(designations_list)
+    # print(designations_list)
     users = r
 
 
@@ -2258,6 +2260,9 @@ def assign_roles(request):
 
 @authenticationrequired
 def n_assign_roles(request):
+    # field ={}
+    # roles = dowellconnection("login","bangalore","login","roles","roles","1089","ABCDE","fetch",field,"nil")
+    # print(roles)
     current_user = request.session.get('current_user')
     username = current_user['username']
     # print(current_user)

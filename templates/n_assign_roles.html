@@ -241,7 +241,7 @@ Add Designation
                 },
                 success: function (result) {
                   $("#loadingMask").css('visibility', 'hidden');
-                   $('#category').empty();
+                   $('#category ').empty();
                    console.log( result.projects );
                    // var optionText = result.name;
                     //var optionValue = result.name;
@@ -250,7 +250,32 @@ Add Designation
                     var totalCount_proj = result.projects.length;
 
 
-   
+
+                    for (let i = 0; i < totalCount_comp; i++) {
+
+                    $('#category').append(`<option value="${result.companies[i].company}">
+                                       ${result.companies[i].company}
+                    </option>`);
+                    }
+
+
+                      for (let i = 0; i < totalCount_dept; i++) {
+
+                    $('#category').append(`<option value="${result.departments[i].department}-${result.departments[i].brand_id}-brand">
+                                       ${result.departments[i].department}
+                    </option>`);
+
+                    }
+
+                    for (let i = 0; i < totalCount_dept; i++) {
+
+                    $('#category').append(`<option value="${result.departments[i].department}-${result.departments[i].brand_id}-brand">
+                                       ${result.departments[i].department}
+                    </option>`);
+
+                    }
+
+                  /*
                   if ( $('#roles_').val()== '103') {
 
                     for (let i = 0; i < totalCount_comp; i++) {
@@ -287,7 +312,7 @@ Add Designation
                     </option>`);
                     }
                   }
-
+                  */
 
                 }
             });

@@ -22,7 +22,7 @@ from django.conf import settings
 from django.views.static import serve
 
 urlpatterns = [
-    path('', include('client_admin.urls')),
+    path('', include('client_admin_new.urls')),
     path('api/', include('api.urls')),
     # re_path(r'^login/$', LoginView.as_view(), name='login'),
     # re_path(r'^', LoginView.as_view(), name='login'),

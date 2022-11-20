@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'client_admin',
+    'client_admin_new',
     'bootstrap5',
     'corsheaders',
     'rest_framework',
