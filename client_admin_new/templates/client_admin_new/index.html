@@ -387,7 +387,7 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 						<div class="elementor-element elementor-element-ae018a9 elementor-widget elementor-widget-image" data-id="ae018a9" data-element_type="widget" data-widget_type="image.default">
 				<div class="elementor-widget-container">
 								<div class="elementor-image">
-												<img decoding="async" width="300" height="200" src="https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?fit=300%2C200&amp;ssl=1" class="attachment-medium size-medium jetpack-lazy-image" alt data-attachment-id="1432" data-permalink="https://uxlivinglab.com/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640/" data-orig-file="https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?fit=640%2C426&amp;ssl=1" data-orig-size="640,426" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;0&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;0&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;0&quot;,&quot;iso&quot;:&quot;0&quot;,&quot;shutter_speed&quot;:&quot;0&quot;,&quot;title&quot;:&quot;&quot;,&quot;orientation&quot;:&quot;0&quot;}" data-image-title="57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640" data-image-description data-image-caption data-medium-file="https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?fit=300%2C200&amp;ssl=1" data-large-file="https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?fit=640%2C426&amp;ssl=1" data-lazy-srcset="https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?w=640&amp;ssl=1 640w, https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?resize=300%2C200&amp;ssl=1 300w" data-lazy-sizes="(max-width: 300px) 100vw, 300px" data-lazy-src="https://i0.wp.com/uxlivinglab.com/wp-content/uploads/2021/06/57e8d6454e56a914f6da8c7dda793179113ac3e456567049732b7cdc9f_640.jpg?fit=300%2C200&amp;ssl=1&amp;is-pending-load=1" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">														</div>
+												<img decoding="async" width="300" height="200" src="{{data.Profile_Image}}"></div>
 						</div>
 				</div>
 						</div>
@@ -501,12 +501,11 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 								Select Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[name]" id="form-field-name" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-									<option value="Organisation 1">Organisation 1</option>
-									<option value="Organisation 2">Organisation 2</option>
-									<option value="Organisation 3">Organisation 3</option>
-									<option value="Organisation 4">Organisation 4</option>
-									<option value="My Organisation">My Organisation</option>
-									<option value=""></option>
+
+			{% for company in companies %}
+									<option value="{{company.company}}">{{company.company}}</option>
+			{% endfor %}
+
 							</select>
 		</div>
 						</div>

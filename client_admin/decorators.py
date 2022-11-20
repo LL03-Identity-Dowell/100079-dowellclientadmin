@@ -44,18 +44,18 @@ def authenticationrequired(view_func):
         if key == '':
             return HttpResponseRedirect("https://100014.pythonanywhere.com/")
 
-        try:
-            user = get_user_profile(key)
-            # print(user)
-            s = requests.session()
-            users = s.get(usersurl)
-            users = users.text
-            request.session['current_user'] = user
-            # print(users)
-            # if user['role'] == 'User':
-            #     return HttpResponse("Your Role Does Not Have Permission To Access Admin Panel. Please Login with Authorized Credentials <a href ='https://100014.pythonanywhere.com/'> Here </a>")
-        except ValueError:
-            return HttpResponseRedirect("https://100014.pythonanywhere.com/")
+        # try:
+        #     user = get_user_profile(key)
+        #     # print(user)
+        #     s = requests.session()
+        #     users = s.get(usersurl)
+        #     users = users.text
+        #     request.session['current_user'] = user
+        #     # print(users)
+        #     # if user['role'] == 'User':
+        #     #     return HttpResponse("Your Role Does Not Have Permission To Access Admin Panel. Please Login with Authorized Credentials <a href ='https://100014.pythonanywhere.com/'> Here </a>")
+        # except ValueError:
+        #     return HttpResponseRedirect("https://100014.pythonanywhere.com/")
         return view_func(request, *args, **kwargs)
     return wrapper_func
 
