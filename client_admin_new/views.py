@@ -30,13 +30,14 @@ def home(request):
         url = "https://100014.pythonanywhere.com/api/userinfo/"
         r = s.post(url = url,data={"session_id":session_id})
         r = json.loads(r.text)
-        print (r[0])
+        # print (r[0])
 
     username = r[0]["username"]
     field = {}
     session_id = request.session.get('session_id')
     companies = dowellconnection("login","bangalore","login","company","company","1083","ABCDE","fetch",field,"nil")
     companies = json.loads(companies)
+    # print(companies)
     result = []
     current_user = request.session.get('current_user')
     c_id = []
@@ -44,7 +45,6 @@ def home(request):
     field1 = {"Username": username }
     a = dowellconnection("login","bangalore","login","registration","registration","10004545","ABCDE","fetch",field1,"nil")
     a = json.loads(a)
-    print(a)
     try:
         # if 'Admin' in current_user['role'] or 'client_admin' in  current_user['role'] :
         #     result = companies['data']    
@@ -59,13 +59,13 @@ def home(request):
         #                 pass
         for company in companies['data']:
             for k,v in company.items():
-                if k == 'owner' and current_user['username'] in v:
+                if k == 'owner' and username in v:
                     result.append(company)
                     c_id.append(company["_id"])
                 else:
                     pass    
 
-
+        # print(result)
         username = current_user['username']
         field1 = {"Username":username}
         
@@ -74,18 +74,30 @@ def home(request):
         a = json.loads(a)
         a = a["data"]["Role"]
         roles = a
-        print(type(roles))
+        # print(type(roles))
         if type(roles) is str:
             messages.error(request,"No data found")
-            print(roles)
+            # print(roles)
 
         brands = []
         if type(roles) is list:
             for role in roles:
                 brand = role.split("@")[-1]
                 brands.append(brand)
+        field= {"owner":username}
+        print(username)
+        f = dowellconnection("login","bangalore","login","organization","organization","1084","ABCDE","fetch",field,"nil")
+        print(f)
+
+        # if request.method == "POST" and "savelevels_btn" in request.POST:
+        #     level1_name = request.POST.get("level1_name")
+        #     field_add = {"name":level1_name, "owner":username}
+        #     add = dowellconnection("login","bangalore","login","organization","organization","1084","ABCDE","insert",field_add,"nil")
+
+            
 
     except :
+        print("some error")
         pass
     
     context = {"data":r[0],"companies":result}
