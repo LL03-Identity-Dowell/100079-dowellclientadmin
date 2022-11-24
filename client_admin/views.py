@@ -324,6 +324,7 @@ def get_organisation_lead(request):
 def index(request):
     session_id = request.session.get('session_id')
     current_user = request.session.get('current_user')
+    print(current_user)
     username = current_user['username']
     # try: 
     hit0 =get_company(request)
