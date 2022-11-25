@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>HTML Forms</h2>
+
+
+<button id="workflow" onclick="temp(this)"> Workflow </button>
+<button id="digital"> Digital </button>
+
+<form action="" method="POST">
+
+	<input type="radio" name="portfolio"> Portfolio
+
+    <input type="text" name="name1" id="name1">
+    <button type="submit"> Save </button>
+
+</form> 
+
+
+<script>
+function temp(s) {
+    var i = document.getElementById('name1');
+    i.value = s;
+    return s;
+}
+</script>
+</body>
+</html>
