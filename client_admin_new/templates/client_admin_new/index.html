@@ -1221,13 +1221,25 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 						<div class="elementor-element elementor-element-49e4251c elementor-widget elementor-widget-eael-advanced-data-table" data-id="49e4251c" data-element_type="widget" data-widget_type="eael-advanced-data-table.default">
 				<div class="elementor-widget-container">
 			<div class="ea-advanced-data-table-wrap" data-id="49e4251c"><div class="ea-advanced-data-table-search-wrap ea-advanced-data-table-search-right"><input type="search" placeholder="Member Search" class="ea-advanced-data-table-search"></div><div class="ea-advanced-data-table-wrap-inner">
-                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-49e4251c ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="49e4251c" data-items-per-page="10"><thead><tr><th><ol><li>Team Member 1</li><li>Team Member 2</li><li>Team Member 3</li><li>Team Member 4</li><li>Team Member 5</li></ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
+                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-49e4251c ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="49e4251c" data-items-per-page="10"><thead><tr><th>
+				<ol>
+				{% for member in accept_members %}
+				<li>{{member.name}}</li>
+				{% endfor %}				{% comment %} <li>Team Member 2</li><li>Team Member 3</li><li>Team Member 4</li><li>Team Member 5</li> {% endcomment %}
+				</ol>
+				<p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
             </div><div class="ea-advanced-data-table-pagination ea-advanced-data-table-pagination-button clearfix"></div></div>		</div>
 				</div>
 				<div class="elementor-element elementor-element-11cab353 elementor-widget elementor-widget-eael-advanced-data-table" data-id="11cab353" data-element_type="widget" data-widget_type="eael-advanced-data-table.default">
 				<div class="elementor-widget-container">
 			<div class="ea-advanced-data-table-wrap" data-id="11cab353"><div class="ea-advanced-data-table-search-wrap ea-advanced-data-table-search-left"><input type="search" placeholder="Invited" class="ea-advanced-data-table-search"></div><div class="ea-advanced-data-table-wrap-inner">
-                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-11cab353 ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="11cab353" data-items-per-page="5"><thead><tr><th><ol><li>Team Member 1</li><li>Team Member 2</li><li>Team Member 3</li><li>Team Member 4</li><li>Team Member 5</li></ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
+                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-11cab353 ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="11cab353" data-items-per-page="5"><thead><tr><th>
+				<ol>
+				{% for member in pending_members %}
+				<li>{{member.name}}</li>
+				{% endfor %}
+				{% comment %} <li>Team Member 2</li><li>Team Member 3</li><li>Team Member 4</li><li>Team Member 5</li> {% endcomment %}
+				</ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
             </div><div class="ea-advanced-data-table-pagination ea-advanced-data-table-pagination-button clearfix"></div></div>		</div>
 				</div>
 						</div>
@@ -1251,11 +1263,11 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 								Select Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[name]" id="form-field-name" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-									<option value="Team Member 1">Team Member 1</option>
-									<option value="Team Member 2">Team Member 2</option>
-									<option value="Team Member 3">Team Member 3</option>
-									<option value="Team Member 4">Team Member 4</option>
-									<option value="Team Member 5">Team Member 5</option>
+									
+													{% for member in accept_members %}
+
+									<option value="{{member.name}}">{{member.name}}</option>
+													{% endfor %}
 									<option value=""></option>
 							</select>
 		</div>
@@ -1282,7 +1294,8 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 				</div>
 				<div class="elementor-element elementor-element-292eebbf elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="292eebbf" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+					<form class="" method="post" name="invite_member">
+					{% csrf_token %}
 			<input type="hidden" name="post_id" value="6047"/>
 			<input type="hidden" name="form_id" value="292eebbf"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -1293,10 +1306,10 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 								<div class="elementor-field-type-text elementor-field-group elementor-column elementor-field-group-name elementor-col-100 elementor-field-required">
 												<label for="form-field-name" class="elementor-field-label elementor-screen-only">
 								Name							</label>
-														<input size="1" type="text" name="form_fields[name]" id="form-field-name" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Email" required="required" aria-required="true">
+														<input size="1" type="text" name="member_email" id="member_email" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Email" required="required" aria-required="true">
 											</div>
 								<div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
-					<button type="submit" class="elementor-button elementor-size-sm">
+					<button type="submit" class="elementor-button elementor-size-sm" name="invite_member_btn">
 						<span >
 															<span class=" elementor-button-icon">
 																										</span>
@@ -1358,13 +1371,23 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 						<div class="elementor-element elementor-element-336ef821 elementor-widget elementor-widget-eael-advanced-data-table" data-id="336ef821" data-element_type="widget" data-widget_type="eael-advanced-data-table.default">
 				<div class="elementor-widget-container">
 			<div class="ea-advanced-data-table-wrap" data-id="336ef821"><div class="ea-advanced-data-table-search-wrap ea-advanced-data-table-search-right"><input type="search" placeholder="Guest Search" class="ea-advanced-data-table-search"></div><div class="ea-advanced-data-table-wrap-inner">
-                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-336ef821 ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="336ef821" data-items-per-page="10"><thead><tr><th><ol><li>Guest 1</li><li>Guest 2</li><li>Guest 3</li><li>Guest 4</li><li>Guest 5</li></ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
+                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-336ef821 ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="336ef821" data-items-per-page="10"><thead><tr><th>
+				<ol>
+				{% for member in accept_members_g %}
+				<li>{{member}}</li>
+				{% endfor %}				{% comment %} <li>Guest 2</li><li>Guest 3</li><li>Guest 4</li><li>Guest 5</li> {% endcomment %}
+				</ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
             </div><div class="ea-advanced-data-table-pagination ea-advanced-data-table-pagination-button clearfix"></div></div>		</div>
 				</div>
 				<div class="elementor-element elementor-element-69b48a3a elementor-widget elementor-widget-eael-advanced-data-table" data-id="69b48a3a" data-element_type="widget" data-widget_type="eael-advanced-data-table.default">
 				<div class="elementor-widget-container">
 			<div class="ea-advanced-data-table-wrap" data-id="69b48a3a"><div class="ea-advanced-data-table-search-wrap ea-advanced-data-table-search-left"><input type="search" placeholder="Invited" class="ea-advanced-data-table-search"></div><div class="ea-advanced-data-table-wrap-inner">
-                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-69b48a3a ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="69b48a3a" data-items-per-page="5"><thead><tr><th><ol><li>Guest 1</li><li>Guest 2</li><li>Guest 3</li><li>Guest 4</li><li>Guest 5</li></ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
+                <table class="ea-advanced-data-table ea-advanced-data-table-static ea-advanced-data-table-69b48a3a ea-advanced-data-table-sortable ea-advanced-data-table-paginated ea-advanced-data-table-searchable" data-id="69b48a3a" data-items-per-page="5"><thead><tr><th>
+				<ol>
+				{% for member in pending_members_g %}
+				<li>{{member}}</li>
+				{% endfor %}				{% comment %} <li>Guest 2</li><li>Guest 3</li><li>Guest 4</li><li>Guest 5</li> {% endcomment %}
+				</ol><p><br></p></th><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table>
             </div><div class="ea-advanced-data-table-pagination ea-advanced-data-table-pagination-button clearfix"></div></div>		</div>
 				</div>
 						</div>
@@ -1388,11 +1411,13 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 								Select Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[name]" id="form-field-name" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true">
-									<option value="Guest 1">Guest 1</option>
-									<option value="Guest 2">Guest 2</option>
+													{% for member in accept_members_g %}
+
+									<option value="{{member}}">{{member}}</option>
+													{% endfor %}									{% comment %} <option value="Guest 2">Guest 2</option>
 									<option value="Guest 3">Guest 3</option>
 									<option value="Guest 4">Guest 4</option>
-									<option value="Guest 5">Guest 5</option>
+									<option value="Guest 5">Guest 5</option> {% endcomment %}
 									<option value=""></option>
 							</select>
 		</div>
@@ -1419,7 +1444,8 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 				</div>
 				<div class="elementor-element elementor-element-51ca0848 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="51ca0848" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+					<form class="" method="post" name="guest_invite">
+					{% csrf_token %}
 			<input type="hidden" name="post_id" value="6051"/>
 			<input type="hidden" name="form_id" value="51ca0848"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -1430,10 +1456,10 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 								<div class="elementor-field-type-text elementor-field-group elementor-column elementor-field-group-name elementor-col-100 elementor-field-required">
 												<label for="form-field-name" class="elementor-field-label elementor-screen-only">
 								Name							</label>
-														<input size="1" type="text" name="form_fields[name]" id="form-field-name" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Email" required="required" aria-required="true">
+														<input size="1" type="text" name="guest_email" id="guest_email" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Email" required="required" aria-required="true">
 											</div>
 								<div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
-					<button type="submit" class="elementor-button elementor-size-sm">
+					<button type="submit" class="elementor-button elementor-size-sm" name="invite_guest_btn">
 						<span >
 															<span class=" elementor-button-icon">
 																										</span>
@@ -1777,33 +1803,31 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
             <div class="eael-tabs-nav">
                 <ul class="eael-tab-inline-icon">
 
-				{% for key,value in organisations.items %}
                                             <li id="level-1-name" class="inactive eael-tab-item-trigger" aria-selected="true" data-tab="1" role="tab" tabindex="0" aria-controls="level-1-name-tab" aria-expanded="false">
                             
                                                                 <i class="fas fa-level-down-alt"></i>                                                            
-                                                            <span class="eael-tab-title  title-after-icon">{{ key }}</span>                            
+                                                            <span class="eael-tab-title  title-after-icon">{{level1.level_name}}</span>                            
                                                     </li>
-													{% endfor %}
-                                            {% comment %} <li id="level-2-name" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="2" role="tab" tabindex="-1" aria-controls="level-2-name-tab" aria-expanded="false">
+                                             <li id="level-2-name" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="2" role="tab" tabindex="-1" aria-controls="level-2-name-tab" aria-expanded="false">
                             
                                                                 <i class="fas fa-level-down-alt"></i>                                                            
-                                                            <span class="eael-tab-title  title-after-icon">Level 2 [Name]</span>                            
+                                                            <span class="eael-tab-title  title-after-icon">{{level2.level_name}}</span>                            
                                                     </li>
                                             <li id="level-3-name" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="3" role="tab" tabindex="-1" aria-controls="level-3-name-tab" aria-expanded="false">
                             
                                                                 <i class="fas fa-level-down-alt"></i>                                                            
-                                                            <span class="eael-tab-title  title-after-icon">Level 3 [Name]</span>                            
+                                                            <span class="eael-tab-title  title-after-icon">{{level3.level_name}}</span>                            
                                                     </li>
                                             <li id="level-4-name" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="4" role="tab" tabindex="-1" aria-controls="level-4-name-tab" aria-expanded="false">
                             
                                                                 <i class="fas fa-level-down-alt"></i>                                                            
-                                                            <span class="eael-tab-title  title-after-icon">Level 4 [Name]</span>                            
+                                                            <span class="eael-tab-title  title-after-icon">{{level4.level_name}}</span>                            
                                                     </li>
                                             <li id="level-5-name" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="5" role="tab" tabindex="-1" aria-controls="level-5-name-tab" aria-expanded="false">
                             
                                                                 <i class="fas fa-level-down-alt"></i>                                                            
-                                                            <span class="eael-tab-title  title-after-icon">Level 5 [Name]</span>                            
-                                                    </li> {% endcomment %}
+                                                            <span class="eael-tab-title  title-after-icon">{{level5.level_name}}</span>                            
+                                                    </li> 
                                     </ul>
             </div>
             
