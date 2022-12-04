@@ -26,7 +26,7 @@ def dowellconnection(cluster,platform,database,collection,document,team_member_I
 
 
 username = 'Jazz3650'
-field = {"document_name":username}
+field = {}
 s =dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field,"nil")
 print(s)
 ss= json.loads(s)
@@ -36,22 +36,22 @@ p = ss["data"][0]["organisations"]
 # p= organisations
 
 
-s = ss["data"][0]
-organisations = [s["organisations"]]
-# print(organisations)
-username = 'Jazz3650'
-field = {"document_name":username}
-update = {"organisations":organisations}
-org_dict = organisations[0]
-item_name = "abcd"
-items= org_dict["level1"]["items"]
-if item_name :
-    items.append(item_name)
-org_dict["level1"]["items"] = items
-organisations.append(org_dict)
-# print(organisations)
-field= {"document_name":username}
-field_update = {"organisations":organisations}
+# s = ss["data"][0]
+# organisations = [s["organisations"]]
+# # print(organisations)
+# username = 'Jazz3650'
+# field = {"document_name":username}
+# update = {"organisations":organisations}
+# org_dict = organisations[0]
+# item_name = "abcd"
+# items= org_dict["level1"]["items"]
+# if item_name :
+#     items.append(item_name)
+# org_dict["level1"]["items"] = items
+# organisations.append(org_dict)
+# # print(organisations)
+# field= {"document_name":username}
+# field_update = {"organisations":organisations}
 # print(p)
 # result =dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,field_update)
 
