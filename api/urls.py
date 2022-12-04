@@ -1,6 +1,6 @@
 from django.urls import path,re_path
 from . import views
-from .views import BrowserView, CompanyView, ConnectionView, DepartmentView, DeviceView, LocationView, OrganisationView, OsView, ProcessView, ProjectView, YoutubeplaylistView
+from .views import BrowserView, CompanyView, ConnectionView, DepartmentView, DeviceView, LocationView, OrganisationView, OsView, ProcessView, ProjectView, YoutubeplaylistView,Organisations,Profile,Members
 
 
 
@@ -19,6 +19,8 @@ path('connection/', ConnectionView.as_view(), name='connection'),
 path('browser/', BrowserView.as_view(), name='browser'),
 path('process/', ProcessView.as_view(), name='process'),
 path('youtube_playlist/', YoutubeplaylistView.as_view(), name='youtube_playlist'),
-
+path('organisations/', Organisations.as_view(), name='organisations'),
+path('profile/', Profile.as_view(), name='profle'),
+path('members/', Members.as_view(), name='members'),
 
 ]

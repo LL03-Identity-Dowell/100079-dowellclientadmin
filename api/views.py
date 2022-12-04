@@ -10,7 +10,8 @@ import jwt
 import datetime
 from client_admin.decorators import authenticationrequired, is_client_admin, is_client_and_super_admin, is_super_admin, loginrequired, unauthenticated_user
 from client_admin.login import get_user_profile
-
+from client_admin_new.models import ClientAdmin
+from django.core import serializers
 
 
 
@@ -208,4 +209,31 @@ class YoutubeplaylistView(APIView):
         # return Response(companies)  
 
 
+class Organisations(APIView):
+    def get(self,request):
+        organisations = list(ClientAdmin.objects.values_list('organisations',flat=True))
+        print(organisations)
+        # organisations = organisations_
+        # data = serializers.serialize('json', organisations)
 
+        return JsonResponse({"organisations":organisations},safe=False)
+        # return HttpResponse(data, content_type='application/json')
+
+
+class Profile(APIView):
+    def get(self,request):
+        profile = list(ClientAdmin.objects.values_list('profile',flat=True))
+        # print(organisations)
+        # organisations = organisations_
+        # data = serializers.serialize('json', organisations)
+
+        return JsonResponse({"profile":profile},safe=False)
+
+class Members(APIView):
+    def get(self,request):
+        members = list(ClientAdmin.objects.values_list('members',flat=True))
+        # print(organisations)
+        # organisations = organisations_
+        # data = serializers.serialize('json', organisations)
+
+        return JsonResponse({"members":members},safe=False)

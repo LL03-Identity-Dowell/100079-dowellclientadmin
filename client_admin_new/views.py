@@ -23,6 +23,7 @@ from client_admin.decorators import authenticationrequired
 from client_admin.dowellconnection import dowellconnection 
 from django.urls import reverse
 from django.core.mail import EmailMessage
+from .models import ClientAdmin
 
 # @authenticationrequired
 # def home(request):
@@ -140,6 +141,12 @@ def home(request):
     s = dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field,"nil")
     s = json.loads(s)
     s = s["data"][0]
+    if not ClientAdmin.objects.filter(id=s["_id"]).exists():
+        ClientAdmin.objects.create(id = s["_id"],document_name= s["document_name"],organisations = s["organisations"] ,profile = s["profile_info"],products = s["products"],members=s["members"],portfolio = s["portpolio"],security_layers = s["security_layers"],other_organisation = s["other_organisation"] )
+    else:
+        ClientAdmin.objects.update(id = s["_id"],document_name= s["document_name"],organisations = s["organisations"] ,profile = s["profile_info"],products = s["products"],members=s["members"],portfolio = s["portpolio"],security_layers = s["security_layers"],other_organisation = s["other_organisation"] )
+
+
     print(s)
     # print(s["data"][0])
     # print(s["profile_info"])#user info
