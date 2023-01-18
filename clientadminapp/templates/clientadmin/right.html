@@ -1,0 +1,373 @@
+{%extends 'clientadmin/allcontent.html'%}
+
+{% block content %}
+
+
+
+
+
+
+                  <div id="rights-tab" class="clearfix eael-tab-content-item inactive" data-title-link="rights-tab">
+				        					        <h5> </h5><h5>Operational rights of my Organisation</h5><p> </p><p>		<div data-elementor-type="section" data-elementor-id="6219" class="elementor elementor-6219">
+		<div class="elementor-section-wrap">
+					<section class="elementor-section elementor-inner-section elementor-element elementor-element-6686ac12 elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="6686ac12" data-element_type="section">
+						<div class="elementor-container elementor-column-gap-default">
+							<div class="elementor-row">
+					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-6acb6303" data-id="6acb6303" data-element_type="column" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-2dfb8dd8 elementor-widget elementor-widget-heading" data-id="2dfb8dd8" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-medium">Select</h2>		</div>
+				</div>
+				<div class="elementor-element elementor-element-3fc7eacc elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="3fc7eacc" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
+				<div class="elementor-widget-container">
+					<form action="" method="POST" name="Item">
+					    {%csrf_token%}
+			<input type="hidden" name="post_id" value="6219"/>
+			<input type="hidden" name="form_id" value="3fc7eacc"/>
+			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
+
+							<input type="hidden" name="queried_id" value="5880"/>
+
+			<div class="elementor-form-fields-wrapper elementor-labels-above">
+								<div class="elementor-field-type-radio elementor-field-group elementor-column elementor-field-group-field_4028c09 elementor-col-100">
+												<label for="form-field-field_4028c09" class="elementor-field-label">
+								select member type							</label>
+						<div class="elementor-field-subgroup  elementor-subgroup-inline"><span class="elementor-field-option"><input type="radio" value="team_member" id="form-field-field_4028c09-0" name="member_type"> <label for="form-field-field_4028c09-0">Team Member</label></span><span class="elementor-field-option"><input type="radio" value="Guest" id="form-field-field_4028c09-1" name="member_type"> <label for="form-field-field_4028c09-1">User</label></span><span class="elementor-field-option"><input type="radio" value="Public" id="form-field-field_4028c09-2" name="member_type"> <label for="form-field-field_4028c09-2">Public</label></span></div>				</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-name elementor-col-100">
+												<label for="form-field-name" class="elementor-field-label">
+								Select Member(*)							</label>
+								<div class="elementor-field elementor-select-wrapper ">
+			<select name="member" id="form-field-name" class="elementor-field-textual elementor-size-sm">
+									<option value="Select">Select</option>
+									{%for mem in datalav.members.team_members.accept_members %}
+									<option value="{{mem.name}}">{{mem.name}}</option>
+									{%endfor%}
+							</select>
+		</div>
+						</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_c8bda1f elementor-col-100">
+												<label for="form-field-field_c8bda1f" class="elementor-field-label">
+								Select from My Products(*)							</label>
+								<div class="elementor-field elementor-select-wrapper ">
+			<select name="product" id="form-field-field_c8bda1f" class="elementor-field-textual elementor-size-sm">
+									<option value="Select">Select</option>
+									{%for mem in datalav.products %}
+									<option value="{{mem}}">{{mem}}</option>
+									{%endfor%}
+							</select>
+		</div>
+						</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_a5eeae4 elementor-col-100">
+												<label for="form-field-field_a5eeae4" class="elementor-field-label">
+								Select Data Type(*)							</label>
+								<div class="elementor-field elementor-select-wrapper ">
+			<select name="data_type" id="form-field-field_a5eeae4" class="elementor-field-textual elementor-size-sm">
+									<option value="Select">Select</option>
+									<option value="Real_Data">Real Data</option>
+									<option value="Testing_Data">Testing Data</option>
+									<option value="Learning_Data">Learning Data</option>
+									<option value="Archived_Data">Archived Data</option>
+									<option value=""></option>
+							</select>
+		</div>
+						</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_adb15eb elementor-col-100">
+												<label for="form-field-field_adb15eb" class="elementor-field-label">
+								Select Operational Rights(*)							</label>
+								<div class="elementor-field elementor-select-wrapper ">
+			<select name="op_rights" id="form-field-field_adb15eb" class="elementor-field-textual elementor-size-sm">
+									<option value="View">View</option>
+									<option value="Add/Edit">Add/Edit</option>
+									<option value="Delete">Delete</option>
+									<option value="Admin">Admin</option>
+							</select>
+		</div>
+						</div>
+								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_c88b6de elementor-col-100">
+												<label for="form-field-field_c88b6de" class="elementor-field-label">
+								Roles(*)							</label>
+								<div class="elementor-field elementor-select-wrapper ">
+			<select name="role" id="form-field-field_c88b6de" class="elementor-field-textual elementor-size-sm">
+									<option value="Select">Select</option>
+									{%for mem in datalav.roles %}
+									<option value="{{mem.role_name}}">{{mem.role_name}}</option>
+									{%endfor%}
+							</select>
+		</div>
+						</div>
+								<div class="elementor-field-type-text elementor-field-group elementor-column elementor-field-group-field_4672d64 elementor-col-100 elementor-field-required">
+												<label for="form-field-field_4672d64" class="elementor-field-label">
+								Port Folio Name(*)							</label>
+														<input size="1" type="text" name="portfolio_name" id="form-field-field_4672d64" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter a unique Name for portfolio" required="required" aria-required="true">
+												<label for="form-field-field_4672d65" class="elementor-field-label">
+								Port Folio Code	(*)					</label>
+														<input size="1" type="text" name="portfolio_code" id="form-field-field_4672d65" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Portfolio Code" required="required" aria-required="true">
+
+																			<label for="form-field-field_4672d65" class="elementor-field-label">
+								Port Folio Details						</label>
+													<input size="1" type="text" name="portfolio_det" id="form-field-field_eb53206" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Portfolio Details ">
+																	<label for="form-field-field_4672d65" class="elementor-field-label">
+								Port Folio Universal Code(*)						</label>
+														<input size="1" type="text" name="portfolio_u_code" id="form-field-field_eb53206" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Portfolio Universal Code">
+
+																	<label for="form-field-field_4672d65" class="elementor-field-label">
+								Port Folio Specification						</label>
+														<input size="1" type="text" name="portfolio_spec" id="form-field-field_eb53206" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Enter Portfolio Specification">
+
+                                            </div>
+								<div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
+					<button type="submit" class="elementor-button elementor-size-sm">
+						<span >
+															<span class=" elementor-button-icon">
+																										</span>
+																						<span class="elementor-button-text">Create Portfolio</span>
+													</span>
+					</button>
+				</div>
+			</div>
+		</form>
+				</div>
+				</div>
+						</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-510fcdba" data-id="510fcdba" data-element_type="column">
+			<div class="elementor-column-wrap elementor-element-populated">
+							<div class="elementor-widget-wrap">
+						<div class="elementor-element elementor-element-c9b4c0c elementor-widget elementor-widget-heading" data-id="c9b4c0c" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+			<h2 class="elementor-heading-title elementor-size-medium">Products, Data Types, Rights Assigned</h2>		</div>
+			<!--<center>-->
+			<!--    <style>-->
+			<!--        #lavscroll::-webkit-scrollbar { width: 0 !important }-->
+			<!--    </style>-->
+			<!--    <div id="lavscroll" style="width:80%; height:150px; overflow:scroll; scrollbar-width:none;-ms-overflow-style: none;">-->
+			<!--        <table>-->
+			<!--            <tr style="text-align:left">-->
+			<!--                <th>Portfolio Name</th><th>Present Status</th><th>Action</th>-->
+			<!--            </tr>-->
+			<!--            {%for iport in datalav.portpolio %}-->
+			<!--            <tr>-->
+			<!--                <td>{{iport.portfolio_name}}</td>-->
+			<!--                <td>{%if iport.status %}{{iport.status}} {%else%}Enable{%endif%}</td>-->
+			<!--                <td><form action="en_dis_port" method="POST">{%csrf_token%}<input type="text" name="portfolio" value="{{iport.portfolio_name}}" hidden> {% if "disabl" in iport.status %} <input type="text" name="status" value="enable" hidden> <div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons " ><button type="submit" class="elementor-button elementor-size-sm" style="background-color:green"><span ><span class=" elementor-button-icon"></span><span class="elementor-button-text">Enable</span></button></div> {%else%} <input type="text" name="status"  value="disable" hidden> <button type="submit" class="elementor-button elementor-size-sm" style="background-color:maroon"><span ><span class=" elementor-button-icon"></span><span class="elementor-button-text">Disable</span></span></button> {%endif%} </form></td>-->
+			<!--            </tr>-->
+			<!--            {%endfor%}-->
+			<!--        </table>-->
+			<!--    </div></center>-->
+				</div>
+				<div class="elementor-element elementor-element-74839e5b elementor-widget elementor-widget-eael-adv-tabs" data-id="74839e5b" data-element_type="widget" data-widget_type="eael-adv-tabs.default">
+				<div class="elementor-widget-container">
+			        <div id="eael-advance-tabs-74839e5b" class="eael-advance-tabs eael-tabs-horizontal eael-tab-auto-active" data-tabid="74839e5b">
+            <div class="eael-tabs-nav">
+                <ul class="eael-tab-inline-icon">
+                                            <li id="real-data" class="inactive eael-tab-item-trigger" aria-selected="true" data-tab="1" role="tab" tabindex="0" aria-controls="real-data-tab" aria-expanded="false">
+
+                                                                <i class="fas fa-torii-gate"></i>
+                                                            <span class="eael-tab-title  title-after-icon">Real Data</span>
+                                                    </li>
+                                            <li id="testing-data" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="2" role="tab" tabindex="-1" aria-controls="testing-data-tab" aria-expanded="false">
+
+                                                                <i class="fas fa-home"></i>
+                                                            <span class="eael-tab-title  title-after-icon">Testing Data</span>
+                                                    </li>
+                                            <li id="learning-data" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="3" role="tab" tabindex="-1" aria-controls="learning-data-tab" aria-expanded="false">
+
+                                                                <i class="fas fa-users"></i>
+                                                            <span class="eael-tab-title  title-after-icon">Learning Data</span>
+                                                    </li>
+                                            <li id="archived-data" class="inactive eael-tab-item-trigger" aria-selected="false" data-tab="4" role="tab" tabindex="-1" aria-controls="archived-data-tab" aria-expanded="false">
+
+                                                                <i class="fas fa-store"></i>
+                                                            <span class="eael-tab-title  title-after-icon">Archived Data</span>
+                                                    </li>
+                                    </ul>
+            </div>
+
+            <div class="eael-tabs-content">
+
+                    <div id="real-data-tab" class="clearfix eael-tab-content-item inactive" data-title-link="real-data-tab">
+                        <h6 data-pm-slice="1 1 []" data-en-clipboard="true"><strong>[Select Product]</strong></h6>
+                        <div class="elementor-field elementor-select-wrapper " >
+			<select name="product"  class="elementor-field-textual elementor-size-md" style="width:100% !important">
+									<option value="Select">Select</option>
+									{%for mem in datalav.products %}
+									<option value="{{mem}}">{{mem}}</option>
+									{%endfor%}
+							</select>
+		</div>
+				        					        <h6 data-pm-slice="1 1 []" data-en-clipboard="true"><strong>[Select Portfolio]</strong></h6>
+
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+display:none;
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+/*#myTable tr.header, #myTable tr:hover {*/
+/*  background-color: #f1f1f1;*/
+/*}*/
+
+#summary:hover {
+    cursor: pointer;
+    color: #fff200;
+}
+
+#detail {
+    width: 300px;
+    height: 300px;
+    background: #fff200;
+    display: none;
+}
+</style>
+<script>
+    $(document).ready( function(e) {
+    $('#summary').hover( function( evt ) {
+        $('#detail').toggle();
+    });
+});
+</script>
+
+
+
+
+				        					        <input type="text" id="myInput" onkeyup="myFunction22()" placeholder="Search for portfolio.." title="Type in a name">
+
+
+				        					        <table id="myTable">
+                                                      <tr class="header">
+                                                        <th>Portfolio Name</th><th>action</th>
+                                                      </tr>
+                                                      {%for mem in datalav.portpolio %}
+									<tr>
+
+									    <td id="summary">{{mem.portfolio_name}}</td>
+             <!--                           <td>{{mem.portfolio_code}}</td>-->
+									    <!--<td>{{mem.role}}</td>-->
+									    <!--<td>{{mem.operations_right}}</td>-->
+
+									    <!--<td>{{mem.status}}</td>-->
+									    <td>enble</td>
+
+									</tr>
+									{%endfor%}
+									</table>
+
+									<div id="myDynamicTable"></div>
+<div id="detail">Detail of theis summary</div>
+
+<script>
+function getdetails(link){
+var t = link.innerText || link.textContent;
+  var myTableDiv = document.getElementById("myDynamicTable");
+
+  var table = document.createElement('TABLE');
+  table.border = '1';
+
+  var tableBody = document.createElement('TBODY');
+  table.appendChild(tableBody);
+
+
+    var tr = document.createElement('TR');
+    tableBody.appendChild(tr);
+      var td = document.createElement('TD');
+      td.width = '75';
+      td.appendChild(document.createTextNode("Cell "));
+      tr.appendChild(td);
+  myTableDiv.appendChild(table);
+
+}
+                                        function myFunction22() {
+                                            var al=document.getElementById("myTable");
+                                            al.style.display="block";
+                                          var input, filter, table, tr, td, i, txtValue;
+                                          input = document.getElementById("myInput");
+                                          filter = input.value.toUpperCase();
+                                          table = document.getElementById("myTable");
+                                          tr = table.getElementsByTagName("tr");
+                                          for (ir = 0; ir < tr.length; ir++) {
+                                            td = tr[ir].getElementsByTagName("td")[0];
+                                            if (td) {
+                                              txtValue = td.textContent || td.innerText;
+                                              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                                tr[ir].style.display = "";
+                                              } else {
+                                                tr[ir].style.display = "none";
+                                              }
+                                            }
+                                          }
+                                        }
+ </script>
+
+
+		<!--		        					        <div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-field_c88b6de elementor-col-100">-->
+		<!--										<label for="form-field-field_c88b6de" class="elementor-field-label">-->
+		<!--						Portfolio							</label>-->
+		<!--						<div class="elementor-field elementor-select-wrapper ">-->
+		<!--	<select name="role" id="form-field-field_c88b6de" class="elementor-field-textual elementor-size-sm">-->
+		<!--							<option value="Select">Select</option>-->
+		<!--							{%for mem in datalav.portpolio %}-->
+		<!--							<option value="{{mem.portfolio_name}}">{{mem.portfolio_name}}</option>-->
+		<!--							{%endfor%}-->
+		<!--					</select>-->
+		<!--</div>-->
+		<!--				</div>-->
+
+
+
+				        					       <h6 data-pm-slice="1 1 []" data-en-clipboard="true"></h6><ol><li><h6>Team Member</h6><ol><li><h6>Member 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li><li><h6>Portfolio 2  [View, Add/Edit, Delete, Admin]</h6></li><li> </li></ol></li><li><h6>Member 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>User</h6><ol><li><h6>User 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>User 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>Public</h6><ol><li><h6>Public 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>Public 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li></ol>				                            </div>
+
+                    <div id="testing-data-tab" class="clearfix eael-tab-content-item inactive" data-title-link="testing-data-tab">
+				        					        <h6 data-pm-slice="1 1 []" data-en-clipboard="true"><strong>[Select Product]</strong></h6><p><strong>[Select Role]</strong></p><h6 data-pm-slice="1 1 []" data-en-clipboard="true"> </h6><ol><li><h6>Team Member</h6><ol><li><h6>Member 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li><li><h6>Portfolio 2  [View, Add/Edit, Delete, Admin]</h6></li><li> </li></ol></li><li><h6>Member 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>User</h6><ol><li><h6>User 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>User 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>Public</h6><ol><li><h6>Public 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>Public 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li></ol>				                            </div>
+
+                    <div id="learning-data-tab" class="clearfix eael-tab-content-item inactive" data-title-link="learning-data-tab">
+				        					        <h6 data-pm-slice="1 1 []" data-en-clipboard="true"><strong>[Select Product]</strong></h6><p><strong>[Select Role]</strong></p><h6 data-pm-slice="1 1 []" data-en-clipboard="true"> </h6><ol><li><h6>Team Member</h6><ol><li><h6>Member 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li><li><h6>Portfolio 2  [View, Add/Edit, Delete, Admin]</h6></li><li> </li></ol></li><li><h6>Member 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>User</h6><ol><li><h6>User 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>User 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>Public</h6><ol><li><h6>Public 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>Public 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li></ol>				                            </div>
+
+                    <div id="archived-data-tab" class="clearfix eael-tab-content-item inactive" data-title-link="archived-data-tab">
+				        					        <h6 data-pm-slice="1 1 []" data-en-clipboard="true"><strong>[Select Product]</strong></h6><p><strong>[Select Role]</strong></p><h6 data-pm-slice="1 1 []" data-en-clipboard="true"> </h6><ol><li><h6>Team Member</h6><ol><li><h6>Member 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li><li><h6>Portfolio 2  [View, Add/Edit, Delete, Admin]</h6></li><li> </li></ol></li><li><h6>Member 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>User</h6><ol><li><h6>User 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>User 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li><li><h6>Public</h6><ol><li><h6>Public 1</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li><li><h6>Public 2</h6><ol><li><h6>Portfolio 1  [View, Add/Edit, Delete, Admin]</h6></li></ol></li></ol></li></ol>				                            </div>
+		                    </div>
+        </div>
+		</div>
+				</div>
+						</div>
+					</div>
+		</div>
+								</div>
+					</div>
+		</section>
+				</div>
+		</div>
+		</p>				                            </div>
+
+
+{% endblock content %}
