@@ -1512,13 +1512,20 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Team Management</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
-<option>Portfolio 01, Role Name, Member Type</option>
+<p style="text-align: left;">
+	<!-- <select id="mySelect"> -->
+
+	<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Team Management" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Team Management" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+		<b><br>
+		<button type="submit">Connect</button></b></form>
+
+<!-- <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
-<option>Portfolio 3, Role Name, Member Type</option>
+<option>Portfolio 3, Role Name, Member Type</option> 
 </select></p>
+
 <b><br>
-<button>Connect</button></b></p>
+<button>Connect</button></b></p> -->
                                             </div>
                 </div>
             </div>
@@ -1529,13 +1536,24 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Living Lab Monitoring</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
+<p style="text-align: left;">
+	
+
+	<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Living Lab Monitoring" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Monitoring" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+		<b><br>
+		<button type="submit">Connect</button></b></form>
+
+	<!-- <select id="mySelect">
 <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
 <option>Portfolio 3, Role Name, Member Type</option>
-</select></p>
-<b><br>
-<button>Connect</button></b></p>
+</select> -->
+
+</p>
+<!-- <b><br>
+<button>Connect</button></b> -->
+
+</p>
                                             </div>
                 </div>
             </div>
@@ -1546,13 +1564,24 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Live Dashboard</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
+<p style="text-align: left;">
+	
+
+	<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Live Dashboard" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Dashboard" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+		<b><br>
+		<button type="submit">Connect</button></b></form>
+
+	<!-- <select id="mySelect">
 <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
 <option>Portfolio 3, Role Name, Member Type</option>
-</select></p>
-<b><br>
-<button>Connect</button></b></p>
+</select> -->
+
+</p>
+<!--<b><br>
+ <button>Connect</button></b> -->
+
+</p>
                                             </div>
                 </div>
             </div>
@@ -1579,13 +1608,21 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Sales Agent</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
+<p style="text-align: left;">
+	
+	<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Sales Agent" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Agent" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+		<b><br>
+		<button type="submit">Connect</button></b></form>
+	<!-- <select id="mySelect">
 <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
 <option>Portfolio 3, Role Name, Member Type</option>
-</select></p>
-<b><br>
-<button>Connect</button></b></p>
+</select> -->
+
+</p>
+<!--<b><br>
+ <button>Connect</button></b> -->
+</p>
                                             </div>
                 </div>
             </div>
@@ -1596,13 +1633,21 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Permutation Calculator</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
+<p style="text-align: left;">
+	
+	<!-- <select id="mySelect">
 <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
 <option>Portfolio 3, Role Name, Member Type</option>
-</select></p>
-<b><br>
-<button>Connect</button></b></p>
+</select> -->
+
+<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Permutation Calculator" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Permutation" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+	<b><br>
+	<button type="submit">Connect</button></b></form>
+</p>
+<!--<b><br>
+ <button>Connect</button></b> -->
+</p>
                                             </div>
                 </div>
             </div>
@@ -1613,13 +1658,22 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Customer Support</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
+<p style="text-align: left;">
+	
+
+	<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Customer Support" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Support" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+		<b><br>
+		<button type="submit">Connect</button></b></form>
+
+	<!-- <select id="mySelect">
 <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
 <option>Portfolio 3, Role Name, Member Type</option>
-</select></p>
+</select>
+
+</p>
 <b><br>
-<button>Connect</button></b></p>
+<button>Connect</button></b></p>  -->
                                             </div>
                 </div>
             </div>
@@ -1645,7 +1699,16 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
             <div class="overlay">
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
-                        <h2 class="img-accordion-title">Secure Repositories</h2>                            <p><p> </p><p style="text-align: left;"><select id="mySelect"><option>Portfolio 01, Role Name, Member Type</option><option>Portfolio 02, Role Name, Member Type</option><option>Portfolio 3, Role Name, Member Type</option></select></p><p><b><br /><button>Connect</button></b></p></p>
+                        <h2 class="img-accordion-title">Secure Repositories</h2>                            
+						<p><p> </p><p style="text-align: left;">
+							<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Secure Repositories" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Repositories" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+								<b><br>
+								<button type="submit">Connect</button></b></form>
+
+							<!-- <select id="mySelect"><option>Portfolio 01, Role Name, Member Type</option><option>Portfolio 02, Role Name, Member Type</option><option>Portfolio 3, Role Name, Member Type</option></select>
+						</p><p><b><br /><button>Connect</button></b></p> -->
+					
+					</p>
                                             </div>
                 </div>
             </div>
@@ -1655,7 +1718,14 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
             <div class="overlay">
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
-                        <h2 class="img-accordion-title">Secure Data</h2>                            <p><p> </p><p style="text-align: left;"><select id="mySelect"><option>Portfolio 01, Role Name, Member Type</option><option>Portfolio 02, Role Name, Member Type</option><option>Portfolio 3, Role Name, Member Type</option></select></p><p><b><br /><button>Connect</button></b></p></p>
+                        <h2 class="img-accordion-title">Secure Data</h2>                            
+						<p><p> </p><p style="text-align: left;">
+							<!-- <select id="mySelect"><option>Portfolio 01, Role Name, Member Type</option><option>Portfolio 02, Role Name, Member Type</option><option>Portfolio 3, Role Name, Member Type</option></select></p><p><b><br /><button>Connect</button></b></p> -->
+							<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Secure Data" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Secure" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+								<b><br>
+								<button type="submit">Connect</button></b></form>
+						
+						</p>
                                             </div>
                 </div>
             </div>
@@ -1666,13 +1736,21 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                 <div class="overlay-inner">
                     <div class="overlay-inner ">
                         <h2 class="img-accordion-title">Samanta</h2>                            <p>&nbsp;
-<p style="text-align: left;"><select id="mySelect">
+<p style="text-align: left;">
+	<form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Samanta" hidden><select id="mySelect" name="portfl" required>{% for i in datalav.portpolio %} {% if "Samanta" in i.product and "owner" in i.username%}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%}</select></p>
+		<b><br>
+		<button type="submit">Connect</button></b></form>
+	<!-- <select id="mySelect">
 <option>Portfolio 01, Role Name, Member Type</option>
 <option>Portfolio 02, Role Name, Member Type</option>
 <option>Portfolio 3, Role Name, Member Type</option>
-</select></p>
+</select> 
+
+</p>
 <b><br>
-<button>Connect</button></b></p>
+<button>Connect</button></b> -->
+
+</p> 
                                             </div>
                 </div>
             </div>
