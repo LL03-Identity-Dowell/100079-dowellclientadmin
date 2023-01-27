@@ -112,6 +112,8 @@ def Home(request):
         context["pmem"]=[*set(tmem)]
         context["pmemp"]=[elem for elem in pmemp if elem not in pmember ]
         context["public"]=publiclink.objects.all().filter(username=user["userinfo"]["username"])
+        # print(context["datalav"])
+
         return render(request,"new/index.html",context)
     else:
         return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100093.pythonanywhere.com/new")

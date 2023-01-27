@@ -668,7 +668,16 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Organisations</a>
 					</div>
 
-					<div id="elementor-tab-content-1171" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1171"><ol><li><h6>Organisation 1 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Organisation 2 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Organisation 3 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6></li><li><h6>Product 2</h6></li></ol></li><li><h6>My Organisation [Myself]</h6><ol><li><h6>Product 1</h6></li><li><h6>Product 2</h6></li></ol></li><li> </li><li> </li></ol></div>
+					<div id="elementor-tab-content-1171" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1171"><ol>
+
+						{% for org in datalav.other_organisation %}
+						<li><h6>{{org.org_name}} [Owner]</h6><ol><li><h6>{{org.product}}<span style="color: #ff6600;">[{{org.data_type}}, {{org.operations_right}}]</span></h6><ol><li><h6>{{org.portfolio_name}}</h6></li></ol></li>
+
+						<!-- <li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li> -->
+					</ol>
+					</li>
+						{% endfor %}
+						<!-- <li><h6>Organisation 2 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Organisation 3 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6></li><li><h6>Product 2</h6></li></ol></li><li><h6>My Organisation [Myself]</h6><ol><li><h6>Product 1</h6></li><li><h6>Product 2</h6></li></ol></li><li> </li><li> </li></ol></div> -->
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-1172" class="elementor-tab-title" data-tab="2" role="tab" aria-controls="elementor-tab-content-1172" aria-expanded="false">
@@ -730,7 +739,13 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Team Member Chat (098)</a>
 					</div>
 
-					<div id="elementor-tab-content-2101" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-2101"><ol><li>Member 1</li><li>Member 2</li><li>Member 3</li></ol></div>
+					<div id="elementor-tab-content-2101" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-2101">
+						<ol>
+							{% for tm in datalav.members.team_members.accept_members %}
+							<li>{{tm.first_name}}</li>
+							{% endfor %}
+							<!-- <li>Member 1</li><li>Member 2</li><li>Member 3</li> -->
+						</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-2102" class="elementor-tab-title" data-tab="2" role="tab" aria-controls="elementor-tab-content-2102" aria-expanded="false">
@@ -741,7 +756,14 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">User Chat (09)</a>
 					</div>
 
-					<div id="elementor-tab-content-2102" class="elementor-tab-content elementor-clearfix" data-tab="2" role="tabpanel" aria-labelledby="elementor-tab-title-2102"><ol><li>User 1</li><li>User 2</li><li>User 3</li><li>User 4</li></ol></div>
+					<div id="elementor-tab-content-2102" class="elementor-tab-content elementor-clearfix" data-tab="2" role="tabpanel" aria-labelledby="elementor-tab-title-2102">
+						<ol>
+							<!-- <li>User 1</li><li>User 2</li><li>User 3</li><li>User 4</li> -->
+
+							{% for tm in datalav.members.team_members.guest_members %}
+							<li>{{tm.first_name}} [Active/ Live/ Disabled]</li>
+							{% endfor %}
+						</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-2103" class="elementor-tab-title" data-tab="3" role="tab" aria-controls="elementor-tab-content-2103" aria-expanded="false">
@@ -752,7 +774,14 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Public Chat (0045)</a>
 					</div>
 
-					<div id="elementor-tab-content-2103" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-2103"><ol><li>Public 1</li><li>Public 2</li><li>Public 3</li><li>Public 4</li></ol></div>
+					<div id="elementor-tab-content-2103" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-2103">
+						<ol>
+							<!-- <li>Public 1</li><li>Public 2</li><li>Public 3</li><li>Public 4</li> -->
+
+							{% for tm in datalav.members.team_members.public_members %}
+							<li>{{tm.first_name}} [Active/ Live/ Disabled]</li>
+							{% endfor %}
+						</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-2104" class="elementor-tab-title" data-tab="4" role="tab" aria-controls="elementor-tab-content-2104" aria-expanded="false">
@@ -876,7 +905,12 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Products (007)</a>
 					</div>
 
-					<div id="elementor-tab-content-1521" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1521"><ol><li>Workflow AI</li><li>Wifi QR Code</li><li>Digital Q</li></ol></div>
+					<div id="elementor-tab-content-1521" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1521"><ol>
+						<!-- <li>Workflow AI</li><li>Wifi QR Code</li><li>Digital Q</li> -->
+					{% for prod in datalav.products %}
+					<li>{{prod}}</li>
+					{% endfor %}
+					</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-1522" class="elementor-tab-title" data-tab="2" role="tab" aria-controls="elementor-tab-content-1522" aria-expanded="false">
@@ -887,7 +921,14 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Team Members (00025)</a>
 					</div>
 
-					<div id="elementor-tab-content-1522" class="elementor-tab-content elementor-clearfix" data-tab="2" role="tabpanel" aria-labelledby="elementor-tab-title-1522"><p><strong>[Search Team Member]</strong></p><ol><li>Team Member 1 [Active/ Live/ Disabled]</li><li>Team Member 2 [Active/ Live/ Disabled]</li><li>Team Member 3 [Active/ Live/ Disabled]</li><li>Team Member 4 [Active/ Live/ Disabled]</li></ol></div>
+					<div id="elementor-tab-content-1522" class="elementor-tab-content elementor-clearfix" data-tab="2" role="tabpanel" aria-labelledby="elementor-tab-title-1522"><p><strong>[Search Team Member]</strong></p><ol>
+						<!-- <li>Team Member 1 [Active/ Live/ Disabled]</li><li>Team Member 2 [Active/ Live/ Disabled]</li><li>Team Member 3 [Active/ Live/ Disabled]</li><li>Team Member 4 [Active/ Live/ Disabled]</li> -->
+						{% for tm in datalav.members.team_members.accept_members %}
+						<li>{{tm.first_name}} [Active/ Live/ Disabled]</li>
+						{% endfor %}
+
+
+					</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-1523" class="elementor-tab-title" data-tab="3" role="tab" aria-controls="elementor-tab-content-1523" aria-expanded="false">
@@ -898,7 +939,12 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Users (0000234)</a>
 					</div>
 
-					<div id="elementor-tab-content-1523" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1523"><p><strong>[Search User]</strong></p><ol><li>User 1 [Active/ Live/ Disabled]</li><li>User 2 [Active/ Live/ Disabled]</li><li>User 3 [Active/ Live/ Disabled]</li><li>User 4 [Active/ Live/ Disabled]</li></ol></div>
+					<div id="elementor-tab-content-1523" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1523"><p><strong>[Search User]</strong></p><ol>
+						<!-- <li>User 1 [Active/ Live/ Disabled]</li><li>User 2 [Active/ Live/ Disabled]</li><li>User 3 [Active/ Live/ Disabled]</li><li>User 4 [Active/ Live/ Disabled]</li> -->
+						{% for tm in datalav.members.team_members.guest_members %}
+						<li>{{tm.first_name}} [Active/ Live/ Disabled]</li>
+						{% endfor %}
+					</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-1524" class="elementor-tab-title" data-tab="4" role="tab" aria-controls="elementor-tab-content-1524" aria-expanded="false">
@@ -909,7 +955,12 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Public (009)</a>
 					</div>
 
-					<div id="elementor-tab-content-1524" class="elementor-tab-content elementor-clearfix" data-tab="4" role="tabpanel" aria-labelledby="elementor-tab-title-1524"><p>Active Public IDs</p><ol><li>QR code ID 1</li><li>QR code ID 2</li><li>QR code ID 3</li></ol></div>
+					<div id="elementor-tab-content-1524" class="elementor-tab-content elementor-clearfix" data-tab="4" role="tabpanel" aria-labelledby="elementor-tab-title-1524"><p>Active Public IDs</p><ol>
+						<!-- <li>QR code ID 1</li><li>QR code ID 2</li><li>QR code ID 3</li> -->
+						{% for tm in datalav.members.team_members.public_members %}
+						<li>{{tm.first_name}} [Active/ Live/ Disabled]</li>
+						{% endfor %}
+					</ol></div>
 				</div>
 								</div>
 				</div>

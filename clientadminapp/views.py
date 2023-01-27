@@ -16,6 +16,7 @@ import requests
 def Home(request):
     if request.session.get("session_id"):
         session=request.session["session_id"]
+        print(context["datalav"])
         return redirect(f'/new?session_id={session}')
     else:
         return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100093.pythonanywhere.com/new")
@@ -115,6 +116,7 @@ def Home1(request):
         # context["level1"]=r["data"][0]["organisations"][0]["level1"]["level_name"]
         #request.session.modified = True
         context["public"]=publiclink.objects.all().filter(username=user["userinfo"]["username"])
+        print(context["datalav"])
         return render(request,"index.html",context)
     else:
         return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100093.pythonanywhere.com")
