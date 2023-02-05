@@ -15,5 +15,7 @@ urlpatterns = [
     path("otherorg",otherorg,name="otherorg"),
     path("addpublic",addpublic,name="addpublic"),
     path('en_dis_port',disablep,name="en_dis_port"),
-    path('logout',Logout,name="logout")
+    path('logout',Logout,name="logout"),
+    path('layers',Layers,name="layers")
+
 ]

@@ -165,3 +165,46 @@ class publiclink(models.Model):
         db_table="publiclink"
 
 
+
+
+class Devices(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="Devices"
+
+class OperatingSystems(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="OperatingSystems"
+
+class Browsers(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="Browsers"
+
+class InternetConnection(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="InternetConnection"
+
+class LoginType(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="LoginType"
+
+class PasswordStrength(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="PasswordStrength"
+
+class IdVerification(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="IdVerification"

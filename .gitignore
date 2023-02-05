@@ -143,3 +143,9 @@ db.sqlite3
 ./tickets/migrations/
 
 myapp.zip
+.settings.py
+clientadmin/settings.py
+clientadminapp/migrations/
+clientadmin/static
+clientadminapp/static/
+static/rest_framework/

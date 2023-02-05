@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from clientadminapp.models import UserData,UserOrg
+from clientadminapp.models import UserData,UserOrg,Devices,Browsers,IdVerification,InternetConnection,OperatingSystems,LoginType,PasswordStrength
 import json
 @api_view(["POST"])
 def sessionView(request):
@@ -45,3 +45,51 @@ def OrgView(request):
     members=rj["members"]
     portl=rj["portpolio"]
     return Response({"members":members,"portfolio":portl})
+
+
+@api_view(["GET"])
+def DeviceLayers(request):
+
+    ro1=Devices.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})
+
+
+@api_view(["GET"])
+def OsLayers(request):
+
+    ro1=OperatingSystems.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})
+
+
+@api_view(["GET"])
+def BrowserLayers(request):
+
+    ro1=Browsers.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})
+
+
+@api_view(["GET"])
+def ConnectionLayers(request):
+
+    ro1=InternetConnection.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})
+
+@api_view(["GET"])
+def LoginLayers(request):
+
+    ro1=LoginType.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})
+
+
+@api_view(["GET"])
+def IdVerificationLayers(request):
+
+    ro1=IdVerification.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})
+
+
+@api_view(["GET"])
+def PasswordLayers(request):
+
+    ro1=PasswordStrength.objects.all()
+    return Response({"data":json.loads(ro1[0].data)})

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,HttpResponse
-from .models import UserInfo,UserPortfolio,UserOrg,Urls,UserData,publiclink
+from .models import UserInfo,UserPortfolio,UserOrg,Urls,UserData,publiclink,Devices,OperatingSystems,Browsers,InternetConnection,LoginType,PasswordStrength,IdVerification
 from clientadminapp.dowellconnection import dowellconnection
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -16,13 +16,15 @@ import requests
 def Home(request):
     if request.session.get("session_id"):
         session=request.session["session_id"]
-        print(context["datalav"])
+        # print(context["datalav"])
         return redirect(f'/new?session_id={session}')
     else:
         return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100093.pythonanywhere.com/new")
 def Home1(request):
     context={}
-
+    var1 = Devices.objects.all()
+    # context["devices"] = var1[0]
+    context["devicess"]  = "Hello"
     # try:
     #     s=request.session.get("session_id")
     # except:
@@ -116,6 +118,7 @@ def Home1(request):
         # context["level1"]=r["data"][0]["organisations"][0]["level1"]["level_name"]
         #request.session.modified = True
         context["public"]=publiclink.objects.all().filter(username=user["userinfo"]["username"])
+
         print(context["datalav"])
         return render(request,"index.html",context)
     else:
@@ -908,4 +911,46 @@ def Logout(request):
 #     if request.method="POST":
 #         level=request.POST["itemname"]
 #     return HttpResponse(level)
+
+
+def Layers(request):
+    if request.method == "POST" and "devicelayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"laptop":request.POST.get('form_fields[laptoplayer]'),"phone":request.POST.get('form_fields[phonelayer]'),"tablet":request.POST.get('form_fields[tabletlayer]'),"others":request.POST.get('form_fields[otherdevicelayer]')}
+        # print(username)
+        obj, created = Devices.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+    if request.method == "POST" and "oslayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"windows":request.POST.get('form_fields[windowslayer]'),"macos":request.POST.get('form_fields[maclayer]'),"linux":request.POST.get('form_fields[linuxlayer]'),"android":request.POST.get('form_fields[androidlayer]'),"ios":request.POST.get('form_fields[iossecuritylayer]'),"others":request.POST.get('form_fields[otherslayeros]')}
+        # print(username)
+        obj, created = OperatingSystems.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+    if request.method == "POST" and "browserlayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"chrome":request.POST.get('form_fields[chromelayer]'),"safari":request.POST.get('form_fields[safarilayer]'),"bing":request.POST.get('form_fields[binglayer]'),"firefox":request.POST.get('form_fields[firefoxlayer]'),"edge":request.POST.get('form_fields[edgelayer]'),"opera":request.POST.get('form_fields[operalayer]'),"others":request.POST.get('form_fields[otherslayerbrowser]')}
+        # print(username)
+        obj, created = Browsers.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+    if request.method == "POST" and "internetlayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"mobiledata":request.POST.get('form_fields[mobiledatalayer]'),"officewifi":request.POST.get('form_fields[securedwifilayer]'),"publicwifi":request.POST.get('form_fields[publicwifilayer]'),"others":request.POST.get('form_fields[otherslayerinternet]')}
+        # print(username)
+        obj, created = InternetConnection.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+    if request.method == "POST" and "passwordlayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"chars8":request.POST.get('form_fields[password8loginlayer]'),"chars10":request.POST.get('form_fields[password10loginlayer]'),"chars12":request.POST.get('form_fields[password12loginayer]'),"chars16":request.POST.get('form_fields[password16loginlayer]'),"others":request.POST.get('form_fields[otherslayerpassword]')}
+        # print(username)
+        obj, created = PasswordStrength.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+    if request.method == "POST" and "logintypelayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"userpass":request.POST.get('form_fields[textloginlayer]'),"faceid":request.POST.get('form_fields[faceidloginlayer]'),"voiceid":request.POST.get('form_fields[voiceidloginayer]'),"biometric":request.POST.get('form_fields[biometricloginlayer]'),"videoid":request.POST.get('form_fields[videoIDlayer]'),"others":request.POST.get('form_fields[otherslayerlogintype]')}
+        # print(username)
+        obj, created = LoginType.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+    if request.method == "POST" and "verifiedIDlayersetbtn" in request.POST:
+        username=request.session['username']
+        dict = {"verifiedid":request.POST.get('form_fields[verifiedIDlayer]'),"notverifiedid":request.POST.get('form_fields[notverifiedIDlayer]'),"phoneverified":request.POST.get('form_fields[verifiedphonelayer]'),"phonenotverified":request.POST.get('form_fields[notverifiedphonelayer]'),"verifiedemail":request.POST.get('form_fields[verifiedemaillayer]'),"notverifiedemail":request.POST.get('form_fields[notverifiedemaillayer]'),"others":request.POST.get('form_fields[otherslayerverifiedID]')}
+        # print(username)
+        obj, created = IdVerification.objects.update_or_create(username=username,defaults={'data': json.dumps(dict)})
+
+    
+    return redirect(f'/?session_id={request.session["session_id"]}')
+
 
