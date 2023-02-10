@@ -208,3 +208,10 @@ class IdVerification(models.Model):
     data = models.TextField()
     class Meta:
         db_table="IdVerification"
+
+
+class GeoLocation(models.Model):
+    username=models.CharField(max_length=255)
+    data = models.TextField()
+    class Meta:
+        db_table="GeoLocation"

@@ -31,7 +31,7 @@ def Home1(request):
     #     s=False
     # if s:
     #     #return HttpResponse(s)
-
+    
     #     return render(request,"index.html")
 
     # else:
@@ -954,3 +954,8 @@ def Layers(request):
     return redirect(f'/?session_id={request.session["session_id"]}')
 
 
+def GeoSetting(request):
+    if request.method == "POST" and "geosetting" in request.POST:
+        print(request.POST.get("AUS"))
+
+    return redirect(f'/?session_id={request.session["session_id"]}')

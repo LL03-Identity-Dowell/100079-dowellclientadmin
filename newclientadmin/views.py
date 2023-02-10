@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect
 from clientadminapp.models import UserInfo,UserPortfolio,UserOrg,Urls,UserData,publiclink
-from clientadminapp.dowellconnection import dowellconnection
+from clientadminapp.dowellconnection import dowellconnection,loginrequired
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core.mail import send_mail
@@ -1165,6 +1165,223 @@ def StatusChange(request):
 
         else:
             return HttpResponse(f'{status},{pname} is check')
+
+@loginrequired
+def En_dis(request):
+    username=request.session["username"]
+    if request.method=="POST":
+        if request.POST.get('formname')=="roles":
+            status=request.POST.get("form_fields[enabledisablerole]",None)
+
+            if status=="enable":
+                role=request.POST.get("form_fields[rolessearchresultdisabled]",None)
+                if "select" in role:
+                    return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the role you want disable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+            elif status=="disable":
+                role=request.POST.get("form_fields[rolessearchresultenabled]",None)
+                if "select" in role:
+                    return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the role you want enable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+            else:
+                return HttpResponse("something wrong contact system admin")
+            userorg=UserOrg.objects.all().filter(username=username)
+            for i in userorg:
+                dataorg=i.org
+                dataorg1=json.loads(dataorg)
+            rot=dataorg1["roles"]
+            for ir in rot:
+                    if ir["role_name"]==role:
+                        ir["status"]=status
+            dataorg1["roles"]=rot
+            obj, created = UserOrg.objects.update_or_create(username=username,defaults={'org': json.dumps(dataorg1)})
+
+            field={"document_name":username}
+            update={"roles":rot}
+            login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
+            return redirect('/')
+        elif request.POST.get('formname')=="levels":
+            if request.POST.get('level')=="level1":
+                level="level1"
+                status=request.POST.get("form_fields[enabledisableitemlevel1]",None)
+                if status=="enable":
+                    itemname=request.POST.get("form_fields[itemlevel1ssearchresultdisabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want disable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+
+                elif status=="disable":
+                    itemname=request.POST.get("form_fields[itemlevel1searchresultenabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want enable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+                else:
+                    return HttpResponse("something wrong contact system admin")
+            if request.POST.get('level')=="level2":
+                level="level2"
+                status=request.POST.get("form_fields[enabledisableitemlevel2]",None)
+                if status=="enable":
+                    itemname=request.POST.get("form_fields[itemlevel2ssearchresultdisabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want disable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+
+                elif status=="disable":
+                    itemname=request.POST.get("form_fields[itemlevel2searchresultenabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want enable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+                else:
+                    return HttpResponse("something wrong contact system admin")
+            if request.POST.get('level')=="level3":
+                level="level3"
+                status=request.POST.get("form_fields[enabledisableitemlevel3]",None)
+                if status=="enable":
+                    itemname=request.POST.get("form_fields[itemlevel3ssearchresultdisabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want disable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+
+                elif status=="disable":
+                    itemname=request.POST.get("form_fields[itemlevel3searchresultenabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want enable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+                else:
+                    return HttpResponse("something wrong contact system admin")
+            if request.POST.get('level')=="level4":
+                level="level4"
+                status=request.POST.get("form_fields[enabledisableitemlevel4]",None)
+                if status=="enable":
+                    itemname=request.POST.get("form_fields[itemlevel4ssearchresultdisabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want disable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+
+                elif status=="disable":
+                    itemname=request.POST.get("form_fields[itemlevel4searchresultenabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want enable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+                else:
+                    return HttpResponse("something wrong contact system admin")
+            if request.POST.get('level')=="level5":
+                level="level5"
+                status=request.POST.get("form_fields[enabledisableitemlevel5]",None)
+                if status=="enable":
+                    itemname=request.POST.get("form_fields[itemlevel5ssearchresultdisabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want disable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+
+                elif status=="disable":
+                    itemname=request.POST.get("form_fields[itemlevel5searchresultenabled]",None)
+                    if "select" in itemname:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Select the Item you want enable<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+                else:
+                    return HttpResponse("something wrong contact system admin")
+            userorg=UserOrg.objects.all().filter(username=username)
+            for i in userorg:
+                dataorg=i.org
+                dataorg1=json.loads(dataorg)
+
+            lev=dataorg1["organisations"]
+
+            for ir in lev[0][level]["items"]:
+                    try:
+                        if ir["item_name"]==itemname:
+                            ir["status"]=status
+                    except:
+                        pass
+            dataorg1["organisations"]=lev
+            #return HttpResponse(f'{lev}')
+            obj, created = UserOrg.objects.update_or_create(username=username,defaults={'org': json.dumps(dataorg1)})
+
+            field={"document_name":username}
+            update={"organisations":lev}
+            login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
+            return redirect('/')
+        else:
+            return HttpResponse("something wrong contact system admin")
+
+@loginrequired
+def MemEnDis(request):
+    username=request.session["username"]
+    if request.method=="POST":
+        if request.POST.get('formname')=="cancelmember":
+            if request.POST.get('mtype')=="guest":
+                membertype="guest_members"
+            if request.POST.get('mtype')=="team":
+                membertype="team_members"
+            pnamestr=request.POST.get("form_fields[invitedmemberdetails1]",None)
+            df=pnamestr.replace("'", '"')
+            #rf=eval(df[1:-1])
+            pnamedict=json.loads(df[1:-1])
+            userorg=UserOrg.objects.all().filter(username=username)
+            for i in userorg:
+                dataorg=i.org
+                dataorg1=json.loads(dataorg)
+            lev=dataorg1["members"]
+            for ir in lev[membertype]["pending_members"]:
+                try:
+                    if ir["name"]==pnamedict["name"]:
+                        #ir["status"]="del"
+                        lev[membertype]["pending_members"].remove(ir)
+                    else:
+                        pass
+                except:
+                    pass
+            dataorg1["members"]=lev
+            #return HttpResponse(f'{lev[membertype]["pending_members"]}')
+            obj, created = UserOrg.objects.update_or_create(username=username,defaults={'org': json.dumps(dataorg1)})
+
+            field={"document_name":username}
+            update={"members":lev}
+            login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
+            return redirect(f'https://100093.pythonanywhere.com?session_id={request.session["session_id"]}')
+
+        elif request.POST.get('formname')=="removemember":
+            if request.POST.get('mtypes')=="guest":
+                membertype="guest_members"
+            if request.POST.get('mtypes')=="team":
+                membertype="team_members"
+            namestr=request.POST.get("form_fields[membersearchdetails1]",None)
+            dfs=namestr.replace("'", '"')
+            #rf=eval(df[1:-1])
+            rnamedict=json.loads(dfs[1:-1])
+            userorg=UserOrg.objects.all().filter(username=username)
+            for i in userorg:
+                dataorg=i.org
+                dataorgr=json.loads(dataorg)
+            lev=dataorgr["members"]
+            for ir in lev[membertype]["accept_members"]:
+                try:
+                    if ir["name"]==rnamedict["name"]:
+                        #ir["status"]="disable"
+                        lev[membertype]["accept_members"].remove(ir)
+                    else:
+                        pass
+                except:
+                    pass
+            userorg1=UserOrg.objects.all().filter(username=rnamedict["name"])
+            porg=request.session["present_org"]
+            for ii in userorg1:
+                dataorg1=ii.org
+                dataorg2=json.loads(dataorg1)
+            levorg=dataorg2["other_organisation"]
+            for irs in levorg:
+                try:
+                    if irs["org_name"]==porg:
+                        irs["status"]="deleted"
+                        #levorg.remove(irs)
+                    else:
+                        pass
+                except:
+                    pass
+            dataorgr["members"]=lev
+            dataorg2["other_organisation"]=levorg
+            #return HttpResponse(f'{lev} <br> <h1>next</h1> <br> {levorg}')
+            obj, created = UserOrg.objects.update_or_create(username=username,defaults={'org': json.dumps(dataorgr)})
+            obj, created = UserOrg.objects.update_or_create(username=rnamedict["name"],defaults={'org': json.dumps(dataorg2)})
+            field={"document_name":username}
+            update={"members":lev}
+            login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
+            field1={"document_name":rnamedict["name"]}
+            update1={"other_organisation":levorg}
+            login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field1,update1)
+            return redirect('/')
+        else:
+            return HttpResponse("something wrong contact system admin")
+
 
 def custom_page_not_found_view(request, exception):
     context={}

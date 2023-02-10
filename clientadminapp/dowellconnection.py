@@ -1,5 +1,6 @@
 import json
 import requests
+from django.shortcuts import redirect
 
 url = 'http://100002.pythonanywhere.com/'
 
@@ -25,6 +26,14 @@ def dowellconnection(cluster,platform,database,collection,document,team_member_I
         return str(response_data[0])
     else:
         return response.text
+
+def loginrequired(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        useranme = request.session.get('username')
+        if useranme is None:
+            return redirect('/new')
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
 
 # pfm={"platformcode":"FB"}
 # pfm_response=dowellconnection("mstr","bangalore","mysql","platform_master","pfm_master","97654321","ABCDE","fetch",pfm,"nil")

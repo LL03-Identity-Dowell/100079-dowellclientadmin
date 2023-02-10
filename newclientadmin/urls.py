@@ -11,6 +11,8 @@ urlpatterns = [
     path("members",Members,name="members"),
     path("item_name",Items,name="item_name"),
     path("settings",Settings,name="settings"),
+    path("endis",En_dis,name="endis"),
+
     # path("edit_item",edititems, name="edit_item"),
     path("addroles",AddRoles,name="addroles"),
     path("invitemembers",InviteMembers,name="invitemebers"),
@@ -18,5 +20,7 @@ urlpatterns = [
     # path("invitesocial",invitesocial,name="invitesocial"),
     # path("addpublic",addpublic,name="addpublic"),
     path('status',StatusChange,name="status"),
+    path("memberen",MemEnDis,name="memberen"),
+
     # path('logout',Logout,name="logout")
 ]

@@ -16,6 +16,8 @@ urlpatterns = [
     path("addpublic",addpublic,name="addpublic"),
     path('en_dis_port',disablep,name="en_dis_port"),
     path('logout',Logout,name="logout"),
-    path('layers',Layers,name="layers")
+    path('layers',Layers,name="layers"),
+    path('geolocation',GeoSetting,name="geolocation")
+
 
 ]

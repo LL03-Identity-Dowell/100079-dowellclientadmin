@@ -3164,8 +3164,9 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-7dee4f2 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="7dee4f2" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
-			<input type="hidden" name="post_id" value="5880"/>
+					<form action="memberen" method="POST" name="New Form">
+					   {% csrf_token %}			
+					   <input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="7dee4f2"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
 
@@ -3176,7 +3177,7 @@ rt.textContent = "Copied";
 												<label for="form-field-memberlistsearchnoportfolio" class="elementor-field-label">
 								Team Members not having Portfolio							</label>
 								<div class="elementor-field elementor-select-wrapper ">
-			<select name="form_fields[memberlistsearchnoportfolio][]" id="form-field-memberlistsearchnoportfolio" class="elementor-field-textual elementor-size-sm" multiple="" size="15">
+			<select name="form_fields[memberlistsearchnoportfolio][]" id="form-field-memberlistsearchnoportfolio" class="elementor-field-textual elementor-size-sm" multiple="" size="15" onchange="getteammembers(this.value,'form-field-membersearchdetails1')">
 									{% for m in datalav.members.team_members.pending_members %}
                                         {% if m.status == "used" %}
 									<option value="{{m.name}}">{{m.name}}</option>
@@ -3189,12 +3190,23 @@ rt.textContent = "Copied";
 												<label for="form-field-memberlistsearchwithportfolio" class="elementor-field-label">
 								Team Members having assigned Portfolio							</label>
 								<div class="elementor-field elementor-select-wrapper ">
-			<select name="form_fields[memberlistsearchwithportfolio][]" id="form-field-memberlistsearchwithportfolio" class="elementor-field-textual elementor-size-sm" multiple="" size="15">
-										{% for m in  tmem %}
+			<select name="form_fields[memberlistsearchwithportfolio][]" id="form-field-memberlistsearchwithportfolio" class="elementor-field-textual elementor-size-sm" multiple="" size="15" onchange="getteammembers(this.value,'form-field-membersearchdetails1')">
+										{% comment %} {% for m in  tmem %}
 
 									<option value="{{m}}">{{m}}</option>
 
+									{%endfor%} {% endcomment %}
+
+							
+
+															{% for m in datalav.members.team_members.accept_members %}
+
+									{% if m.portfolio_name %}
+									<option value="{{m.name}}">{{m.name}}</option>
+                                        {% endif %}
+
 									{%endfor%}
+
 							</select>
 		</div>
 						</div>
@@ -3302,7 +3314,9 @@ display:none;
 							<div class="elementor-widget-wrap">
 						<div class="elementor-element elementor-element-5267e9a elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="5267e9a" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+										<form action="memberen" method="POST" name="New Form">
+					   {% csrf_token %}
+		    <input type="hidden" name="formname" value="cancelmember"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="5267e9a"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -3340,6 +3354,7 @@ if (value1=="{{i.name}}"){
 								Search Invited Team Members							</label>
 														<input size="1" type="text" name="form_fields[invitedmembersearch1]" id="form-field-invitedmembersearch1" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Name">
 											</div>
+								<input type="hidden" name="mtype" value="team"/>
 								<div class="elementor-field-type-textarea elementor-field-group elementor-column elementor-field-group-invitedmemberdetails1 elementor-col-100">
 												<label for="form-field-invitedmemberdetails1" class="elementor-field-label">
 								Details of invited Team member							</label>
@@ -3682,7 +3697,11 @@ rt.textContent = "Copied";
 							<div class="elementor-widget-wrap">
 						<div class="elementor-element elementor-element-acf0418 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="acf0418" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+					
+
+						<form action="memberen" method="POST" name="New Form">
+					   {% csrf_token %}
+		    <input type="hidden" name="formname" value="cancelmember"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="acf0418"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -3694,9 +3713,9 @@ rt.textContent = "Copied";
 												<label for="form-field-inviteduserlist" class="elementor-field-label">
 								Invited Users							</label>
 								<div class="elementor-field elementor-select-wrapper ">
-			<select name="form_fields[inviteduserlist][]" id="form-field-inviteduserlist" class="elementor-field-textual elementor-size-sm" multiple="" size="5">
+			<select name="form_fields[inviteduserlist][]" id="form-field-inviteduserlist" class="elementor-field-textual elementor-size-sm" multiple="" size="5" onchange="getmembers(this.value,'form-field-inviteduserdetails1')">
 									{% for guest in datalav.members.guest_members.pending_members %}
-									{% if guest.name %}
+									{% if guest.name and guest.status == "unused" %}
 									<option value="{{guest.name}}">{{guest.name}}</option>
 									{%endif%}
 									{%endfor%}
@@ -3709,10 +3728,11 @@ rt.textContent = "Copied";
 								Search Invited Users							</label>
 														<input size="1" type="text" name="form_fields[invitedusersearch1]" id="form-field-invitedusersearch1" class="elementor-field elementor-size-sm  elementor-field-textual" placeholder="Name">
 											</div>
+								<input type="hidden" name="mtype" value="guest"/>
 								<div class="elementor-field-type-textarea elementor-field-group elementor-column elementor-field-group-inviteduserdetails1 elementor-col-100">
 												<label for="form-field-inviteduserdetails1" class="elementor-field-label">
 								Details of invited User							</label>
-						<textarea class="elementor-field-textual elementor-field  elementor-size-sm" name="form_fields[inviteduserdetails1]" id="form-field-inviteduserdetails1" rows="4" placeholder="&lt;portfolio name, code, spec, universal code, details&gt; &lt;member name, code, spec, universal code, details&gt; &lt;member type&gt; &lt;data type&gt; &lt;operational rights&gt;  &lt;role Name, code, spec, universal code, details&gt; &lt;(level 1 name,Item name), (level 2 name,Item name), (level 3 name,Item name), (level 4 name,Item name), (level 5 name,Item name)&gt; &lt;layer #&gt;"></textarea>				</div>
+						<textarea class="elementor-field-textual elementor-field  elementor-size-sm" name="form_fields[invitedmemberdetails1]" id="form-field-inviteduserdetails1" rows="4" placeholder="&lt;portfolio name, code, spec, universal code, details&gt; &lt;member name, code, spec, universal code, details&gt; &lt;member type&gt; &lt;data type&gt; &lt;operational rights&gt;  &lt;role Name, code, spec, universal code, details&gt; &lt;(level 1 name,Item name), (level 2 name,Item name), (level 3 name,Item name), (level 4 name,Item name), (level 5 name,Item name)&gt; &lt;layer #&gt;"></textarea>				</div>
 								<div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
 					<button type="submit" class="elementor-button elementor-size-md" id="removeuser">
 						<span >
@@ -4158,7 +4178,10 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-9c0eadb elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="9c0eadb" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+				
+				           <form method="POST" action="endis" name="New Form">
+						    {%csrf_token%}
+						    <input type="text" name="formname" value="roles" hidden>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="9c0eadb"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -4261,14 +4284,16 @@ rt.textContent = "Copied";
 		</div>
 						</div>
 								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-rolessearchresultenabled elementor-col-100">
+
 												<label for="form-field-rolessearchresultenabled" class="elementor-field-label">
 								Enabled Roles							</label>
 								<div class="elementor-field elementor-select-wrapper ">
-			<select name="form_fields[rolessearchresultenabled]" id="form-field-rolessearchresultenabled" class="elementor-field-textual elementor-size-sm">
+			<select name="form_fields[rolessearchresultenabled]" id="form-field-rolessearchresultenabled" class="elementor-field-textual elementor-size-sm" onchange="getroledetails('form-field-rolessearchresultenabled','form-field-roledetails');">
+									<option>...select...</option>
 									{%for i in datalav.roles %}
-
+                                    {% if i.status != "disable" %}
 									<option value="{{i.role_name}}">{{i.role_name}}</option>
-
+                                    {%endif%}
 
 									{%endfor%}
 							</select>
@@ -4278,7 +4303,8 @@ rt.textContent = "Copied";
 												<label for="form-field-rolessearchresultdisabled" class="elementor-field-label">
 								Disabled Roles							</label>
 								<div class="elementor-field elementor-select-wrapper ">
-			<select name="form_fields[rolessearchresultdisabled]" id="form-field-rolessearchresultdisabled" class="elementor-field-textual elementor-size-sm">
+			<select name="form_fields[rolessearchresultdisabled]" id="form-field-rolessearchresultdisabled" class="elementor-field-textual elementor-size-sm" onchange="getroledetails('form-field-rolessearchresultdisabled','form-field-roledetails');">
+			                        <option>...select...</option>
 									{%for i in datalav.roles %}
 									{% if "disable" in i.status %}
 									<option value="{{i.role_name}}">{{i.role_name}}</option>
@@ -4297,8 +4323,8 @@ rt.textContent = "Copied";
 								Enable / Disable selected Role							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[enabledisablerole]" id="form-field-enabledisablerole" class="elementor-field-textual elementor-size-sm">
-									<option value="Enable">Enable</option>
-									<option value="Disable">Disable</option>
+									<option value="enable">Enable</option>
+									<option value="disable">Disable</option>
 							</select>
 		</div>
 						</div>
@@ -4313,7 +4339,8 @@ rt.textContent = "Copied";
 				</div>
 			</div>
 		</form>
-				</div>
+				
+								</div>
 				</div>
 				<div class="elementor-element elementor-element-12c1a5b elementor-align-justify elementor-widget elementor-widget-button" data-id="12c1a5b" data-element_type="widget" data-widget_type="button.default">
 				<div class="elementor-widget-container">
@@ -4476,12 +4503,18 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-aa860fa elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="aa860fa" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+
+
+ 	<form method="POST" action="endis" name="New Form">
+					    {% csrf_token %}
+			<input type="hidden" name="formname" value="levels"/>
+			<input type="hidden" name="level" value="level1"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="aa860fa"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
 
 							<input type="hidden" name="queried_id" value="5880"/>
+
 
 			<div class="elementor-form-fields-wrapper elementor-labels-above">
 								<div class="elementor-field-type-select elementor-field-group elementor-column elementor-field-group-itemlevel1searchresultenabled elementor-col-100">
@@ -4489,11 +4522,12 @@ rt.textContent = "Copied";
 								Enabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel1searchresultenabled]" id="form-field-itemlevel1searchresultenabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel1details','level1');">
+									<option>...select...</option>
 									{%for i in datalav.organisations.0.level1.items %}
-									{% if i.item_name %}
+									{%if i.item_name %}
+									{% if i.status != "disable" %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
-									{%else%}
-									<option value="{{i}}">{{i}}</option>
+									{%endif%}
 									{%endif%}
 
 									{%endfor%}
@@ -4505,8 +4539,9 @@ rt.textContent = "Copied";
 								Disabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel1ssearchresultdisabled]" id="form-field-itemlevel1ssearchresultdisabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel1details','level1');">
-									{%for i in datalav.organisations.0.level5.items %}
-									{% if "disable" in i.item_name %}
+									<option>...select...</option>
+									{%for i in datalav.organisations.0.level1.items %}
+									{% if "disable" in i.status %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
 
 									{%endif%}
@@ -4524,8 +4559,8 @@ rt.textContent = "Copied";
 								Enable / Disable selected Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[enabledisableitemlevel1]" id="form-field-enabledisableitemlevel1" class="elementor-field-textual elementor-size-sm">
-									<option value="Enable">Enable</option>
-									<option value="Disable">Disable</option>
+									<option value="enable">Enable</option>
+									<option value="disable">Disable</option>
 							</select>
 		</div>
 						</div>
@@ -4692,7 +4727,10 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-609cc95 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="609cc95" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+					<form method="POST" action="endis" name="New Form">
+					    {% csrf_token %}
+			<input type="hidden" name="formname" value="levels"/>
+			<input type="hidden" name="level" value="level2"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="609cc95"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -4705,11 +4743,11 @@ rt.textContent = "Copied";
 								Enabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel2searchresultenabled]" id="form-field-itemlevel2searchresultenabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel2details','level2');">
+									<option>...select...</option>
 									{%for i in datalav.organisations.0.level2.items %}
-									{% if i.item_name %}
+									{% if i.status != "disable" %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
-									{%else%}
-									<option value="{{i}}">{{i}}</option>
+
 									{%endif%}
 
 									{%endfor%}
@@ -4721,6 +4759,7 @@ rt.textContent = "Copied";
 								Disabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel2ssearchresultdisabled]" id="form-field-itemlevel2ssearchresultdisabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel2details','level2');">
+									<option>...select...</option>
 									{%for i in datalav.organisations.0.level2.items %}
 									{% if "disable" in i.status %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
@@ -4739,8 +4778,8 @@ rt.textContent = "Copied";
 								Enable / Disable selected Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[enabledisableitemlevel2]" id="form-field-enabledisableitemlevel2" class="elementor-field-textual elementor-size-sm">
-									<option value="Enable">Enable</option>
-									<option value="Disable">Disable</option>
+									<option value="enable">Enable</option>
+									<option value="disable">Disable</option>
 							</select>
 		</div>
 						</div>
@@ -4907,7 +4946,10 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-b82a153 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="b82a153" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+					<form method="POST" action="endis" name="New Form">
+					    {% csrf_token %}
+			<input type="hidden" name="formname" value="levels"/>
+			<input type="hidden" name="level" value="level3"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="b82a153"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -4920,11 +4962,11 @@ rt.textContent = "Copied";
 								Enabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel3searchresultenabled]" id="form-field-itemlevel3searchresultenabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel3details','level3');">
+									<option>...select...</option>
 									{%for i in datalav.organisations.0.level3.items %}
-									{% if i.item_name %}
+									{% if i.status != "disable" %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
-									{%else%}
-									<option value="{{i}}">{{i}}</option>
+
 									{%endif%}
 
 									{%endfor%}
@@ -4936,6 +4978,7 @@ rt.textContent = "Copied";
 								Disabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel3ssearchresultdisabled]" id="form-field-itemlevel3ssearchresultdisabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel3details','level3');">
+								<option>...select...</option>
 								{%for i in datalav.organisations.0.level3.items %}
 									{% if "disable" in i.status %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
@@ -4955,8 +4998,8 @@ rt.textContent = "Copied";
 								Enable / Disable selected Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[enabledisableitemlevel3]" id="form-field-enabledisableitemlevel3" class="elementor-field-textual elementor-size-sm">
-									<option value="Enable">Enable</option>
-									<option value="Disable">Disable</option>
+									<option value="enable">Enable</option>
+									<option value="disable">Disable</option>
 							</select>
 		</div>
 						</div>
@@ -5123,7 +5166,10 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-f2ce3d7 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="f2ce3d7" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+							<form method="POST" action="endis" name="New Form">
+					    {% csrf_token %}
+			<input type="hidden" name="formname" value="levels"/>
+			<input type="hidden" name="level" value="level4"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="f2ce3d7"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -5136,11 +5182,11 @@ rt.textContent = "Copied";
 								Enabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel4searchresultenabled]" id="form-field-itemlevel4searchresultenabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel4details','level4');">
-								{%for i in datalav.organisations.0.level4.items %}
-									{% if i.item_name %}
+								<option>...select...</option>
+									{%for i in datalav.organisations.0.level4.items %}
+									{% if i.status != "disable" %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
-									{%else%}
-									<option value="{{i}}">{{i}}</option>
+
 									{%endif%}
 
 									{%endfor%}
@@ -5152,6 +5198,7 @@ rt.textContent = "Copied";
 								Disabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel4ssearchresultdisabled]" id="form-field-itemlevel4ssearchresultdisabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel4details','level4');">
+									<option>...select...</option>
 									{%for i in datalav.organisations.0.level4.items %}
 									{% if "disable" in i.status %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
@@ -5171,8 +5218,8 @@ rt.textContent = "Copied";
 								Enable / Disable selected Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[enabledisableitemlevel4]" id="form-field-enabledisableitemlevel4" class="elementor-field-textual elementor-size-sm">
-									<option value="Enable">Enable</option>
-									<option value="Disable">Disable</option>
+									<option value="enable">Enable</option>
+									<option value="disable">Disable</option>
 							</select>
 		</div>
 						</div>
@@ -5339,7 +5386,10 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-b029451 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="b029451" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form class="elementor-form" method="post" name="New Form">
+						<form method="POST" action="endis" name="New Form">
+					    {% csrf_token %}
+			<input type="hidden" name="formname" value="levels"/>
+			<input type="hidden" name="level" value="level5"/>
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="b029451"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -5352,11 +5402,10 @@ rt.textContent = "Copied";
 								Enabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel5searchresultenabled]" id="form-field-itemlevel5searchresultenabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel5details','level5');">
-								{%for i in datalav.organisations.0.level5.items %}
-									{% if i.item_name %}
+							<option>...select...</option>
+									{%for i in datalav.organisations.0.level5.items %}
+									{% if i.status != "disable" %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
-									{%else%}
-									<option value="{{i}}">{{i}}</option>
 									{%endif%}
 
 									{%endfor%}
@@ -5368,6 +5417,7 @@ rt.textContent = "Copied";
 								Disabled Items							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[itemlevel5ssearchresultdisabled]" id="form-field-itemlevel5ssearchresultdisabled" class="elementor-field-textual elementor-size-sm" onchange="filterlevel(this.value,'form-field-itemlevel5details','level5');">
+									<option>...select...</option>
 									{%for i in datalav.organisations.0.level5.items %}
 									{% if "disable" in i.status %}
 									<option value="{{i.item_name}}">{{i.item_name}}</option>
@@ -5387,8 +5437,8 @@ rt.textContent = "Copied";
 								Enable / Disable selected Item							</label>
 								<div class="elementor-field elementor-select-wrapper ">
 			<select name="form_fields[enabledisableitemlevel5]" id="form-field-enabledisableitemlevel5" class="elementor-field-textual elementor-size-sm">
-									<option value="Enable">Enable</option>
-									<option value="Disable">Disable</option>
+									<option value="enable">Enable</option>
+									<option value="disable">Disable</option>
 							</select>
 		</div>
 						</div>
@@ -5403,7 +5453,7 @@ rt.textContent = "Copied";
 				</div>
 			</div>
 		</form>
-				</div>
+		</div>
 				</div>
 				<div class="elementor-element elementor-element-9165322 elementor-align-justify elementor-widget elementor-widget-button" data-id="9165322" data-element_type="widget" data-widget_type="button.default">
 				<div class="elementor-widget-container">
@@ -6461,7 +6511,11 @@ rt.textContent = "Copied";
 				</div> {% endcomment %}
 
 				<div class="top">
-    <ol id="setlocation" class="row orglayers clear "></ol>
+					<form method="POST" action="{% url 'geolocation' %}" >
+					{% csrf_token %}
+
+    <ol id="setlocation" class="row orglayers clear ">
+	</ol>
 </div>
 
 <ul id="pagin">
@@ -6479,7 +6533,10 @@ rt.textContent = "Copied";
   <li><a class="page_li" href="#">5</a></li>
 </ul>
 <div class="d-grid gap-2 mb-3">
-  <button class="btn product-btn" type="button">Save Geographic Settings</button>
+  <button class="btn product-btn" type="submit" name="geosetting">Save Geographic Settings</button>
+
+  	</form>
+
 </div>
 
 
@@ -7483,7 +7540,49 @@ function filterlevel(myval,nameid1,level){
         {%endfor%}
         }
 
-}</script>
+}
+
+function getroledetails(var1,var2){
+var ee = document.getElementById(var1);
+
+var ro = document.getElementById(var2);
+var value1 = ee.value;
+
+{% for i in datalav.roles %}
+if (value1=="{{i.role_name}}"){
+    ro.value=JSON.stringify("{{i|safe}}");
+}
+{%endfor%}
+}
+function getmembers(mem,mem1){
+    let input = document.getElementById(mem1);
+    input.innerHTML='';
+        {% for i in datalav.members.guest_members.pending_members %}
+        if (mem=="{{i.name}}"){
+            input.value=JSON.stringify("{{i|safe}}");
+        }
+        {%endfor%}
+        }
+function getteammembers(mem,mem1){
+    let input = document.getElementById(mem1);
+    input.innerHTML='';
+        {% for i in datalav.members.team_members.accept_members %}
+        if (mem=="{{i.name}}"){
+            input.value=JSON.stringify("{{i|safe}}");
+        }
+        {%endfor%}
+        }
+function getguestmembers(mem,mem1){
+    let input = document.getElementById(mem1);
+    input.innerHTML='';
+        {% for i in datalav.members.guest_members.accept_members %}
+        if (mem=="{{i.name}}"){
+            input.value=JSON.stringify("{{i|safe}}");
+        }
+        {%endfor%}
+        }
+
+</script>
 
 <script>
 	const memberList =  {{ datalav.portpolio|safe }}
