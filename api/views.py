@@ -2,6 +2,9 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from clientadminapp.models import UserData,UserOrg,Devices,Browsers,IdVerification,InternetConnection,OperatingSystems,LoginType,PasswordStrength
+from clientadminapp.dowellconnection import dowellconnection,loginrequired
+
+
 import json
 @api_view(["POST"])
 def sessionView(request):
@@ -93,3 +96,16 @@ def PasswordLayers(request):
 
     ro1=PasswordStrength.objects.all()
     return Response({"data":json.loads(ro1[0].data)})
+
+@api_view(["POST"])
+def GetPort(request):
+    odata = request.data
+    org = odata["org"]
+    port = odata["portfolio"]
+
+    field1={"document_name":org}
+    login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
+    r=json.loads(login1)
+
+    return Response({"portfolio":r["data"][0]["portpolio"]})
+

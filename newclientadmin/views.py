@@ -186,18 +186,18 @@ def otherorg1(request):
                 context["products"]=[*set(co)]
                 return render(request,"new/other1.html",context)
 def otherorg(request):
-    if request.session.get("username"):
+   if request.session.get("username"):
         username=request.session['username']
         if request.method=="POST":
             context={}
-
+            lsimg=[]
             org=request.POST["org"]
             user_org=UserOrg.objects.all().filter(username=username)
             for it in user_org:
                     data12=it.org
                     data13=json.loads(data12)
             if request.session["username"]==org:
-                return redirect(f"/new?session_id={request.session['session_id']}")
+                return redirect(f"/?session_id={request.session['session_id']}")
             else:
                 userorg=UserInfo.objects.all().filter(username=username)
                 for i in userorg:
@@ -205,6 +205,7 @@ def otherorg(request):
                     data=json.loads(data1)
                 #return HttpResponse(f'{data}')
                 request.session["present_org"]=org
+                #return HttpResponse(request.session["present_org"])
                 context["img"]=data13["profile_info"]["profile_img"]
 
                 context["time"]=data["dowell_time"]
@@ -251,7 +252,8 @@ def otherorg(request):
                 context["aiport"]=[*set(po)]
                 context["myorg"]=[*set(ors)]
                 context["products"]=[*set(co)]
-                return render(request,"new/other1.html",context)
+                return render(request,"new/editother.html",context)
+
 @csrf_exempt
 def portfolio(request):
     if request.method=="POST":
@@ -364,8 +366,10 @@ def portfolio(request):
             return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
         else:
             return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
+
+
 def Refresh(request):
-    if request.session.get("username"):
+    if request.session.get("session_id"):
         username=request.session["username"]
         field={"document_name":username}
         login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field,"update")
@@ -391,9 +395,104 @@ def Refresh(request):
         # obj7, created7 = OtherOrg.objects.update_or_create(username=username,defaults={'otherorg': json.dumps(oo)})
         # obj8, created8 = MyRoles.objects.update_or_create(username=username,defaults={'roles': json.dumps(role)})
         # return redirect(f'/new?session_id={request.session["session_id"]}')
-        return redirect(f'https://100093.pythonanywhere.com/new?session_id={request.session["session_id"]}')
+        return redirect('/')
     else:
-        return redirect("https://100093.pythonanywhere.com/new")
+        return redirect("/")
+
+def RefreshOther(request):
+        org = request.GET.get('org','lol')
+        username=request.session["username"]
+        field={"document_name":username}
+        login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field,"update")
+        r=json.loads(login)
+        # pi=r["data"][0]["profile_info"]
+        # o=r["data"][0]["organisations"]
+        # p=r["data"][0]["products"]
+        # pf=r["data"][0]["portpolio"]
+        # m=r["data"][0]["members"]
+        # s=r["data"][0]["security_layers"]
+        # oo=r["data"][0]["other_organisation"]
+        # role=r["data"][0]["roles"]
+        obj, created = UserOrg.objects.update_or_create(username=username,defaults={'org': json.dumps(r["data"][0])})
+        #return HttpResponse(f'{pi} <br> {o} <br> {p} <br> {m} <br> {s} <br> {oo} <br> {role}')
+        #ProfileInfo,Organisation,Products,Members,Portfolio,SecurtiyLayers,OtherOrg,MyRoles
+
+        # obj1, created1 = ProfileInfo.objects.update_or_create(username=username,defaults={'profile_info': json.dumps(pi)})
+        # obj2, created2 = Organisation.objects.update_or_create(username=username,defaults={'organisation': json.dumps(o)})
+        # obj3, created3 = Products.objects.update_or_create(username=username,defaults={'products': json.dumps(p)})
+        # obj4, created4 = Members.objects.update_or_create(username=username,defaults={'members': json.dumps(m)})
+        # obj5, created5 = Portfolio.objects.update_or_create(username=username,defaults={'portfolio': json.dumps(pf)})
+        # obj6, created6 = SecurtiyLayers.objects.update_or_create(username=username,defaults={'layers': json.dumps(s)})
+        # obj7, created7 = OtherOrg.objects.update_or_create(username=username,defaults={'otherorg': json.dumps(oo)})
+        # obj8, created8 = MyRoles.objects.update_or_create(username=username,defaults={'roles': json.dumps(role)})
+        # return redirect(f'/new?session_id={request.session["session_id"]}')
+        username=request.session['username']
+        context={}
+        lsimg=[]
+        print("hi",org,username)
+        user_org=UserOrg.objects.all().filter(username=username)
+        for it in user_org:
+                data12=it.org
+                data13=json.loads(data12)
+        if request.session["username"]==org:
+            return redirect(f"/?session_id={request.session['session_id']}")
+        else:
+            userorg=UserInfo.objects.all().filter(username=username)
+            for i in userorg:
+                data1=i.userinfo
+                data=json.loads(data1)
+            #return HttpResponse(f'{data}')
+            request.session["present_org"]=org
+            #return HttpResponse(request.session["present_org"])
+            context["img"]=data13["profile_info"]["profile_img"]
+
+            context["time"]=data["dowell_time"]
+            context["location"]=data["city"]
+            userorg=UserOrg.objects.all().filter(username=username)
+            for i in userorg:
+                dataorg=i.org
+                dataorg1=json.loads(dataorg)
+            context["datalav"]=dataorg1
+            ors=[]
+            context["first"]=dataorg1["profile_info"]["first_name"]
+            context["last"]=dataorg1["profile_info"]["last_name"]
+            for lsr in dataorg1["organisations"]:
+                ors.append(lsr["org_name"])
+            for lst in dataorg1["other_organisation"]:
+                ors.append(lst["org_name"])
+            co=[]
+            po=[]
+            othero=[]
+            for i in dataorg1["other_organisation"]:
+                if i["org_name"]==org:
+                    try:
+                        co.append(i["product"])
+                        if i["portfolio_name"] and "enable" in i["status"]:
+                            othero.append(i)
+                        else:
+                            po.append(i["portfolio_name"])
+                    except:
+                        pass
+            # userorg1=UserOrg.objects.all().filter(username=org)
+            # for i in userorg1:
+            #     datap=i.org
+            #     datapro=json.loads(datap)
+            # for ii in datapro["portpolio"]:
+            #     if username in ii["username"]:
+            #         co.append(ii["product"])
+            # for i in userorg1:
+            #     datap=i.org
+            #     datapro=json.loads(datap)
+            # for ii in dataorg1["other_organisation"]:
+            #     if org in ii["org_name"]:
+            #         ro=ii["portfolio"]
+            context["othero"]=othero
+            context["aiport"]=[*set(po)]
+            context["myorg"]=[*set(ors)]
+            context["products"]=[*set(co)]
+            return render(request,"new/editother.html",context)
+        # return redirect('/otherorg')
+
 def PortfolioAdd(request):
     if request.session.get("username"):
         username=request.session["username"]
@@ -702,11 +801,16 @@ def Items(request):
                 o=i.org
                 odata=json.loads(o)
             org=odata["organisations"]
-            try:
-                if ls[0] in org[0][r]["items"]:
-                    return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Item name <b> ' + ls[0] + '</b> <br> already exists..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
-            except:
-                pass
+            # return HttpResponse(f'{org[0][r]["items"]} <br /> )
+            # try:
+            for i_name in org[0][r]["items"]:
+                    # return HttpResponse(l[)
+                try:
+                    if ls[0] in i_name["item_name"]:
+                        return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Item name <b> ' + ls[0] + '</b> <br> already exists..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
+                except:
+                    pass
+            # return HttpResponse("Failed")
             org[0][r]["items"].append({"item_name":ls[0],"item_code":itemcode,"item_details":itemdet,"item_universal_code":itemuni,"item_specification":itemspec,"item_barcode":barurl,"item_image1":imageurl,"item_image2":imageurl1,"status":"enable"})
             #return HttpResponse(f'{org}')
             field={"document_name":request.session["username"]}
@@ -1073,6 +1177,7 @@ def InviteLink(request):
 
     else:
         return redirect("https://100014.pythonanywhere.com/?redirect_url=https://100093.pythonanywhere.com/new")
+@loginrequired
 def StatusChange(request):
     context={}
     username=request.session["username"]
@@ -1111,7 +1216,7 @@ def StatusChange(request):
                 login=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
                 try:
                     if "public" in membertype:
-                        return redirect(f'/new?session_id={request.session["session_id"]}')
+                        return redirect(f'/?session_id={request.session["session_id"]}')
                 except:
                     pass
                 if type(username1) is list:
@@ -1133,9 +1238,9 @@ def StatusChange(request):
                             field={"document_name":name}
                             update={"other_organisation":lo}
                             forlocal["other_organisation"]=lo
-                            obj, created = UserOrg.objects.update_or_create(username=username1,defaults={'org': json.dumps(forlocal)})
+                            obj, created = UserOrg.objects.update_or_create(username=name,defaults={'org': json.dumps(forlocal)})
                             login2=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
-                            return redirect(f'/new?session_id={request.session["session_id"]}')
+                            return redirect('/')
                         else:
                             return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Something wrong try again<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
 
@@ -1159,7 +1264,7 @@ def StatusChange(request):
                         forlocal["other_organisation"]=lo
                         obj, created = UserOrg.objects.update_or_create(username=username1,defaults={'org': json.dumps(forlocal)})
                         login2=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
-                        return redirect(f'/new?session_id={request.session["session_id"]}')
+                        return redirect('/')
                     else:
                         return HttpResponse('<style>body{background-color: rgba(0,0,0, 0.4);}.close-btn {position: absolute;bottom: 12px;right: 25px;}.content {position: absolute;width: 250px;height: 200px;background: #fff;top: 0%;left: 50%;transform: translate(-50%, -50%)scale(0.1);visibility: hidden;transition: transform 0.4s, top 0.4s;}.open-popup {visibility: visible;top: 50%;transform: translate(-50%, -50%)scale(1);}.header {height: 50px;background: #efea53;overflow: hidden;text-align: center;}p {padding-top: 40px;text-align: center;}</style><div class="content open-popup" id="popup"><div class="header"><h2>Alert!</h2></div><p>Something wrong try again<br> ..</p><div><button type="button" onclick="history.back();" class="close-btn">close</button></div></div>')
 

@@ -478,15 +478,15 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 							<div class="elementor-widget-wrap">
 						<div class="elementor-element elementor-element-e790cae elementor-align-justify elementor-widget elementor-widget-button" data-id="e790cae" data-element_type="widget" data-widget_type="button.default">
 				<div class="elementor-widget-container">
-					<div class="elementor-button-wrapper">
+					{% comment %} <div class="elementor-button-wrapper">
 			<a href="#" class="elementor-button-link elementor-button elementor-size-xs" role="button">
 						<span class="elementor-button-content-wrapper">
 							<span class="elementor-button-icon elementor-align-icon-left">
 				<i aria-hidden="true" class="fas fa-atom"></i>			</span>
-						<span class="elementor-button-text">Settings</span>
+						 <span class="elementor-button-text">Settings</span> 
 		</span>
 					</a>
-		</div>
+		</div> {% endcomment %}
 				</div>
 				</div>
 						</div>
@@ -548,7 +548,7 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 							<div class="elementor-widget-wrap">
 						<div class="elementor-element elementor-element-67557c1 elementor-widget elementor-widget-heading" data-id="67557c1" data-element_type="widget" data-widget_type="heading.default">
 				<div class="elementor-widget-container">
-			<h2 class="elementor-heading-title elementor-size-medium">Select Organisation</h2>		</div>
+			<h2 class="elementor-heading-title elementor-size-medium">Select Workspace</h2>		</div>
 				</div>
 				<div class="elementor-element elementor-element-7b89fdf elementor-widget__width-initial elementor-widget elementor-widget-html" data-id="7b89fdf" data-element_type="widget" data-widget_type="html.default">
 				<div class="elementor-widget-container">
@@ -1704,6 +1704,8 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 				</div>
 				<div class="elementor-element elementor-element-adf10fc elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="adf10fc" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
+
+											{% if products %}
 					<form action="portfolio" method="POST" name="New Form">
 					    {%csrf_token%}
 			<input type="hidden" name="post_id" value="5880"/>
@@ -1757,8 +1759,10 @@ if (value1=="{{i.portfolio_name}}"){
 			<select name="product" id="form-field-name" class="elementor-field-textual elementor-size-sm" required="required" aria-required="true" onchange="lav();">
 									<option >....Select Product....</option>
 									{% for i in products %}
+
 									<option value="{{i}}">{{i}}</option>
-									{%endfor%}
+										{% endfor %}
+
 							</select>
 		</div>
 						</div>
@@ -1786,6 +1790,8 @@ if (value1=="{{i.portfolio_name}}"){
 				</div>
 			</div>
 		</form>
+		{% endif %}
+
 				</div>
 				</div>
 						</div>
