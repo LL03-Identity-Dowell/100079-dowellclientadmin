@@ -1710,7 +1710,7 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 						<div class="elementor-element elementor-element-a192072 elementor-align-justify MAIN elementor-widget elementor-widget-button" data-id="a192072" data-element_type="widget" id="layerbtnID" data-widget_type="button.default">
 				<div class="elementor-widget-container">
 					<div class="elementor-button-wrapper">
-			<a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button" id="layerbtn">
+			<a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button" id="layerbtn" >
 						<span class="elementor-button-content-wrapper">
 							<span class="elementor-button-icon elementor-align-icon-left">
 				<i aria-hidden="true" class="fas fa-torii-gate"></i>			</span>
@@ -7566,7 +7566,12 @@ function getmembers(mem,mem1){
         }
         {%endfor%}
         }
+
 function getteammembers(mem,mem1){
+
+            document.getElementById('removemember').removeAttribute("disabled");
+
+
 	    let selectedOrg = document.getElementById("selectorg").value;
 		let selectedMember = document.getElementById("form-field-memberlistsearchwithportfolio").value;
 
@@ -7598,27 +7603,40 @@ function getteammembers(mem,mem1){
 
 		if (selectedMember ==  "owner")
 		{
+			   // $('#removemember').attr("disabled", true);  
 		    console.log("found");
-	document.getElementById('removemember').setAttribute("disabled", true);
+		    let rembut = document.getElementById("removemember");
+            rembut.setAttribute("disabled", true);
+            rembut.style.cursor = "pointer";
+        	//document.getElementById('removemember').setAttribute("disabled", true);
 		}
-		else {
-		    		    console.log("Not found");
+//		else if (selectedMember !=  "owner")
+	//	{
+//		    		    console.log("Not found");
 
-            document.getElementById('removemember').removeAttribute("disabled");
-        }
+ //           document.getElementById('removemember').removeAttribute("disabled");
+
+ //       }
 
 
 		if (selectedMember1 ==  "owner")
 		{
+						//    $('#removemember').attr("disabled", true);  
 		    		    console.log("found");
+		    		    let rembut = document.getElementById("removemember");
+            rembut.setAttribute("disabled", true);
+            rembut.style.cursor = "not-allowed";
 
-	document.getElementById('removemember').setAttribute("disabled", true);
+	//document.getElementById('removemember').setAttribute("disabled", true);
 		}
-		else {
-		    		    		    console.log("Not found");
-
-            document.getElementById('removemember').removeAttribute("disabled");
-        }
+//		else if (selectedMember1 !=  "owner")
+//		{
+//		    		    		    console.log("Not found");
+  //          let rembut = document.getElementById("removemember");
+  //          rembut.removeAttribute("disabled");
+  //          rembut.style.cursor = "pointer";
+            //document.getElementById('removemember').removeAttribute("disabled");
+//        }
     let input = document.getElementById(mem1);
     input.innerHTML='';
         {% for i in datalav.members.team_members.accept_members %}
@@ -7627,6 +7645,7 @@ function getteammembers(mem,mem1){
         }
         {%endfor%}
         }
+
 function getguestmembers(mem,mem1){
     let input = document.getElementById(mem1);
     input.innerHTML='';
@@ -7765,7 +7784,7 @@ $(document).ready(function(){
 </script>
 <script src="{%static 'clientadmin/js/searchmember.js' %}">\</script>
 
-    <script>
+        <script>
       // pagination 
       pageSize = 9;
       var pageCount = $(".line-content").length / pageSize;
@@ -7784,7 +7803,6 @@ $(document).ready(function(){
         $("#pagin li a").removeClass("current");
         $(this).addClass("current");
         showPage(parseInt($(this).text()));
-		     return false;
       });
 
 

@@ -5,6 +5,7 @@ urlpatterns = [
     path("otherorg",otherorg,name="otherorg"),
     path("otherorg1",otherorg1,name="otherorg1"),
     path('portfolio',portfolio,name="portfolio"),
+    path('exportfolio',portfolioUrl,name="exportfolio"),
     path('refresh',Refresh,name="refresh"),
     path('refreshother',RefreshOther,name="refreshother"),
 

@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from clientadminapp.models import UserData,UserOrg,Devices,Browsers,IdVerification,InternetConnection,OperatingSystems,LoginType,PasswordStrength
+from clientadminapp.models import UserData,UserOrg,Devices,Browsers,IdVerification,InternetConnection,OperatingSystems,LoginType,PasswordStrength,publiclink
 from clientadminapp.dowellconnection import dowellconnection,loginrequired
+from django.http import HttpResponse
 
 
 import json
@@ -101,11 +102,73 @@ def PasswordLayers(request):
 def GetPort(request):
     odata = request.data
     org = odata["org"]
-    port = odata["portfolio"]
+    r1 = []
+    if "portfolio" in odata.keys():
+        print("first")
+        port = odata["portfolio"]
+        field1={"document_name":org}
+        login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
+        r=json.loads(login1)
+        
+        for p in r["data"][0]["portpolio"]:
+            if port in p["portfolio_name"]:
+                r1.append(p)
+            # else:
+            #     return Response({"msg":"portfolio not found"})
+    if "product" in odata.keys() and "portfolio" in odata.keys():
+        r1.clear()
+        print("second")
+        port = odata["portfolio"]
+        product = odata["product"]
+        field1={"document_name":org}
+        login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
+        r=json.loads(login1)
+        r1 = []
+        for p in r["data"][0]["portpolio"]:
+            if p["portfolio_name"] == port and p["product"] == product:
+                r1.append(p)
+            # else:
+            #     return Response({"msg":"portfolio not found"})
 
+    else:
+        field1={"document_name":org}
+        login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
+        r=json.loads(login1)
+        r1 = r["data"]
+
+    return Response({"portfolio":r1})
+
+
+@api_view(["POST"])
+def UpdateQr(request):
+    odata = request.data
+    org = odata["org"]
+    product = odata["product"]
+    qrid = odata["qrcodeid"]
+    q = {}
     field1={"document_name":org}
-    login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
-    r=json.loads(login1)
+    l1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
+    l1 = json.loads(l1)
+    members = l1["data"][0]["members"]
+    print(members)
+    q["qrcodeid"] = qrid
+    # members["public_members"]["accept_members"].append(q)
+    # print(members)
+    for i in members["public_members"]["pending_members"]:
+        if i.name == qrid:
+            i.productstatus = "used"
+            i.product = product
+    field={"document_name":org}
+    update={"members":members}
+    # l2=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","update",field,update)
+    try:
+        obj = publiclink.objects.filter(username = org,qrcodeid = qrid)
+        for i in obj:
+            # i.linkstatus = "used"
+            i.productstatus = "used"
+            i.save()
+        print(obj)
+    except:
+        Response({"msg":"not found"})
 
-    return Response({"portfolio":r["data"][0]["portpolio"]})
-
+    return Response({"msg":members})

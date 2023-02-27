@@ -256,117 +256,205 @@ def otherorg(request):
 
 @csrf_exempt
 def portfolio(request):
-    if request.method=="POST":
-        portf=request.POST["portfl"]
-        product=request.POST["product"]
-        user=request.session["username"]
-        orl=request.session["present_org"]
-        session=request.session["session_id"]
-        lo=UserOrg.objects.all().filter(username=orl)
-        for rd in lo:
-            lo1=rd.org
-            lrf=json.loads(lo1)
-        mydict={}
+    if request.session.get("session_id"):
+        if request.method=="POST":
+            portf=request.POST["portfl"]
+            product=request.POST["product"]
 
-        ro=UserInfo.objects.all().filter(username=user)
-        ro1=UserOrg.objects.all().filter(username=user)
+            #return HttpResponse(product)
+            user=request.session["username"]
+            orl=request.session["present_org"]
+            session=request.session["session_id"]
+            lo=UserOrg.objects.all().filter(username=orl)
+            for rd in lo:
+                lo1=rd.org
+                lrf=json.loads(lo1)
+            mydict={}
+
+            ro=UserInfo.objects.all().filter(username=user)
+            ro1=UserOrg.objects.all().filter(username=user)
 
 
 
-        for i in ro:
-            rofield=i.userinfo
-            #s = rofield.replace("\'", "\"")
-            s=json.loads(rofield)
-            mydict["userinfo"]=s
+            for i in ro:
+                rofield=i.userinfo
+                #s = rofield.replace("\'", "\"")
+                s=json.loads(rofield)
+                mydict["userinfo"]=s
 
-        if orl==user:
-            lrst=[]
-            for lis in lrf["portpolio"]:
-                if lis["portfolio_name"]==portf:
-                    mydict["portfolio_info"]=[lis]
-                if lis["product"]==product:
-                    lrst.append(lis)
+            if orl==user:
+                lrst=[]
+                for lis in lrf["portpolio"]:
+                    if lis["portfolio_name"]==portf:
+                        mydict["portfolio_info"]=[lis]
+                    if lis["product"]==product:
+                        lrst.append(lis)
+                mydict["portfolio_info"][0]["org_id"]=lrf["_id"]
+                mydict["portfolio_info"][0]["owner_name"]=lrf["document_name"]
+                mydict["portfolio_info"][0]["org_name"]=lrf["document_name"]
+                mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":lrst,"payment_status":"unpaid"}
+                obj, created = UserData.objects.update_or_create(username=user,sessionid=session,defaults={'alldata': json.dumps(mydict)})
+                if "Workflow AI" in product or "workflow" in product:
+                # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
+                    return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
+
+                elif "Scale" in product or "scales" in product:
+                    return redirect(f'https://100035.pythonanywhere.com/client?session_id={request.session["session_id"]}&id=100093')
+                elif "Legalzar" in product or "Legalzard" in product:
+                    return redirect(f'https://play.google.com/store/apps/details?id=com.legalzard.policies')
+                elif "Calculator" in product:
+                    return redirect(f'https://100050.pythonanywhere.com/calculator/?session_id={request.session["session_id"]}&id=100093')
+                elif "Team" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Wifi" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "UX" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Media" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Logo" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Chat" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Maps" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Digital" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Experience" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Admin" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Management" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Monitoring" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Dashboard" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Agent" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Support" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Repositories" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Data" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+
+
+                else:
+                    return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
+            for ii in ro1:
+                pfield=ii.org
+                #s = rofield.replace("\'", "\"")
+                ss=json.loads(pfield)
+                rr=ss["other_organisation"]
+                rr1=ss["organisations"]
+
+            for iii in rr:
+                if iii["org_name"]==request.session["present_org"]:
+                    try:
+                        if iii["portfolio_name"]==portf:
+                            mydict["portfolio_info"]=[iii]
+
+                        else:
+                            pass
+                    except:
+                        pass
+            try:
+                selected_role=mydict["portfolio_info"]["role"]
+            except:
+                pass
+            level1={}
+            level2={}
+            level3={}
+            level4={}
+            level5={}
+            try:
+                for items in lrf["roles"]:
+                    if selected_role==items["role_name"]:
+                        if items["level1_item"]:
+                            level1["level1name"]=lrf["organisations"][0]["level1"]["level_name"]
+                            level1["level1items"]=lrf["organisations"][0]["level1"]["items"]
+                        if items["level2_item"]:
+                            level2["level1name"]=lrf["organisations"][0]["level2"]["level_name"]
+                            level2["level1items"]=lrf["organisations"][0]["level2"]["items"]
+                        if items["level3_item"]:
+                            level2["level3name"]=lrf["organisations"][0]["level3"]["level_name"]
+                            level2["level3items"]=lrf["organisations"][0]["level3"]["items"]
+                        if items["level4_item"]:
+                            level2["level4name"]=lrf["organisations"][0]["level4"]["level_name"]
+                            level2["level4items"]=lrf["organisations"][0]["level4"]["items"]
+                        if items["level5_item"]:
+                            level2["level5name"]=lrf["organisations"][0]["level5"]["level_name"]
+                            level2["level5items"]=lrf["organisations"][0]["level5"]["items"]
+            except:
+                pass
+            if "portfolio_info" not in mydict:
+                #return HttpResponse(f'{rr1}')
+                mydict["portfolio_info"]=[ss["portpolio"][0]]
+            productport=[]
+            for product2 in lrf["portpolio"]:
+                if product==product2["product"]:
+                    productport.append(product2)
+
+            mydict["organisations"]=[{"orgname":lrf["document_name"],"orgowner":lrf["document_name"]}]
+            mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":productport,"payment_status":"unpaid"}
+            mydict["selected_portfoliolevel"]=level1
+            mydict["selected_portfolioleve2"]=level2
+            mydict["selected_portfolioleve3"]=level3
+            mydict["selected_portfolioleve4"]=level4
+            mydict["selected_portfolioleve5"]=level5
             mydict["portfolio_info"][0]["org_id"]=lrf["_id"]
             mydict["portfolio_info"][0]["owner_name"]=lrf["document_name"]
             mydict["portfolio_info"][0]["org_name"]=lrf["document_name"]
-            mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":lrst,"payment_status":"unpaid"}
             obj, created = UserData.objects.update_or_create(username=user,sessionid=session,defaults={'alldata': json.dumps(mydict)})
+
             if "Workflow AI" in product or "workflow" in product:
-            # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
+                # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
                 return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
+            elif "Scale" in product or "scales" in product:
+                return redirect(f'https://100035.pythonanywhere.com/client?session_id={request.session["session_id"]}&id=100093')
+            elif "Legalzar" in product or "Legalzard" in product:
+                    return redirect(f'https://play.google.com/store/apps/details?id=com.legalzard.policies')
+            elif "Team" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#/?session_id={request.session["session_id"]}&id=100093')
+            elif "Wifi" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "UX" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Media" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Logo" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Chat" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Maps" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Digital" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Experience" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Admin" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Management" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Monitoring" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Dashboard" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Agent" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Support" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Repositories" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Data" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+        
+            
             else:
                 return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
-        for ii in ro1:
-            pfield=ii.org
-            #s = rofield.replace("\'", "\"")
-            ss=json.loads(pfield)
-            rr=ss["other_organisation"]
-            rr1=ss["organisations"]
-
-        for iii in rr:
-            if iii["org_name"]==request.session["present_org"]:
-                try:
-                    if iii["portfolio_name"]==portf:
-                        mydict["portfolio_info"]=[iii]
-
-                    else:
-                        pass
-                except:
-                    pass
-        try:
-            selected_role=mydict["portfolio_info"]["role"]
-        except:
-            pass
-        level1={}
-        level2={}
-        level3={}
-        level4={}
-        level5={}
-        try:
-            for items in lrf["roles"]:
-                if selected_role==items["role_name"]:
-                    if items["level1_item"]:
-                        level1["level1name"]=lrf["organisations"][0]["level1"]["level_name"]
-                        level1["level1items"]=lrf["organisations"][0]["level1"]["items"]
-                    if items["level2_item"]:
-                        level2["level1name"]=lrf["organisations"][0]["level2"]["level_name"]
-                        level2["level1items"]=lrf["organisations"][0]["level2"]["items"]
-                    if items["level3_item"]:
-                        level2["level3name"]=lrf["organisations"][0]["level3"]["level_name"]
-                        level2["level3items"]=lrf["organisations"][0]["level3"]["items"]
-                    if items["level4_item"]:
-                        level2["level4name"]=lrf["organisations"][0]["level4"]["level_name"]
-                        level2["level4items"]=lrf["organisations"][0]["level4"]["items"]
-                    if items["level5_item"]:
-                        level2["level5name"]=lrf["organisations"][0]["level5"]["level_name"]
-                        level2["level5items"]=lrf["organisations"][0]["level5"]["items"]
-        except:
-            pass
-        if "portfolio_info" not in mydict:
-            #return HttpResponse(f'{rr1}')
-            mydict["portfolio_info"]=[ss["portpolio"][0]]
-        productport=[]
-        for product2 in lrf["portpolio"]:
-            if product==product2["product"]:
-                productport.append(product2)
-
-        mydict["organisations"]=[{"orgname":lrf["document_name"],"orgowner":lrf["document_name"]}]
-        mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":productport,"payment_status":"unpaid"}
-        mydict["selected_portfoliolevel"]=level1
-        mydict["selected_portfolioleve2"]=level2
-        mydict["selected_portfolioleve3"]=level3
-        mydict["selected_portfolioleve4"]=level4
-        mydict["selected_portfolioleve5"]=level5
-        mydict["portfolio_info"][0]["org_id"]=lrf["_id"]
-        mydict["portfolio_info"][0]["owner_name"]=lrf["document_name"]
-        mydict["portfolio_info"][0]["org_name"]=lrf["document_name"]
-        obj, created = UserData.objects.update_or_create(username=user,sessionid=session,defaults={'alldata': json.dumps(mydict)})
-        if "Workflow AI" in product or "workflow" in product:
-            # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
-            return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
-        else:
-            return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
-
+    else:
+        return redirect("/")
 
 def Refresh(request):
     if request.session.get("session_id"):
@@ -877,6 +965,7 @@ def edititems(request):
             return HttpResponse("no values")
 
 
+@loginrequired
 def Members(request):
     if request.session.get("username"):
         username=request.session["username"]
@@ -963,7 +1052,8 @@ def Members(request):
                 else:
                    return JsonResponse({"public_name":"Pl provide a number","autopublic":"fsaf"})
     else:
-        return redirect("https://100093.pythonanywhere.com/new")
+        return redirect("/")
+        
 def InviteMembers(request):
     if request.session.get("username"):
         if is_ajax(request=request):
@@ -1516,3 +1606,209 @@ def custom_bad_request_view(request, exception=None):
 
 
 
+@csrf_exempt
+def portfolioUrl(request):
+    #post portfolio and product and org , session idas url parameters
+
+    session_c = request.GET.get("session_id")
+
+    # return HttpResponse(f'{session_c}and{request.session["session_id"]}')
+
+    if request.session["session_id"] == session_c:
+        # if request.method=="POST":
+            portf=request.GET.get("portfolio")
+            product=request.GET.get("product")
+
+            #return HttpResponse(product)
+            user=request.GET.get("username")
+            orl=request.GET.get("org")
+            session=request.session["session_id"]
+            lo=UserOrg.objects.all().filter(username=orl)
+            for rd in lo:
+                lo1=rd.org
+                lrf=json.loads(lo1)
+            mydict={}
+
+            ro=UserInfo.objects.all().filter(username=user)
+            ro1=UserOrg.objects.all().filter(username=user)
+
+
+
+            for i in ro:
+                rofield=i.userinfo
+                #s = rofield.replace("\'", "\"")
+                s=json.loads(rofield)
+                mydict["userinfo"]=s
+
+            if orl==user:
+                lrst=[]
+                for lis in lrf["portpolio"]:
+                    if lis["portfolio_name"]==portf:
+                        mydict["portfolio_info"]=[lis]
+                    if lis["product"]==product:
+                        lrst.append(lis)
+                mydict["portfolio_info"][0]["org_id"]=lrf["_id"]
+                mydict["portfolio_info"][0]["owner_name"]=lrf["document_name"]
+                mydict["portfolio_info"][0]["org_name"]=lrf["document_name"]
+                mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":lrst,"payment_status":"unpaid"}
+                obj, created = UserData.objects.update_or_create(username=user,sessionid=session,defaults={'alldata': json.dumps(mydict)})
+                if "Workflow AI" in product or "workflow" in product:
+                # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
+                    return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
+
+                elif "Scale" in product or "scales" in product:
+                    return redirect(f'https://100035.pythonanywhere.com/client?session_id={request.session["session_id"]}&id=100093')
+                elif "Legalzar" in product or "Legalzard" in product:
+                    return redirect(f'https://play.google.com/store/apps/details?id=com.legalzard.policies')
+                elif "Calculator" in product:
+                    return redirect(f'https://100050.pythonanywhere.com/calculator/?session_id={request.session["session_id"]}&id=100093')
+                elif "Team" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Wifi" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "UX" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Media" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Logo" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Chat" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Maps" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Digital" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Experience" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Admin" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Management" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Monitoring" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Dashboard" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Agent" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Support" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Repositories" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+                elif "Data" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+
+
+                else:
+                    return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
+            for ii in ro1:
+                pfield=ii.org
+                #s = rofield.replace("\'", "\"")
+                ss=json.loads(pfield)
+                rr=ss["other_organisation"]
+                rr1=ss["organisations"]
+
+            for iii in rr:
+                if iii["org_name"]==request.session["present_org"]:
+                    try:
+                        if iii["portfolio_name"]==portf:
+                            mydict["portfolio_info"]=[iii]
+
+                        else:
+                            pass
+                    except:
+                        pass
+            try:
+                selected_role=mydict["portfolio_info"]["role"]
+            except:
+                pass
+            level1={}
+            level2={}
+            level3={}
+            level4={}
+            level5={}
+            try:
+                for items in lrf["roles"]:
+                    if selected_role==items["role_name"]:
+                        if items["level1_item"]:
+                            level1["level1name"]=lrf["organisations"][0]["level1"]["level_name"]
+                            level1["level1items"]=lrf["organisations"][0]["level1"]["items"]
+                        if items["level2_item"]:
+                            level2["level1name"]=lrf["organisations"][0]["level2"]["level_name"]
+                            level2["level1items"]=lrf["organisations"][0]["level2"]["items"]
+                        if items["level3_item"]:
+                            level2["level3name"]=lrf["organisations"][0]["level3"]["level_name"]
+                            level2["level3items"]=lrf["organisations"][0]["level3"]["items"]
+                        if items["level4_item"]:
+                            level2["level4name"]=lrf["organisations"][0]["level4"]["level_name"]
+                            level2["level4items"]=lrf["organisations"][0]["level4"]["items"]
+                        if items["level5_item"]:
+                            level2["level5name"]=lrf["organisations"][0]["level5"]["level_name"]
+                            level2["level5items"]=lrf["organisations"][0]["level5"]["items"]
+            except:
+                pass
+            if "portfolio_info" not in mydict:
+                #return HttpResponse(f'{rr1}')
+                mydict["portfolio_info"]=[ss["portpolio"][0]]
+            productport=[]
+            for product2 in lrf["portpolio"]:
+                if product==product2["product"]:
+                    productport.append(product2)
+
+            mydict["organisations"]=[{"orgname":lrf["document_name"],"orgowner":lrf["document_name"]}]
+            mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":productport,"payment_status":"unpaid"}
+            mydict["selected_portfoliolevel"]=level1
+            mydict["selected_portfolioleve2"]=level2
+            mydict["selected_portfolioleve3"]=level3
+            mydict["selected_portfolioleve4"]=level4
+            mydict["selected_portfolioleve5"]=level5
+            mydict["portfolio_info"][0]["org_id"]=lrf["_id"]
+            mydict["portfolio_info"][0]["owner_name"]=lrf["document_name"]
+            mydict["portfolio_info"][0]["org_name"]=lrf["document_name"]
+            obj, created = UserData.objects.update_or_create(username=user,sessionid=session,defaults={'alldata': json.dumps(mydict)})
+
+            if "Workflow AI" in product or "workflow" in product:
+                # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
+                return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
+            elif "Scale" in product or "scales" in product:
+                return redirect(f'https://100035.pythonanywhere.com/client?session_id={request.session["session_id"]}&id=100093')
+            elif "Legalzar" in product or "Legalzard" in product:
+                    return redirect(f'https://play.google.com/store/apps/details?id=com.legalzard.policies')
+            elif "Team" in product:
+                    return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#/?session_id={request.session["session_id"]}&id=100093')
+            elif "Wifi" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "UX" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Media" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Logo" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Chat" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Maps" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Digital" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Experience" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Admin" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Management" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Monitoring" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Dashboard" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Agent" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Support" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Repositories" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+            elif "Data" in product:
+                return redirect(f'https://ll07-team-dowell.github.io/100098-DowellJobPortal/#?session_id={request.session["session_id"]}&id=100093')
+
+            else:
+                return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
+    else:
+        return redirect("/")
