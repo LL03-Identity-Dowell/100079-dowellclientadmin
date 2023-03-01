@@ -113,6 +113,7 @@ def Home(request):
         context["pmemp"]=[elem for elem in pmemp if elem not in pmember ]
         context["public"]=publiclink.objects.all().filter(username=user["userinfo"]["username"])
         # print(context["datalav"])
+        # print(datalav["portpolio"])
 
         return render(request,"new/index.html",context)
     else:
