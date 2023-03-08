@@ -168,6 +168,7 @@ def otherorg1(request):
                                 po.append(i["portfolio_name"])
                         except:
                             pass
+                
                 # userorg1=UserOrg.objects.all().filter(username=org)
                 # for i in userorg1:
                 #     datap=i.org
@@ -236,6 +237,22 @@ def otherorg(request):
                                 po.append(i["portfolio_name"])
                         except:
                             pass
+                
+                publiclinks = UserOrg.objects.all().filter(username="Jazz3655")
+                print(publiclinks)
+
+                temp = []
+                for ii in publiclinks:
+                    publicorg=ii.org
+                    # print(publicorg)
+                    publicorg1=json.loads(publicorg)
+
+                for jj in publicorg1["portpolio"]:
+                    if jj["member_type"] == "public":
+                        temp.append(jj)
+                
+
+
                 # userorg1=UserOrg.objects.all().filter(username=org)
                 # for i in userorg1:
                 #     datap=i.org
@@ -253,6 +270,7 @@ def otherorg(request):
                 context["aiport"]=[*set(po)]
                 context["myorg"]=[*set(ors)]
                 context["products"]=[*set(co)]
+                context["public"] = temp 
                 return render(request,"new/editother.html",context)
 
 @csrf_exempt
