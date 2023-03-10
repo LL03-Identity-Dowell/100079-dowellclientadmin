@@ -3870,8 +3870,8 @@ rt.textContent = "Copied";
 				</div>
 				<div class="elementor-element elementor-element-9c9a107 elementor-button-align-stretch elementor-widget elementor-widget-form" data-id="9c9a107" data-element_type="widget" data-settings="{&quot;step_next_label&quot;:&quot;Next&quot;,&quot;step_previous_label&quot;:&quot;Previous&quot;,&quot;button_width&quot;:&quot;100&quot;,&quot;step_type&quot;:&quot;number_text&quot;,&quot;step_icon_shape&quot;:&quot;circle&quot;}" data-widget_type="form.default">
 				<div class="elementor-widget-container">
-					<form  method="post" id="lavinumber">
-					    {%csrf_token%}
+					<form  action="{% url 'createpublic' %}" method="post" id="">
+					    {% csrf_token %}
 			<input type="hidden" name="post_id" value="5880"/>
 			<input type="hidden" name="form_id" value="9c9a107"/>
 			<input type="hidden" name="referer_title" value="uxlivinglab - innovating from people&#039;s mind" />
@@ -3900,7 +3900,7 @@ rt.textContent = "Copied";
 		</div>
 						</div>
 								<div class="elementor-field-group elementor-column elementor-field-type-submit elementor-col-100 e-form__buttons">
-					<button type="submit" class="elementor-button elementor-size-md" id="publicinvitationlink">
+					<button type="submit" class="elementor-button elementor-size-md" id="publicinvitationlink" name="createpubliclink">
 						<span >
 															<span class=" elementor-button-icon">
 																										</span>
@@ -7445,7 +7445,7 @@ var windowOpen;
                 }
             })
         }
-    if (key=="role"){
+    if (key=="role"){ 
         {{ datalav.portpolio|safe }}.forEach(item => {
                 if (val==item.role){
                     if (item.status=="enable"){

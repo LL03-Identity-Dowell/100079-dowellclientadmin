@@ -1831,3 +1831,27 @@ def portfolioUrl(request):
                 return HttpResponse(f"<h1 align='center'>Redirect the URL of this {product} product not avail in database<br><a href='/'>Home</a></h1>")
     else:
         return redirect("/")
+
+
+def createpubliclinks(request):
+    if request.method == "POST" and "createpubliclink" in request.POST:
+                # public_name = request.POST.get('public_name',None)
+                public_name = request.POST.get('form_fields[public_name]')
+                autopublic = request.POST.get('autopublic',None)
+                if public_name:
+                    links=[]
+
+                    org = base64.b64encode(bytes(request.session["present_org"], 'utf-8')).decode()
+                    pmembers=base64.b64encode(bytes("public_member", 'utf-8')).decode()
+                    for i in range(int(public_name)):
+                        user=passgen.generate_random_password1(12)
+                        linkcode=passgen.generate_random_password1(16)
+                        path=f'https://100093.pythonanywhere.com/invitesocial?next={org}&type={pmembers}&code={user}'
+                        qrcodegen.qrgen1(path,user,f"clientadmin/media/userqrcodes/{user}.png")
+                        links.append(path)
+                        publiclink.objects.create(dateof=datetime.datetime.now(),org=request.session["present_org"],username=request.session["username"],link=path,linkstatus="unused",productstatus="unused",qrcodeid=user,qrpath=f'https://100093.pythonanywhere.com/media/userqrcodes/{user}.png',linkcode=linkcode)
+                    response_data={"public_name":"Successfully create","autopublic":"d"}
+                    # print(response_data["link"])
+                    return JsonResponse(response_data)
+                else:
+                   return JsonResponse({"public_name":"Pl provide a number","autopublic":"fsaf"})

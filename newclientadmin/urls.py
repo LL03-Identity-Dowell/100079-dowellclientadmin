@@ -24,6 +24,7 @@ urlpatterns = [
     # path("addpublic",addpublic,name="addpublic"),
     path('status',StatusChange,name="status"),
     path("memberen",MemEnDis,name="memberen"),
+    path("createpublic",createpubliclinks,name="createpublic"),
 
     # path('logout',Logout,name="logout")
 ]
