@@ -13,6 +13,9 @@ from django.http import JsonResponse
 from PIL import Image
 import requests
 import datetime
+import random
+import string
+
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 def Home(request):
@@ -617,7 +620,8 @@ def PortfolioAdd(request):
                 portfolio_u_code = request.POST.get('portfolio_u_code')
                 portfolio_det = request.POST.get('portfolio_det')
                 lsmem=json.loads(member)
-                response_data={"username":lsmem,"member_type":member_type,"product":product,"data_type":data_type,"operations_right":op_rights,"role":role,"security_layer": "None","portfolio_name":portfolio_name,"portfolio_code":portfolio_code,"portfolio_specification":portfolio_spec,"portfolio_uni_code":portfolio_u_code,"portfolio_details":portfolio_det,"status": "enable"}
+                code = generate_code()
+                response_data={"username":lsmem,"member_type":member_type,"product":product,"data_type":data_type,"operations_right":op_rights,"role":role,"security_layer": "None","portfolio_name":portfolio_name,"portfolio_code":portfolio_code,"portfolio_specification":portfolio_spec,"portfolio_uni_code":portfolio_u_code,"portfolioID":code,"portfolio_details":portfolio_det,"status": "enable"}
                 userorg=UserOrg.objects.all().filter(username=username)
                 for i in userorg:
                         o=i.org
@@ -665,8 +669,8 @@ def PortfolioAdd(request):
                     r=json.loads(login1)
                     try:
                         lo=r["data"][0]["other_organisation"]
-
-                        lo.append({"org_name":ortname,"username":li,"member_type":member_type,"product":product,"data_type":data_type,"operations_right":op_rights,"role":role,"security_layer": "None","portfolio_name":portfolio_name,"portfolio_code":portfolio_code,"portfolio_specification":portfolio_spec,"portfolio_uni_code":portfolio_u_code,"portfolio_details":portfolio_det,"status": "enable"})
+                        code = generate_code()
+                        lo.append({"org_name":ortname,"username":li,"member_type":member_type,"product":product,"data_type":data_type,"operations_right":op_rights,"role":role,"security_layer": "None","portfolio_name":portfolio_name,"portfolio_code":portfolio_code,"portfolio_specification":portfolio_spec,"portfolio_uni_code":portfolio_u_code,"portfolioID":code,"portfolio_details":portfolio_det,"status": "enable"})
 
                         field2={"document_name":li}
                         update={"other_organisation":lo}
@@ -1145,6 +1149,8 @@ def InviteMembers(request):
                         </tr>
                     </tbody>
                 </table>
+                <a href= "https://100087.pythonanywhere.com/privacyconsents/FB1010000000001665306290565391/?session_id=ayaquq6jdyqvaq9h6dlm9ysu3wkykfggyx0d" > Click Here for Privacy Consent </a>
+
                 """
             if request.POST.get('form')=="temailsent":
                 email=request.POST.get('email','None')
@@ -1672,9 +1678,11 @@ def portfolioUrl(request):
                 mydict["selected_product"]={"product_id":1,"product_name":product,"platformpermissionproduct":[{"type":"member","operational_rights":["view","add","edit","delete"],"role":"admin"}],"platformpermissiondata":["real","learning","testing","archived"],"orgid":lrf["_id"],"orglogo":"","ownerid":"","userportfolio":lrst,"payment_status":"unpaid"}
                 obj, created = UserData.objects.update_or_create(username=user,sessionid=session,defaults={'alldata': json.dumps(mydict)})
                 if "Workflow AI" in product or "workflow" in product:
+                    if s["User_type"]=="datatester":
+                        return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
+                    else:
                 # return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/?session_id={request.session["session_id"]}&id=100093')
-                    return redirect(f'https://ll04-finance-dowell.github.io/100018-dowellWorkflowAi-testing/#/?session_id={request.session["session_id"]}&id=100093')
-
+                        return redirect(f'https://ll04-finance-dowell.github.io/workflowai.online/#?session_id={request.session["session_id"]}&id=100093')
                 elif "Scale" in product or "scales" in product:
                     return redirect(f'https://100035.pythonanywhere.com/client?session_id={request.session["session_id"]}&id=100093')
                 elif "Legalzar" in product or "Legalzard" in product:
@@ -1855,3 +1863,8 @@ def createpubliclinks(request):
                     return JsonResponse(response_data)
                 else:
                    return JsonResponse({"public_name":"Pl provide a number","autopublic":"fsaf"})
+
+
+def generate_code():
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+    return code
