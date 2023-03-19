@@ -1265,7 +1265,7 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                     <div class="overlay-inner ">
                         {%if "Workflow AI" in products %}
                         <h2 class="img-accordion-title">Workflow AI</h2>                            <p>&nbsp;
-<p style="text-align: left;"><form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Workflow AI" hidden><select id="mySelect" name="portfl" style="width: 400px;" required>{% for i in othero %} {% if "Workflow" in i.product %}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%} {% for p in public %} <option value="{{p.portfolio_name}}">{{p.portfolio_name}},{{p.role}},{{p.member_type}} </opton> {% endfor %}</select></p>
+<p style="text-align: left;"><form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Workflow AI" hidden><select id="mySelect" name="portfl" style="width: 400px;" required>{% for i in othero %} {% if "Workflow" in i.product %}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{% endif %}{% endfor %}  {% for p in public %} {% if "Workflow" in p.product %}<option value="{{p.portfolio_name}}">{{p.portfolio_name}},{{p.role}},{{p.member_type}} </opton> {% endif %}{% endfor %} </select></p>
 <b><br>
 <button>Connect</button></b></form></p>{%else%}<script>hideimage("Workflow AI");</script>{%endif%}
                                             </div>
@@ -1280,7 +1280,15 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                     <div class="overlay-inner ">
                         {%if "Wifi" in products %}
                         <h2 class="img-accordion-title">Wifi QR Code</h2>                            <p>&nbsp;
-<p style="text-align: left;"><form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Wifi QR Code" hidden><select id="mySelect" name="portfl" required>{% for i in othero %} {% if "Wifi QR" in i.product %}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%} {% for p in public %} <option value="{{p.portfolio_name}}">{{p.portfolio_name}},{{p.role}},{{p.member_type}} </opton> {% endfor %}</select></p>
+<p style="text-align: left;"><form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Wifi QR Code" hidden><select id="mySelect" name="portfl" required>
+{% for i in othero %}
+ {% if "Wifi QR" in i.product %}
+ <option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>
+ {% endif %}
+ {% endfor %} 
+ {% for p in public %} 
+ <option value="{{p.portfolio_name}}">{{p.portfolio_name}},{{p.role}},{{p.member_type}} </opton> 
+ {% endfor %}</select></p>
 <b><br>
 <button>Connect</button></b></form></p>{%else%}<script>hideimage("Wifi QR Code");</script>{%endif%}
                                             </div>
@@ -1534,7 +1542,7 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
                     <div class="overlay-inner ">
                         {%if "Live Dashboard" in products %}
                         <h2 class="img-accordion-title">Live Dashboard</h2>                            <p>&nbsp;
-<p style="text-align: left;"><form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Live Stream Dashboard" hidden><select id="mySelect" name="portfl" required>{% for i in othero %} {% if "Dashboard" in i.product %}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor% {% for p in public %} <option value="{{p.portfolio_name}}">{{p.portfolio_name}},{{p.role}},{{p.member_type}} </opton> {% endfor %}}</select></p>
+<p style="text-align: left;"><form method="POST" action="portfolio">{% csrf_token %}<input type="text" name="product" value="Live Stream Dashboard" hidden><select id="mySelect" name="portfl" required>{% for i in othero %} {% if "Dashboard" in i.product %}<option value="{{i.portfolio_name}}">{{i.portfolio_name}},{{i.role}},{{i.member_type}}</option>{%endif%}{%endfor%} {% for p in public %} <option value="{{p.portfolio_name}}">{{p.portfolio_name}},{{p.role}},{{p.member_type}} </opton> {% endfor %}}</select></p>
 <b><br>
 <button>Connect</button></b></form></p>{%else%}<script>hideimage("Live Stream Dashboard");</script>{%endif%}
                                             </div>
@@ -1724,6 +1732,18 @@ select.appendChild(opt);
 
 
         }
+    });
+
+{{ public|safe }}.forEach(item => {
+
+        if (value==item.product){
+            opt = document.createElement('option');
+            opt.value = item.portfolio_name;
+            opt.innerHTML = item.portfolio_name;
+            select.appendChild(opt);
+
+
+        }
     })
 
 }
@@ -1733,6 +1753,22 @@ var ro = document.getElementById("form-field-field_179acf3");
 var value1 = ee.value, res;
 
 {% for i in othero %}
+if (value1=="{{i.portfolio_name}}"){
+    res = "{{i|safe}}";
+    res = res.slice(1,-1);
+
+    const stringArray = res.split(",");
+
+    let outputString = "";
+        stringArray.forEach(substring => {
+          outputString += substring.trim() + "\n";
+    });
+    ro.value=outputString;
+    //ro.value=JSON.stringify("{{i|safe}}");
+}
+{%endfor%}
+
+{% for i in public %}
 if (value1=="{{i.portfolio_name}}"){
     res = "{{i|safe}}";
     res = res.slice(1,-1);

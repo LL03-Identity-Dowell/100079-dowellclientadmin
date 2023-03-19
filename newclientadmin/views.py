@@ -1866,5 +1866,5 @@ def createpubliclinks(request):
 
 
 def generate_code():
-    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     return code
