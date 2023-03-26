@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import sessionView,OrgView,OrgsView,DeviceLayers,OsLayers,BrowserLayers,ConnectionLayers,LoginLayers,IdVerificationLayers,PasswordLayers,GetPort,UpdateQr
+from .views import sessionView,OrgView,OrgsView,DeviceLayers,OsLayers,BrowserLayers,ConnectionLayers,LoginLayers,IdVerificationLayers,PasswordLayers,GetPort,UpdateQr,userinfo
 urlpatterns = [
     path('userinfo/', sessionView,name="userinfo"),
     path('members/', OrgView,name="members"),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('idverifiationlayers/',IdVerificationLayers,name="idverificationlayers"),
     path('passwordlayers/',PasswordLayers,name="passwordlayers"),
     path('getportfolio/',GetPort,name="getportfolio"),
-    path('updateqr/',UpdateQr,name="updateqr")
+    path('updateqr/',UpdateQr,name="updateqr"),
+    path('userdocument/',userinfo,name="userdocument")
 
 ]

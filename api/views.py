@@ -138,6 +138,15 @@ def GetPort(request):
 
     return Response({"portfolio":r1})
 
+@api_view(["POST"])
+def userinfo(request):
+    odata = request.data
+    user = odata["user"]
+    field1={"document_name":user}
+    login1=dowellconnection("login","bangalore","login","client_admin","client_admin","1159","ABCDE","fetch",field1,"update")
+    r=json.loads(login1)
+    r1 = r["data"]
+    return Response({"data":r1})
 
 @api_view(["POST"])
 def UpdateQr(request):

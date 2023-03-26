@@ -639,7 +639,16 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Workspaces</a>
 					</div>
 
-					<div id="elementor-tab-content-1171" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1171"><ol><li><h6>Workspace 1 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Workspace 2 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Workspace 3 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6></li><li><h6>Product 2</h6></li></ol></li><li><h6>My Workspace [Myself]</h6><ol><li><h6>Product 1</h6></li><li><h6>Product 2</h6></li></ol></li><li> </li><li> </li></ol></div>
+					<div id="elementor-tab-content-1171" class="elementor-tab-content elementor-clearfix" data-tab="1" role="tabpanel" aria-labelledby="elementor-tab-title-1171"><ol>
+					{% comment %} <li><h6>Workspace 1 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Workspace 2 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li><li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li></ol></li><li><h6>Workspace 3 [Owner]</h6><ol><li><h6>Product 1 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6></li><li><h6>Product 2</h6></li></ol></li><li><h6>My Workspace [Myself]</h6><ol><li><h6>Product 1</h6></li><li><h6>Product 2</h6></li></ol></li><li> </li><li> </li> {% endcomment %}
+											{% for i in othero %}
+						<li><h6>{{i.org_name}} [Owner]</h6><ol><li><h6>{{i.product}}<span style="color: #ff6600;">[{{i.data_type}}, {{i.operations_right}}]</span></h6><ol><li><h6>{{i.portfolio_name}}</h6></li></ol></li>
+
+						<!-- <li><h6>Product 2 <span style="color: #ff6600;">[Data type, Operational rights]</span></h6><ol><li><h6>Portfolio 1</h6></li><li><h6>Portfolio 2</h6></li></ol></li> -->
+					</ol>
+					</li>
+						{% endfor %}
+					</ol></div>
 				</div>
 							<div class="elementor-toggle-item">
 					<div id="elementor-tab-title-1172" class="elementor-tab-title" data-tab="2" role="tab" aria-controls="elementor-tab-content-1172" aria-expanded="false">
@@ -661,7 +670,13 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Last Logins</a>
 					</div>
 
-					<div id="elementor-tab-content-1173" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1173"><ol><li><h6>Login 1 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 2 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 3 details</h6><ol><li><h6>Time</h6></li></ol></li><li> </li><li> </li><li> </li><li> </li></ol></div>
+					<div id="elementor-tab-content-1173" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1173"><ol>
+					
+					{% comment %} <li><h6>Login 1 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 2 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 3 details</h6><ol><li><h6>Time</h6></li></ol></li><li> </li><li> </li><li> </li><li> </li> {% endcomment %}
+						{% for time in last_login_times %}
+					<li>{{time}} </li>
+					{% endfor %}
+					</ol></div>
 				</div>
 								</div>
 				</div>

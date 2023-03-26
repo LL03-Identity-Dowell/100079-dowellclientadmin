@@ -1276,7 +1276,14 @@ src="https://www.facebook.com/tr?id=708965233111144&ev=PageView&noscript=1" />
 												<a href="" class="elementor-toggle-title">Last Logins</a>
 					</div>
 
-					<div id="elementor-tab-content-1173" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1173"><ol><li><h6>Login 1 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 2 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 3 details</h6><ol><li><h6>Time</h6></li></ol></li><li> </li><li> </li><li> </li><li> </li></ol></div>
+					<div id="elementor-tab-content-1173" class="elementor-tab-content elementor-clearfix" data-tab="3" role="tabpanel" aria-labelledby="elementor-tab-title-1173"><ol>
+					
+					{% comment %} <li><h6>Login 1 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 2 details</h6><ol><li><h6>Time</h6></li></ol></li><li><h6>Login 3 details</h6><ol><li><h6>Time</h6></li></ol></li><li> </li><li> </li><li> </li><li> </li> {% endcomment %}
+					
+					{% for time in last_login_times %}
+					<li>{{time}} </li>
+					{% endfor %}
+					</ol></div>
 				</div>
 								</div>
 				</div>

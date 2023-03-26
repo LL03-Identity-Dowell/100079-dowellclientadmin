@@ -115,8 +115,27 @@ def Home(request):
         context["pmem"]=[*set(tmem)]
         context["pmemp"]=[elem for elem in pmemp if elem not in pmember ]
         context["public"]=publiclink.objects.all().filter(username=user["userinfo"]["username"])
+        url_lastlogin = "https://100014.pythonanywhere.com/api/lastlogins/"
+
+        # Define the data to be sent in the POST request
+        data = {
+            "username": "your_username_here"
+        }
+
+        # Make the POST request
+        response_login = requests.post(url_lastlogin, json=data)
+
+        # Check if the request was successful
+        if response_login.status_code == 200:
+            # Extract the LastloginTimes data from the response
+            last_login_times = response_login.json()["data"]["LastloginTimes"]
+
+            print("Last login times:", last_login_times)
+        else:
+            print(f"POST request failed with status code {response_login.status_code}.")
         # print(context["datalav"])
         # print(datalav["portpolio"])
+        context["last_login_times"] = last_login_times
 
         return render(request,"new/index.html",context)
     else:
@@ -254,6 +273,27 @@ def otherorg(request):
                     if jj["member_type"] == "public":
                         temp.append(jj)
                 
+                url_lastlogin = "https://100014.pythonanywhere.com/api/lastlogins/"
+
+                # Define the data to be sent in the POST request
+                data = {
+                    "username": org
+                }
+
+                # Make the POST request
+                response_login = requests.post(url_lastlogin, json=data)
+
+                # Check if the request was successful
+                if response_login.status_code == 200:
+                    # Extract the LastloginTimes data from the response
+                    last_login_times = response_login.json()["data"]["LastloginTimes"]
+
+                    print("Last login times:", last_login_times)
+                else:
+                    print(f"POST request failed with status code {response_login.status_code}.")
+                # print(context["datalav"])
+                # print(datalav["portpolio"])
+                context["last_login_times"] = last_login_times
 
 
                 # userorg1=UserOrg.objects.all().filter(username=org)
@@ -274,6 +314,7 @@ def otherorg(request):
                 context["myorg"]=[*set(ors)]
                 context["products"]=[*set(co)]
                 context["public"] = temp 
+                print(context["othero"])
                 return render(request,"new/editother.html",context)
 
 @csrf_exempt
